@@ -1,0 +1,211 @@
+\documentclass{didactica}
+
+
+\usepackage{fancysprefs}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, activeacute]{babel} %Definir idioma español
+
+
+\usepackage{etoolbox} % para \csdef
+
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+\renewcommand{\arraystretch}{0.55}
+\setlength{\tabcolsep}{10pt}
+\usepackage{longtable} % ¡Este es el nombre correcto!
+
+
+
+\newcommand{\lawref}[1]{\nameref{#1}}
+\newcommand{\compref}[1]{\nameref{#1}}
+
+
+\makeatletter
+\newcommand{\namedref}[2]{%
+  \phantomsection%
+  \protected@edef\@currentlabelname{#2}%
+  \label{#1}%
+  \textbf{#2}%
+}
+\makeatother
+
+
+
+\usepackage{titlesec}
+\titleformat{\chapter}
+  {\normalfont\bfseries\fontsize{12}{14}\selectfont}{\thechapter}{10pt}{}
+
+% Tamaño 12 para secciones, subsecciones, etc.
+\titleformat{\section}
+  {\normalfont\bfseries\fontsize{12}{14}\selectfont}{\thechapter.\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\bfseries\fontsize{12}{14}\selectfont}{\thechapter.\thesection.\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalfont\bfseries\fontsize{12}{14}\selectfont}{\thechapter.\thesection.\thesubsection.\thesubsubsection}{1em}{}
+
+% Espaciado vertical entre títulos (ajustable)
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+\titlespacing*{\section}{0pt}{10pt}{5pt}
+\titlespacing*{\subsection}{0pt}{8pt}{4pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{3pt}
+
+
+%%%%%%%%%%%%%%%%%%%% TODOS %%%%%%%%%%%%%%%%%%%%
+\usepackage{soul}
+\sethlcolor{yellow}   % color de resaltado
+
+\usepackage{xcolor}
+\usepackage{etoolbox} % para \gappto
+
+% Creamos una macro donde iremos guardando los TODOs:
+\newcommand{\todoslist}{}
+
+% ❶ Definimos \todo{texto} que:
+%    - Resalta "texto" en amarillo
+%    - Añade "texto" como ítem a la macro \todoslist
+\newcommand{\todo}[1]{%
+  \hl{#1}%
+  % Agregamos el mismo texto a \todoslist, como un \item de una lista
+  \gappto{\todoslist}{\item #1}%
+}
+
+% ❷ Para mostrar la lista de todos, definimos \showtodos
+%    - Crea un título y una lista con todo lo acumulado
+\newcommand{\showtodos}{%
+  \section*{Lista de TODOs}%
+  \begin{itemize}
+    \todoslist
+  \end{itemize}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\thesection}{\arabic{section}}
+\setcounter{section}{0}
+\setcounter{chapter}{0}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{enumitem}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+
+
+% Portada (no incluida en la numeración)
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    {\LARGE\bfseries PROGRAMACIÓN DIDÁCTICA\par}
+    \vspace{1.5cm}
+    {\Large Nombre y Apellidos del Aspirante\par}
+    \vspace{0.5cm}
+    {\Large Especialidad: [Nombre de la Especialidad]\par}
+    \vfill
+    \textbf{Firma: \hrulefill} % Línea para la firma
+    \vspace{1.5cm}
+    \today
+\end{titlepage}
+
+% Comienzo de la numeración de páginas (la portada no se cuenta)
+\pagenumbering{arabic}
+
+% Tabla de contenidos
+\tableofcontents
+\newpage
+
+%-------------------------------------------------
+% Contenido del documento
+%-------------------------------------------------
+\chapter{Introducción}
+% Contenido de la introducción
+
+\begin{itemize}
+    \item Módulo: Programación
+    \item Ciclo Formativo de Grado Superior de Desarrollo de Aplicaciones Multiplataforma.
+    \item Curso: 1ª
+    \item Duración: 270h (14 ECTS)
+    \item Especialidad del profesorado: Informática.
+    \item Ubicación: IES Francisco de Goya, Madrid.
+\end{itemize}
+
+ \paragraph{Características del grupo:}
+
+ Nº de alumnos, NEE, etc.
+ 
+
+
+\input{tex/01_01_leyes}
+\input{tex/01_02_defs}
+
+\chapter{Módulo dentro del ciclo}
+%% 0.5 puntos
+\input{tex/02_descripcion_ciclo}
+
+
+\chapter{Contexto (0.5 ptos)}
+\input{tex/03_contexto}
+% Contenido del contexto
+
+\chapter{Resultados de aprendizaje y criterios de evaluación}
+
+\todo{Ponderar criterios al listarlos}
+
+\input{tex/04_RAs}
+
+
+% RAs en FCE, principios de la evaluación, etc.
+
+\subsection{Principios de la evaluación}
+Como al final de curso el alumno, para aprobar, debe saber realizar todos los resultados de aprendizaje (porque si no, no estaría alcanzando los objetivos y competencias asociadas al módulo), es necesario que obtenga, al menos, un 5 en todos ellos. Por lo tanto, cada resultado de aprendizaje debe poder ser calificado entre 0 y 10. Se verá más adelante cómo se califica cada RA. (no todos los criterios de evaluación deben estar superados)
+Dar la oportunidad al alumno hasta la finalización del periodo lectivo de seguir mejorando y demostrar que puede realizar los resultados de aprendizaje de forma satisfactoria para superar el módulo.
+EVALUACIÓN CONTINUA que permita la evaluación formativa
+
+\chapter{Saberes básicos y temporalización}
+
+\todo{Relación (tabla) de unidades didácticas, situadas en el anexo. Aquí solo títulos y RAs con sus CEs}
+
+\input{tex/05_saberesbasicos_reducido}
+%\input{tex/05_saberesbasicos}
+
+% Contenido de la temporalización
+
+
+
+\chapter{Unidades didácticas }
+%(2 ptos)
+% Contenido de las unidades didácticas
+
+\chapter{Metodología didáctica}
+%  (1 pto)
+\input{tex/06_metodologia}
+
+
+\chapter{Evaluación }
+%% (2.5 ptos)
+\input{tex/07_evaluacion}
+
+\printindex
+
+\showtodos
+
+\end{document}

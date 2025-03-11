@@ -1,0 +1,28 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{\numberline {1}Introducción}{3}{chapter.1}%
+\contentsline {paragraph}{Características del grupo:}{3}{chapter.1}%
+\contentsline {section}{\numberline {1}Resumen de conceptos}{5}{section.1.1}%
+\contentsline {chapter}{\numberline {2}Módulo dentro del ciclo}{7}{chapter.2}%
+\contentsline {section}{\numberline {1}Competencias personales y para la empleabilidad a adquirir con el módulo}{7}{section.2.1}%
+\contentsline {subsection}{\numberline {1.1}Competencias del ciclo}{7}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {1.2}Competencias del módulo:}{9}{subsection.2.1.2}%
+\contentsline {chapter}{\numberline {3}Contexto (0.5 ptos)}{11}{chapter.3}%
+\contentsline {chapter}{\numberline {4}Resultados de aprendizaje y criterios de evaluación}{12}{chapter.4}%
+\contentsline {subsection}{\numberline {0.1}Principios de la evaluación}{19}{subsection.4.0.1}%
+\contentsline {chapter}{\numberline {5}Saberes básicos y temporalización}{20}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Unidades didácticas }{23}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Metodología didáctica}{24}{chapter.7}%
+\contentsline {section}{\numberline {1}Principios metodológicos}{24}{section.7.1}%
+\contentsline {section}{\numberline {2}Recursos}{25}{section.7.2}%
+\contentsline {section}{\numberline {3}Medidas de atención a la diversidad para alumnos con necesidad específica de apoyo educativo}{26}{section.7.3}%
+\contentsline {chapter}{\numberline {8}Evaluación }{27}{chapter.8}%
+\contentsline {section}{\numberline {1}Características de la evaluación}{28}{section.8.1}%
+\contentsline {section}{\numberline {2}Procedimientos de evaluación y criterios de calificación}{28}{section.8.2}%
+\contentsline {section}{\numberline {3}Proceso de evaluación continua y calificación en la evaluación final ordinaria}{28}{section.8.3}%
+\contentsline {section}{\numberline {4}Proceso de evaluación para alumnos a los que no se puede aplicar la evaluación continua (pérdida del derecho a la evaluación continua)}{28}{section.8.4}%
+\contentsline {section}{\numberline {5}Proceso de evaluación y calificación en la evaluación final extraordinaria}{28}{section.8.5}%
+\contentsline {section}{\numberline {6}Medidas para alumnos con necesidad específica de apoyo educativo (2 ptos)}{28}{section.8.6}%
+\contentsline {section}{\numberline {7}Procedimiento de evaluación para alumnos con el módulo pendiente}{28}{section.8.7}%
+\contentsline {subsection}{\numberline {7.1}Ordinaria}{28}{subsection.8.7.1}%
+\contentsline {subsection}{\numberline {7.2}Extraordinaria}{28}{subsection.8.7.2}%
+\contentsline {section}{\numberline {8}Calendario de evaluaciones parciales, final ordinaria y final extraordinaria}{28}{section.8.8}%
