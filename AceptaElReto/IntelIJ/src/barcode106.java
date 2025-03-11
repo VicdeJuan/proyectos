@@ -3,10 +3,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-/** VEREDICTO: Wrong Answer **/
+/*
+VEREDICTO: Wrong Answer
+*/
 
 
 /**
+ * Problema: https://aceptaelreto.com/problem/statement.php?id=106
+ *
  * CASOS DE PRUEBA
 
  65839522
@@ -15,6 +19,14 @@ import java.util.Scanner;
  5029365779425
  5129365779425
  0
+
+ Salida:
+ SI
+ NO
+ SI Desconocido
+ SI Inglaterra
+ NO
+
  */
 public class barcode106 {
 
@@ -31,6 +43,22 @@ public class barcode106 {
         return retval;
     }
 
+    public final static Map<Integer, String> tabla = new HashMap<Integer, String>();
+
+    static {
+        tabla.put(0, "EEUU");
+        tabla.put(539, "Irlanda");
+        tabla.put(759, "Venezuela");
+        tabla.put(380, "Bulgaria");
+        tabla.put(560, "Portugal");
+        tabla.put(850, "Cuba");
+        tabla.put(50, "Inglaterra");
+        tabla.put(70, "Noruega");
+        tabla.put(890, "India");
+    }
+
+
+    /* El juez no acepta Map.of
     public final static Map<Integer,String> tabla = Map.of(0,"EEUU",
             539,"Irlanda",
             759,"Venezuela",
@@ -39,7 +67,7 @@ public class barcode106 {
             850,"Cuba",
             50,"Inglaterra",
             70,"Noruega",
-            890,"India");
+            890,"India");*/
 
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
@@ -53,7 +81,13 @@ public class barcode106 {
 
             EAN13 = num_char > 8;
 
-            int[] numeros = readed.chars().map(c -> c - '0').toArray();
+            //int[] numeros = readed.chars().map(c -> c - '0').toArray();
+            // Traducción de ChatGPT porque el juez no acepta el caracter '->'
+            int[] numeros = new int[num_char];
+            for (int i = 0; i < num_char; i++) {
+                numeros[i] = readed.charAt(i) - '0';
+            }
+
             int[] numeros_reversed = reverse(numeros, EAN13);
 
             int sum = 0, country_code_2_digits = 0, country_code_3_digits = 0;
@@ -84,7 +118,7 @@ public class barcode106 {
                     sum += numeros_reversed[i];
             }
 
-            int control = (sum / 10 + 1) * 10 - sum;
+            int control = sum % 10 == 0 ? (sum / 10 + 1) * 10 - sum : 0;
 
             String toprint = "", country = "";
 
