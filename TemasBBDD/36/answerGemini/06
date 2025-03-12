@@ -1,0 +1,165 @@
+\chapter{Manipulación de Datos y Tipos de Sistemas}
+
+Este capítulo se adentra en las diversas técnicas y sistemas empleados para la manipulación de datos, crucial en el ámbito de la Ingeniería Informática, especialmente a nivel de postgrado. Analizaremos las arquitecturas relacionales, orientadas a objetos, objeto-relacionales y XML, explorando sus lenguajes de manipulación y optimización. Además, introducimos la problemática de la recuperación de información y datos textuales, diferenciándola del tratamiento de datos estructurados.
+
+\section{Manipulación en Sistemas Relacionales (énfasis en SQL)}
+
+Los sistemas relacionales, basados en el modelo relacional de datos de Edgar F. Codd, constituyen la columna vertebral de la gestión de datos en numerosas aplicaciones.  El lenguaje SQL (Structured Query Language) es el estándar de facto para la definición, manipulación y consulta de datos en estos sistemas.  Esta sección explora a fondo los conceptos clave y las técnicas avanzadas para el aprovechamiento eficiente de los sistemas relacionales.
+
+\subsection{Fundamentos de SQL}
+
+Repasaremos los comandos fundamentales de SQL, incluyendo:
+
+*   **DDL (Data Definition Language):** `CREATE`, `ALTER`, `DROP` para la definición de esquemas, creación y modificación de tablas, índices y restricciones de integridad.  Profundizaremos en las diferentes opciones para definir tipos de datos, claves primarias, claves foráneas y restricciones de integridad (NOT NULL, UNIQUE, CHECK). Analizaremos las implicaciones de la elección de tipos de datos y su impacto en el rendimiento y el almacenamiento.
+
+*   **DML (Data Manipulation Language):** `SELECT`, `INSERT`, `UPDATE`, `DELETE` para la manipulación de datos.  Explicaremos la sintaxis de la cláusula `SELECT`, incluyendo las cláusulas `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`, `LIMIT`/`OFFSET`.  Profundizaremos en el uso de subconsultas (subqueries) correlacionadas y no correlacionadas, funciones agregadas (SUM, AVG, COUNT, MIN, MAX), operadores de conjuntos (UNION, INTERSECT, EXCEPT) y joins (INNER, LEFT, RIGHT, FULL) con ejemplos prácticos y consideraciones de rendimiento.
+
+*   **DCL (Data Control Language):** `GRANT`, `REVOKE` para el control de acceso a los datos y la gestión de permisos.
+
+\subsection{Optimización de Consultas en SQL}
+
+La eficiencia de las consultas SQL es crítica para el rendimiento de las aplicaciones. Esta subsección se centra en las técnicas para optimizar consultas.
+
+*   **Índices:**  Explicaremos el concepto de índices (B-trees, Hash indexes, Bitmap indexes) y su impacto en la velocidad de búsqueda.  Analizaremos las diferentes estrategias para la creación de índices, incluyendo índices compuestos, índices en columnas con funciones y la selección de las columnas adecuadas para indexar, considerando la cardinalidad y la selectividad.  Estudiaremos el impacto de los índices en operaciones de inserción, actualización y borrado.
+
+*   **Planes de Ejecución:**  Profundizaremos en la interpretación de los planes de ejecución generados por el optimizador de SQL.  Explicaremos cómo analizar los planes de ejecución para identificar cuellos de botella y optimizar las consultas.  Introduciremos herramientas y comandos específicos para la visualización y análisis de planes de ejecución en diferentes sistemas de gestión de bases de datos (SGBD).
+
+*   **Reescritura de Consultas:**  Exploraremos técnicas para la reescritura de consultas con el objetivo de mejorar el rendimiento.  Esto incluye la simplificación de expresiones, la eliminación de subconsultas redundantes, la transformación de joins, la aplicación de reglas de optimización y la utilización de pistas (hints) para influir en el optimizador.
+
+*   **Modelado de Datos para el Rendimiento:**  Discutiremos cómo el diseño del esquema de la base de datos (normalización, desnormalización, particionamiento) influye en el rendimiento de las consultas. Analizaremos las ventajas y desventajas de diferentes estrategias de modelado y su impacto en el rendimiento y la complejidad de las consultas.
+
+\subsection{Transacciones y Concurrencia}
+
+Las transacciones son fundamentales para garantizar la integridad y la consistencia de los datos en sistemas relacionales.
+
+*   **Propiedades ACID:**  Explicaremos las propiedades ACID (Atomicity, Consistency, Isolation, Durability) y cómo los sistemas relacionales garantizan la consistencia de las transacciones.
+
+*   **Niveles de Aislamiento:**  Profundizaremos en los diferentes niveles de aislamiento de transacciones (READ COMMITTED, READ UNCOMMITTED, REPEATABLE READ, SERIALIZABLE) y sus implicaciones en la concurrencia y el rendimiento.  Analizaremos los problemas de concurrencia (lost updates, dirty reads, non-repeatable reads, phantom reads) y cómo los diferentes niveles de aislamiento ayudan a mitigarlos.
+
+*   **Bloqueos (Locks):**  Explicaremos el concepto de bloqueos (compartidos, exclusivos) y cómo los SGBD los utilizan para controlar el acceso concurrente a los datos.  Analizaremos las estrategias de bloqueo y las implicaciones de los deadlocks (interbloqueos).
+
+\section{Manipulación en Sistemas Orientados a Objetos (énfasis en OQL)}
+
+Los sistemas orientados a objetos (OO) ofrecen una alternativa al modelo relacional, permitiendo la representación de datos complejos y la encapsulación de comportamientos. El lenguaje OQL (Object Query Language) es el estándar para la manipulación de datos en estos sistemas.  Esta sección explora los conceptos clave y las técnicas para la manipulación de datos en entornos OO.
+
+\subsection{Fundamentos de los Sistemas Orientados a Objetos}
+
+Repasaremos los conceptos fundamentales de la programación orientada a objetos (POO) y su aplicación en el contexto de la gestión de datos.
+
+*   **Objetos y Clases:**  Explicaremos la diferencia entre objetos y clases, la encapsulación, la herencia y el polimorfismo.
+
+*   **Modelado de Datos Orientado a Objetos:**  Discutiremos las técnicas de modelado de datos orientado a objetos (modelado de clases, asociaciones, herencia).  Compararemos y contrastaremos el modelado de datos relacional con el modelado de datos orientado a objetos.
+
+\subsection{OQL (Object Query Language)}
+
+OQL es un lenguaje de consulta diseñado para sistemas de gestión de bases de datos orientados a objetos.
+
+*   **Sintaxis y Semántica:**  Presentaremos la sintaxis y la semántica de OQL, incluyendo la especificación de la cláusula `SELECT`, `FROM`, `WHERE`. Compararemos OQL con SQL, destacando las diferencias en la forma de consultar y manipular datos.
+
+*   **Tipos de Datos:**  Explicaremos los tipos de datos soportados por OQL, incluyendo objetos, referencias, colecciones (listas, conjuntos, diccionarios) y tipos primitivos.
+
+*   **Consultas y Navegación:**  Exploraremos cómo realizar consultas sobre objetos, navegar a través de relaciones y acceder a los atributos y métodos de los objetos.
+
+*   **Funciones y Operadores:**  Analizaremos las funciones y operadores disponibles en OQL, incluyendo funciones agregadas y funciones de manipulación de colecciones.
+
+*   **Ejemplos Avanzados:**  Presentaremos ejemplos complejos de consultas OQL, incluyendo el uso de subconsultas y el acceso a métodos de objetos en las consultas.
+
+\subsection{Comparación entre Sistemas Relacionales y Orientados a Objetos}
+
+Compararemos las ventajas y desventajas de los sistemas relacionales y orientados a objetos, considerando factores como el rendimiento, la escalabilidad, la flexibilidad y la complejidad del modelado de datos.  Discutiremos los casos de uso apropiados para cada tipo de sistema.
+
+\section{Manipulación en Sistemas Objeto-Relacionales (uso de SQL con extensiones)}
+
+Los sistemas objeto-relacionales (OR) son una combinación de los modelos relacional y orientado a objetos. Extienden los sistemas relacionales con funcionalidades de objetos, permitiendo modelar datos complejos y encapsular comportamientos.  En esta sección analizaremos las extensiones de SQL para la manipulación de datos en sistemas OR.
+
+\subsection{Tipos de Datos Extendidos en SQL}
+
+Los sistemas OR introducen nuevos tipos de datos para representar objetos y sus atributos.
+
+*   **Tipos de Datos Definidos por el Usuario (UDTs):**  Explicaremos cómo crear y utilizar UDTs para definir tipos de datos complejos, incluyendo tipos de datos estructurados y tipos de datos colecciones (arrays, multiset).
+
+*   **Objetos y Referencias:**  Discutiremos cómo representar objetos como atributos de las tablas y cómo utilizar referencias para representar relaciones entre objetos.
+
+*   **Métodos en SQL:**  Exploraremos cómo definir y utilizar métodos en SQL para encapsular comportamientos y realizar operaciones sobre los objetos almacenados en la base de datos.
+
+\subsection{Consultas y Manipulación de Datos en Sistemas Objeto-Relacionales}
+
+Analizaremos cómo realizar consultas y manipular datos en sistemas OR utilizando SQL con extensiones.
+
+*   **Acceso a Atributos de Objetos:**  Explicaremos cómo acceder a los atributos de los objetos almacenados en las tablas utilizando la notación de puntos.
+
+*   **Llamada a Métodos:**  Analizaremos cómo llamar a los métodos definidos en los objetos utilizando sentencias SQL.
+
+*   **Consultas sobre Colecciones:**  Discutiremos cómo realizar consultas sobre colecciones (arrays, multiset) almacenadas en las tablas, utilizando funciones y operadores específicos para la manipulación de colecciones.
+
+*   **Ejemplos Avanzados:**  Presentaremos ejemplos complejos de consultas en sistemas OR, incluyendo el uso de UDTs, métodos y colecciones.
+
+\subsection{Comparación con Sistemas Relacionales y Orientados a Objetos}
+
+Compararemos las ventajas y desventajas de los sistemas OR, considerando la flexibilidad, el rendimiento y la complejidad del modelado de datos.  Discutiremos los casos de uso apropiados para cada tipo de sistema.
+
+\section{Manipulación de Datos XML}
+
+XML (Extensible Markup Language) se ha convertido en un estándar para el intercambio y el almacenamiento de datos en muchos dominios.  Esta sección explorará la estructura, consulta, transformación y almacenamiento de datos XML.
+
+\subsection{Estructura de los datos XML}
+
+*   **Conceptos Fundamentales:**  Explicaremos los conceptos fundamentales de XML, incluyendo elementos, atributos, texto, entidades y esquemas.
+
+*   **Documentos Bien Formados y Válidos:**  Discutiremos la diferencia entre documentos XML bien formados y válidos, y la importancia de la validación utilizando esquemas (DTD, XSD).
+
+*   **Esquemas XML (XSD):**  Profundizaremos en el uso de esquemas XSD para definir la estructura y los tipos de datos de los documentos XML.  Analizaremos los diferentes elementos y atributos que se pueden utilizar en un esquema XSD, incluyendo la definición de tipos simples y complejos, restricciones de tipo, asociaciones y herencia.
+
+*   **Namespaces:**  Explicaremos el concepto de namespaces y su importancia para evitar conflictos de nombres en documentos XML.
+
+\subsection{Consulta y transformación (XQuery, XSLT)}
+
+*   **XQuery:**  XQuery es un lenguaje de consulta diseñado para XML, similar a SQL para bases de datos relacionales.  Explicaremos la sintaxis y la semántica de XQuery, incluyendo la especificación de las cláusulas `FOR`, `LET`, `WHERE`, `RETURN`.  Analizaremos cómo realizar consultas sobre documentos XML, extraer información, filtrar datos y construir nuevos documentos XML.
+
+*   **XSLT:**  XSLT (Extensible Stylesheet Language Transformations) es un lenguaje utilizado para transformar documentos XML en otros formatos, incluyendo XML, HTML, texto plano, etc.  Explicaremos la sintaxis y la semántica de XSLT, incluyendo el uso de plantillas, reglas de coincidencia, expresiones XPath y funciones.  Analizaremos cómo crear hojas de estilo XSLT para transformar documentos XML en diferentes formatos y personalizar la presentación de los datos.
+
+*   **XPath:**  XPath es un lenguaje de camino utilizado para seleccionar nodos en un documento XML.  Explicaremos la sintaxis y la semántica de XPath, incluyendo el uso de expresiones de camino, predicados y funciones.
+
+*   **Ejemplos Prácticos:**  Presentaremos ejemplos prácticos de consultas XQuery y transformaciones XSLT, incluyendo la extracción de datos, la transformación de datos y la generación de informes.
+
+\subsection{Almacenamiento de datos XML y su consulta}
+
+*   **Almacenamiento Nativo de XML:**  Explicaremos el concepto de almacenamiento nativo de XML (Natively XML Databases - NXD), donde los datos XML se almacenan directamente en formato XML, conservando su estructura y semántica.  Discutiremos las ventajas y desventajas del almacenamiento nativo de XML, incluyendo el rendimiento de las consultas, la escalabilidad y la flexibilidad.
+
+*   **Almacenamiento en Bases de Datos Relacionales:**  Explicaremos cómo almacenar datos XML en bases de datos relacionales utilizando diferentes estrategias, incluyendo el almacenamiento de documentos XML completos en columnas de texto y el mapeo de documentos XML a tablas relacionales.  Analizaremos las ventajas y desventajas de estas estrategias, incluyendo el rendimiento de las consultas, la complejidad del modelado de datos y la escalabilidad.
+
+*   **Indexación en XML:**  Exploraremos diferentes técnicas de indexación para acelerar las consultas sobre datos XML.
+
+\section{Recuperación de Información y Datos Textuales (diferencias con datos estructurados)}
+
+La recuperación de información (IR) se centra en la búsqueda y recuperación de información relevante de colecciones de documentos textuales, a diferencia de los datos estructurados almacenados en bases de datos.  Esta sección explora los conceptos clave y las técnicas para la recuperación de información.
+
+\subsection{Consultas basadas en palabras clave}
+
+*   **Modelos de Recuperación:**  Explicaremos los modelos de recuperación de información más comunes, incluyendo el modelo booleano, el modelo vectorial y el modelo probabilístico.
+
+*   **Tokenización, Stemming y Stop Words:**  Discutiremos las técnicas de preprocesamiento de texto, incluyendo la tokenización, el stemming (reducción de palabras a su raíz) y la eliminación de palabras vacías (stop words).
+
+*   **Representación Vectorial:**  Explicaremos cómo representar documentos y consultas como vectores en un espacio multidimensional, utilizando la frecuencia de términos (TF) y la frecuencia inversa de documentos (IDF) para ponderar los términos.
+
+*   **Medidas de Similaridad:**  Discutiremos las medidas de similaridad más comunes, como la similitud del coseno, para calcular la similitud entre documentos y consultas.
+
+*   **Ejemplos Prácticos:**  Presentaremos ejemplos prácticos de consultas basadas en palabras clave y el cálculo de la relevancia de los documentos.
+
+\subsection{Relevancia de los documentos}
+
+*   **Ranking de Documentos:**  Explicaremos cómo ordenar los documentos recuperados en función de su relevancia para la consulta.
+
+*   **TF-IDF y otros Esquemas de Ponderación:**  Profundizaremos en el uso de TF-IDF y otros esquemas de ponderación (BM25) para calcular la importancia de los términos en los documentos y las consultas.
+
+*   **Feedbacks de Relevancia:**  Discutiremos cómo utilizar el feedback de relevancia (interacción con el usuario para refinar la consulta) para mejorar la precisión de la recuperación.
+
+\subsection{Indexación de documentos}
+
+*   **Índices Invertidos:**  Explicaremos el concepto de índices invertidos, la estructura de datos clave para la indexación de documentos.  Analizaremos cómo crear y mantener índices invertidos para acelerar la búsqueda de documentos.
+
+*   **Compresión de Índices:**  Discutiremos las técnicas de compresión de índices para reducir el espacio de almacenamiento y mejorar el rendimiento.
+
+*   **Implementación de Sistemas de Recuperación:**  Presentaremos una visión general de la arquitectura de un sistema de recuperación de información y los diferentes componentes que lo conforman.
+
+\end{document}

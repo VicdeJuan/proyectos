@@ -1,0 +1,100 @@
+\chapter{Procesamiento de Consultas}
+
+El procesamiento de consultas es el corazón de cualquier Sistema Gestor de Bases de Datos (SGBD). Es el proceso mediante el cual una consulta, expresada en un lenguaje de consulta como SQL, es transformada en un plan de ejecución que el sistema puede entender y ejecutar eficientemente para recuperar la información solicitada. Este capítulo profundiza en las etapas clave del procesamiento de consultas y en la arquitectura del procesador de consultas.
+
+\section{Pasos en el Procesamiento de una Consulta}
+
+El procesamiento de una consulta puede ser descompuesto en una serie de pasos secuenciales y, en algunos casos, iterativos. Cada paso transforma la consulta en una representación más cercana a su ejecución física.
+
+\subsection{Análisis Léxico y Sintáctico}
+
+Esta es la primera etapa del procesamiento y se encarga de verificar la validez formal de la consulta.
+
+\begin{itemize}
+    \item \textbf{Análisis Léxico:} En esta fase, la consulta, que es una cadena de caracteres, se descompone en una secuencia de *tokens*. Los tokens son las unidades léxicas fundamentales del lenguaje, como palabras clave (SELECT, FROM, WHERE), identificadores (nombres de tablas y columnas), operadores (>, =, AND), literales (cadenas, números) y signos de puntuación. El analizador léxico (también conocido como escáner) identifica y clasifica estos tokens.  Por ejemplo, la consulta \texttt{SELECT nombre, apellido FROM empleados WHERE salario > 50000;} se descompondría en los tokens: \texttt{SELECT}, \texttt{nombre}, \texttt{,}, \texttt{apellido}, \texttt{FROM}, \texttt{empleados}, \texttt{WHERE}, \texttt{salario}, \texttt{>}, \texttt{50000}, \texttt{;}.
+    \item \textbf{Análisis Sintáctico:} El analizador sintáctico (también conocido como parser) toma la secuencia de tokens generada por el analizador léxico y construye una estructura jerárquica que representa la estructura gramatical de la consulta.  Esta estructura es, típicamente, un árbol sintáctico o árbol de análisis (parse tree).  El parser utiliza las reglas gramaticales del lenguaje de consulta para verificar si la consulta es sintácticamente correcta. Si la consulta no cumple con la gramática, el parser genera un error.  El árbol sintáctico captura la estructura de la consulta, mostrando cómo los diferentes componentes (SELECT, FROM, WHERE, etc.) se relacionan entre sí.
+\end{itemize}
+
+\subsection{Validación}
+
+Una vez que la consulta ha pasado el análisis sintáctico, se procede a la validación semántica.  Esta etapa verifica la validez de la consulta en relación con el esquema de la base de datos.
+
+\begin{itemize}
+    \item \textbf{Existencia de objetos:} Se comprueba que las tablas y columnas referenciadas en la consulta realmente existen en el esquema de la base de datos.  El diccionario de datos (o catálogo del sistema) es consultado para obtener información sobre la estructura de la base de datos.
+    \item \textbf{Tipos de datos:} Se verifica que los tipos de datos de las columnas referenciadas sean compatibles con los operadores y funciones utilizadas en la consulta.  Por ejemplo, no se puede comparar una columna de tipo cadena de texto con un valor numérico sin una conversión explícita.
+    \item \textbf{Autorización:} Se verifica que el usuario que emitió la consulta tiene los permisos necesarios para acceder a los datos solicitados.  Esto implica consultar la información de seguridad almacenada en el sistema.
+\end{itemize}
+Si la validación falla en cualquier etapa, se genera un mensaje de error y la consulta es rechazada.
+
+\subsection{Traducción a Formato Interno (Árbol de Consulta, Álgebra Relacional)}
+
+Después de la validación, la consulta se traduce a una representación interna que es más adecuada para la optimización y la ejecución.  La representación más común es el árbol de consulta (query tree) o la expresión del álgebra relacional.
+
+\begin{itemize}
+    \item \textbf{Árbol de Consulta:} Un árbol de consulta es una representación gráfica de la consulta, donde los nodos representan las operaciones relacionales (selección, proyección, unión, producto cartesiano, etc.) y las hojas representan las tablas o relaciones.  El árbol de consulta refleja la secuencia de operaciones que se deben realizar para evaluar la consulta.  Por ejemplo, la consulta \texttt{SELECT nombre, apellido FROM empleados WHERE salario > 50000;} podría representarse con un árbol de consulta donde la raíz es una operación de proyección (SELECT nombre, apellido), su hijo es una operación de selección (WHERE salario > 50000), y el hijo de la selección es la tabla empleados.
+    \item \textbf{Álgebra Relacional:} El álgebra relacional es un lenguaje formal que describe las operaciones que se pueden realizar sobre las relaciones (tablas).  La consulta se traduce a una expresión del álgebra relacional, que especifica las operaciones a realizar y su orden.  Por ejemplo, la consulta anterior podría traducirse a la expresión algebraica:  $\Pi_{nombre, apellido} (\sigma_{salario > 50000} (empleados))$.  Donde $\Pi$ representa la proyección, $\sigma$ la selección.
+\end{itemize}
+
+Esta traducción permite que el SGBD manipule la consulta de manera abstracta, sin depender de la sintaxis original del lenguaje de consulta.  La representación interna facilita la optimización de la consulta.
+
+\subsection{Optimización de Consultas}
+
+La optimización de consultas es el proceso de encontrar el plan de ejecución más eficiente para una consulta dada.  El optimizador utiliza una variedad de técnicas para mejorar el rendimiento de la consulta, incluyendo:
+
+\begin{itemize}
+    \item \textbf{Transformaciones Algebraicas:}  El optimizador aplica reglas algebraicas para transformar la expresión del álgebra relacional en una expresión equivalente, pero más eficiente. Por ejemplo, las operaciones de selección se pueden "empujar" lo más cerca posible de las hojas del árbol para reducir la cantidad de datos que deben procesarse en las etapas posteriores.  La conmutatividad y asociatividad de ciertas operaciones (como la unión) también pueden ser explotadas.
+    \item \textbf{Selección de Índices:}  Si hay índices disponibles en las columnas utilizadas en la consulta, el optimizador decidirá si usar o no estos índices.  El uso de índices puede acelerar significativamente las operaciones de selección y unión.  El optimizador evalúa el costo de usar un índice frente al costo de una exploración completa de la tabla (table scan).
+    \item \textbf{Estimación de Costos:}  El optimizador utiliza estadísticas sobre los datos (tamaño de las tablas, número de filas, distribución de valores) para estimar el costo de diferentes planes de ejecución.  El costo se mide, típicamente, en términos de tiempo de CPU, tiempo de E/S (lectura/escritura en disco) y uso de memoria. El optimizador elige el plan con el menor costo estimado.
+    \item \textbf{Materialización:} En algunos casos, el optimizador puede decidir materializar (almacenar temporalmente) los resultados intermedios de ciertas operaciones para evitar recalcularlos.
+\end{itemize}
+El resultado de la optimización es un plan de ejecución optimizado.
+
+\subsection{Generación del Plan de Ejecución}
+
+El plan de ejecución es una especificación detallada de cómo se debe ejecutar la consulta.  Contiene una secuencia de operaciones, junto con información sobre los algoritmos a utilizar para cada operación (por ejemplo, el algoritmo de unión a usar), el orden en que se deben ejecutar las operaciones y los índices a utilizar.  El plan de ejecución es traducido a código ejecutable por el motor de ejecución.  Un plan de ejecución puede ser un árbol de operaciones más detallado que el árbol de consulta.  Cada nodo del árbol de plan de ejecución representa una operación específica y los nodos hoja, las fuentes de datos (tablas e índices).
+
+\subsection{Ejecución del Plan}
+
+En esta etapa, el motor de ejecución ejecuta el plan de ejecución generado en el paso anterior.  El motor de ejecución lee y escribe datos de las tablas, realiza las operaciones especificadas en el plan (selección, proyección, unión, etc.) y genera el resultado de la consulta.  La ejecución del plan involucra el acceso a los datos almacenados en disco o en memoria, el procesamiento de los datos y la generación de la salida.  El rendimiento de la ejecución depende de la eficiencia del plan de ejecución y de la velocidad del hardware.  El motor de ejecución debe estar optimizado para la ejecución eficiente de las operaciones del álgebra relacional.
+
+\section{El Procesador de Consultas y sus Componentes}
+
+El procesador de consultas es el componente principal del SGBD que se encarga de procesar las consultas.  Está compuesto por varios subcomponentes, cada uno responsable de una parte específica del proceso.
+
+\subsection{Intérprete del LDD y Registro en el Diccionario de Datos}
+
+El Lenguaje de Definición de Datos (LDD) se utiliza para definir la estructura de la base de datos (tablas, columnas, índices, etc.). El intérprete del LDD se encarga de:
+
+\begin{itemize}
+    \item \textbf{Parseo y Validación:} Analiza y valida las sentencias LDD, asegurándose de que sean sintáctica y semánticamente correctas.
+    \item \textbf{Modificación del Diccionario de Datos:}  El diccionario de datos (también conocido como catálogo del sistema) es un repositorio de metadatos que describe la estructura de la base de datos.  El intérprete del LDD modifica el diccionario de datos para reflejar los cambios especificados en las sentencias LDD.  Esto incluye la creación de nuevas tablas, la definición de atributos, la creación de índices y la gestión de la información de seguridad.
+\end{itemize}
+
+El diccionario de datos es fundamental para el funcionamiento del SGBD, ya que proporciona información crucial para el procesamiento de consultas, la optimización y la seguridad.
+
+\subsection{Compilador del LMD y Generación del Plan de Evaluación}
+
+El Lenguaje de Manipulación de Datos (LMD) se utiliza para manipular los datos almacenados en la base de datos (consultas, inserciones, actualizaciones y eliminaciones). El compilador del LMD se encarga de:
+
+\begin{itemize}
+    \item \textbf{Análisis Léxico y Sintáctico:}  Similar al descrito en la Sección 4.1.
+    \item \textbf{Validación Semántica:}  Similar al descrito en la Sección 4.1.
+    \item \textbf{Traducción a Formato Interno (Árbol de Consulta):}  Similar al descrito en la Sección 4.1.
+    \item \textbf{Optimización de Consultas:}  Similar al descrito en la Sección 4.1.
+    \item \textbf{Generación del Plan de Evaluación:} Similar al descrito en la Sección 4.1.
+\end{itemize}
+
+El compilador del LMD genera un plan de evaluación optimizado que especifica cómo ejecutar la consulta de manera eficiente.
+
+\subsection{Motor de Evaluación de Consultas}
+
+El motor de evaluación de consultas es el componente responsable de ejecutar el plan de evaluación generado por el compilador del LMD.  Sus funciones incluyen:
+
+\begin{itemize}
+    \item \textbf{Ejecución de Operaciones:}  Ejecuta las operaciones especificadas en el plan de evaluación, tales como selección, proyección, unión, etc.  Esto implica acceder a los datos de las tablas, realizar las operaciones y generar el resultado.
+    \item \textbf{Gestión de Recursos:}  Gestiona los recursos del sistema, como la memoria, el espacio en disco y el tiempo de CPU.
+    \item \textbf{Control de Concurrencia:}  Coordina el acceso concurrente a los datos por múltiples usuarios, garantizando la consistencia de la base de datos.  Esto implica el uso de mecanismos de bloqueo y control de transacciones.
+    \item \textbf{Manejo de Errores:}  Detecta y maneja los errores que pueden ocurrir durante la ejecución de la consulta (por ejemplo, errores de acceso a disco, errores de tipo de dato).
+\end{itemize}
+
+El motor de evaluación de consultas es el "motor" que impulsa el procesamiento de las consultas y es crucial para el rendimiento del SGBD.

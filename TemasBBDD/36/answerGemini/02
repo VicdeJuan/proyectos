@@ -1,0 +1,188 @@
+\chapter{Operaciones de Manipulación de Datos}
+
+Este capítulo se centra en las operaciones fundamentales que permiten interactuar y manipular datos almacenados en sistemas de gestión de bases de datos relacionales. Cubriremos las operaciones de recuperación, actualización y las consideraciones clave para optimizar la eficiencia de estas operaciones.  El conocimiento profundo de estas operaciones es crucial para el diseño, implementación y optimización de aplicaciones que interactúan con bases de datos a nivel de posgrado en ingeniería informática.  Las técnicas que aquí se exponen son la base para entender el comportamiento de sistemas complejos y para la optimización de consultas que, en última instancia, impactan el rendimiento y la escalabilidad de las aplicaciones.
+
+\section{Operaciones de Recuperación (Consultas)}
+
+Las operaciones de recuperación (o consultas) son esenciales para extraer información específica de la base de datos.  Estas operaciones se basan en el álgebra relacional, un lenguaje formal que proporciona una base teórica para la manipulación de datos.  Entender el álgebra relacional permite a los ingenieros informáticos comprender la lógica subyacente de las consultas SQL y optimizarlas de manera efectiva.  Las siguientes subsecciones detallan las operaciones de recuperación más importantes.
+
+\subsection{Selección de Datos Basada en Condiciones}
+
+La operación de selección, denotada por $\sigma$, permite filtrar filas de una relación (tabla) basándose en una condición o predicado.  El predicado se evalúa para cada tupla (fila) de la relación, y solo las tuplas que satisfacen la condición se incluyen en el resultado.  La complejidad de esta operación depende del tipo de condición (simple o compuesta) y de si existen índices en los atributos involucrados.  Sin índices, la selección implica un escaneo completo de la relación, lo que puede ser costoso para relaciones grandes.  Con índices, el sistema puede localizar rápidamente las tuplas que cumplen la condición, reduciendo significativamente el tiempo de ejecución.
+
+Ejemplo:  Si tenemos una relación \texttt{Empleados} con atributos como \texttt{ID\_Empleado}, \texttt{Nombre}, \texttt{Departamento}, y \texttt{Salario}, la siguiente consulta selecciona los empleados del departamento de "Ventas" que ganan más de 50000:
+
+\begin{verbatim}
+SELECT *
+FROM Empleados
+WHERE Departamento = 'Ventas' AND Salario > 50000;
+\end{verbatim}
+
+En álgebra relacional, esto se representaría como:
+
+$$\sigma_{\text{Departamento = 'Ventas' AND Salario > 50000}}(\text{Empleados})$$
+
+La optimización de esta operación involucra el uso de índices en los atributos \texttt{Departamento} y \texttt{Salario}.
+
+\subsection{Proyección de Atributos}
+
+La operación de proyección, denotada por $\Pi$, selecciona un subconjunto de atributos (columnas) de una relación, eliminando los atributos no especificados.  Esta operación es útil para reducir la cantidad de datos devueltos, lo que puede mejorar el rendimiento de la consulta y la claridad de la información.  La proyección también puede implicar la eliminación de duplicados si el conjunto de atributos proyectados no forma una clave candidata.
+
+Ejemplo:  Para obtener solo los nombres y salarios de los empleados, podemos usar la proyección:
+
+\begin{verbatim}
+SELECT Nombre, Salario
+FROM Empleados;
+\end{verbatim}
+
+En álgebra relacional:
+
+$$\Pi_{\text{Nombre, Salario}}(\text{Empleados})$$
+
+La proyección es, en general, una operación más rápida que la selección, ya que no implica la evaluación de condiciones complejas.  Sin embargo, en bases de datos distribuidas, la proyección puede ser costosa si implica transferir grandes cantidades de datos entre nodos.
+
+\subsection{Combinación de Relaciones (Joins)}
+
+Las operaciones de combinación (joins) son fundamentales para relacionar datos de múltiples relaciones.  Existen varios tipos de joins, cada uno con un algoritmo subyacente diferente y con diferentes niveles de rendimiento.  La elección del algoritmo de join adecuado depende de factores como el tamaño de las relaciones, la existencia de índices y la distribución de los datos.
+
+\subsubsection{Bucle Anidado (Nested Loop Join)}
+
+El algoritmo de bucle anidado es el join más básico.  Para combinar dos relaciones, R y S, itera a través de cada tupla de R y, para cada tupla de R, itera a través de todas las tuplas de S, comparando las tuplas basándose en la condición de join.  Este algoritmo es sencillo de implementar, pero su complejidad temporal es O(m*n), donde m y n son el número de tuplas en R y S, respectivamente.  Por lo tanto, es ineficiente para relaciones grandes.
+
+\begin{verbatim}
+FOR EACH tupla r EN R DO
+  FOR EACH tupla s EN S DO
+    IF r.A = s.B THEN
+      OUTPUT(r, s)
+    END IF
+  END FOR
+END FOR
+\end{verbatim}
+
+La optimización para el bucle anidado puede incluir el uso de un índice en el atributo de join de la relación interna (S), lo que permite buscar las tuplas coincidentes en S más rápidamente.
+
+\subsubsection{Ordenación-Fusión (Sort-Merge Join)}
+
+El algoritmo de ordenación-fusión mejora el rendimiento del bucle anidado al ordenar previamente las relaciones basándose en el atributo de join.  Después de la ordenación, el algoritmo itera a través de ambas relaciones simultáneamente, fusionando las tuplas coincidentes.  La complejidad temporal del algoritmo es O(m log m + n log n + m + n), donde m y n son el número de tuplas en R y S, respectivamente, y los términos m log m y n log n corresponden al costo de la ordenación.  Este algoritmo es más eficiente que el bucle anidado, especialmente cuando el atributo de join no está indexado.
+
+\begin{verbatim}
+ORDENAR R POR atributo_join
+ORDENAR S POR atributo_join
+r_index = 0
+s_index = 0
+WHILE r_index < tamaño(R) AND s_index < tamaño(S) DO
+  IF R[r_index].atributo_join = S[s_index].atributo_join THEN
+    OUTPUT(R[r_index], S[s_index])
+    s_index = s_index + 1  // Avanzar en S para encontrar más coincidencias
+  ELSE IF R[r_index].atributo_join < S[s_index].atributo_join THEN
+    r_index = r_index + 1  // Avanzar en R
+  ELSE
+    s_index = s_index + 1  // Avanzar en S
+  END IF
+END WHILE
+\end{verbatim}
+
+\subsubsection{Hash Join}
+
+El algoritmo de hash join es un algoritmo de join muy eficiente que utiliza una función hash para crear una tabla hash de una de las relaciones (la relación más pequeña, idealmente).  Luego, itera a través de la otra relación y busca las tuplas coincidentes en la tabla hash.  La complejidad temporal del algoritmo es típicamente O(m + n), donde m y n son el número de tuplas en las relaciones.  Este algoritmo es especialmente efectivo cuando una de las relaciones cabe en memoria y la función hash distribuye los datos uniformemente.
+
+\begin{verbatim}
+// Construir la tabla hash para la relación más pequeña (S)
+Crear tabla_hash basado en S.atributo_join
+FOR EACH tupla s EN S DO
+  INSERTAR s EN tabla_hash[hash(s.atributo_join)]
+END FOR
+
+// Escanear la otra relación (R) y buscar en la tabla hash
+FOR EACH tupla r EN R DO
+  PARA CADA tupla s EN tabla_hash[hash(r.atributo_join)] DO
+    IF r.atributo_join = s.atributo_join THEN
+      OUTPUT(r, s)
+    END IF
+  END FOR
+END FOR
+\end{verbatim}
+
+\subsubsection{Join Indexado}
+
+Si existe un índice en el atributo de join de una de las relaciones, se puede utilizar un join indexado.  Este algoritmo itera a través de una relación y, para cada tupla, utiliza el índice para buscar las tuplas coincidentes en la otra relación.  La complejidad temporal depende de la estructura del índice (B-tree, hash, etc.) y de la cardinalidad de las relaciones.  Este join es muy eficiente cuando el índice es de alta calidad (selectividad alta).
+
+\begin{verbatim}
+FOR EACH tupla r EN R DO
+  BUSCAR en el índice de S.atributo_join el valor r.atributo_join
+  PARA CADA tupla s EN S que coincida con la clave del índice DO
+    OUTPUT(r, s)
+  END FOR
+END FOR
+\end{verbatim}
+
+\subsubsection{Otras Operaciones del Álgebra Relacional}
+
+Además de selección, proyección y joins, otras operaciones del álgebra relacional son importantes:
+
+*   \textbf{Unión ($\cup$):} Combina dos relaciones, eliminando las tuplas duplicadas. Las relaciones deben ser compatibles (tener el mismo número y tipo de atributos).
+*   \textbf{Intersección ($\cap$):} Devuelve las tuplas que están presentes en ambas relaciones.  Las relaciones deben ser compatibles.
+*   \textbf{Diferencia (-):} Devuelve las tuplas que están presentes en la primera relación pero no en la segunda. Las relaciones deben ser compatibles.
+*   \textbf{División ($\div$):}  Dado dos relaciones R y S, la división R $\div$ S devuelve las tuplas en R que están asociadas con todas las tuplas en S.  Es una operación más compleja y menos utilizada directamente en SQL.
+
+\section{Operaciones de Actualización}
+
+Las operaciones de actualización permiten modificar el contenido de la base de datos.  Estas operaciones incluyen la inserción, eliminación y modificación de datos.  La correcta implementación de estas operaciones es crucial para mantener la integridad y consistencia de la base de datos.
+
+\subsection{Inserción de Nuevos Registros}
+
+La operación de inserción permite agregar nuevas tuplas a una relación.  Es importante verificar la integridad de las claves primarias y foráneas, y aplicar reglas de negocio antes de insertar los datos.  Las operaciones de inserción pueden ser individuales o masivas (inserción de múltiples registros en una sola operación).
+
+Ejemplo:
+
+\begin{verbatim}
+INSERT INTO Empleados (ID_Empleado, Nombre, Departamento, Salario)
+VALUES (1001, 'Ana Pérez', 'Ventas', 60000);
+\end{verbatim}
+
+La optimización de la inserción masiva implica el uso de técnicas como el *bulk loading*, que minimizan la sobrecarga de las operaciones individuales.  El uso de transacciones es crucial para asegurar la atomicidad de las inserciones.
+
+\subsection{Eliminación de Registros Existentes}
+
+La operación de eliminación permite eliminar tuplas de una relación basándose en una condición.  Similar a la selección, la eliminación puede ser costosa sin el uso de índices.  Es crucial considerar la integridad referencial y las restricciones antes de eliminar datos.
+
+Ejemplo:
+
+\begin{verbatim}
+DELETE FROM Empleados
+WHERE ID_Empleado = 1001;
+\end{verbatim}
+
+La eliminación en cascada (cuando se eliminan registros relacionados en otras tablas) requiere una cuidadosa planificación para evitar inconsistencias en los datos.
+
+\subsection{Modificación de Valores de Atributos}
+
+La operación de modificación permite actualizar los valores de los atributos de una tupla.  Similar a la selección y eliminación, se puede usar una condición para especificar qué tuplas deben ser modificadas.  Se deben aplicar restricciones y reglas de negocio al modificar los datos.
+
+Ejemplo:
+
+\begin{verbatim}
+UPDATE Empleados
+SET Salario = Salario * 1.10
+WHERE Departamento = 'Ventas';
+\end{verbatim}
+
+La modificación de atributos involucra la lectura y la escritura de datos, por lo que la eficiencia de esta operación depende del uso de índices y la estructura de almacenamiento.  Las transacciones son vitales para garantizar que la modificación se complete de manera consistente.
+
+\section{Consideraciones sobre la Eficiencia de las Operaciones}
+
+La eficiencia de las operaciones de manipulación de datos es un aspecto fundamental del rendimiento general de una base de datos. Varios factores impactan la eficiencia, incluyendo la estructura de almacenamiento y el uso de índices.
+
+\subsection{El Impacto de las Estructuras de Almacenamiento (Capítulo 11 mencionado en)}
+
+Las estructuras de almacenamiento subyacentes (como archivos indexados, B-trees, y hash) tienen un impacto significativo en la eficiencia de las operaciones de manipulación de datos. El Capítulo 11 (mencionado) profundiza en estas estructuras.  Por ejemplo, las estructuras indexadas (B-trees, hash) permiten una búsqueda más rápida de las tuplas basándose en el valor de los atributos, lo que acelera las operaciones de selección, join y actualización.  El diseño de las estructuras de almacenamiento debe ser cuidadosamente considerado en función de los patrones de acceso a los datos y las cargas de trabajo esperadas.  Las técnicas de optimización del almacenamiento, como el uso de particiones y la compresión, también pueden mejorar significativamente el rendimiento.
+
+\subsection{El Uso de Índices para Acelerar las Operaciones}
+
+Los índices son estructuras de datos que se utilizan para acelerar la recuperación de datos.  Crean una ruta de acceso rápida a las tuplas basadas en el valor de uno o más atributos.  El uso de índices puede reducir significativamente el tiempo de ejecución de las consultas y las operaciones de actualización.  Sin embargo, los índices también tienen desventajas:
+
+*   \textbf{Espacio de almacenamiento adicional:} Los índices ocupan espacio de almacenamiento adicional.
+*   \textbf{Coste de mantenimiento:}  Cada vez que se insertan, eliminan o modifican datos, los índices deben ser actualizados, lo que puede reducir el rendimiento de las operaciones de actualización.
+
+Es esencial seleccionar cuidadosamente los atributos a indexar en función de la frecuencia de las consultas y la actividad de actualización.  Los índices compuestos (índices que cubren varios atributos) pueden ser útiles para optimizar las consultas con múltiples condiciones.  La elección del tipo de índice (B-tree, hash, etc.) depende de los patrones de acceso a los datos y los requisitos de rendimiento.  La optimización de índices es un proceso continuo que requiere monitoreo y ajuste.  El analizador de consultas del sistema de gestión de base de datos es una herramienta clave para determinar qué índices son más efectivos para una consulta determinada.
+```

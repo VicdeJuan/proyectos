@@ -1,0 +1,385 @@
+\chapter{Lenguajes de Manipulación de Datos (LMD)}
+
+En este capítulo, exploraremos a fondo los Lenguajes de Manipulación de Datos (LMD), herramientas fundamentales en el manejo y procesamiento de información dentro de sistemas de gestión de bases de datos (SGBD).  Nos centraremos en los lenguajes de consulta de alto nivel, con especial énfasis en el estándar SQL (Structured Query Language) y, para una comprensión más completa, examinaremos otros paradigmas y lenguajes de consulta, incluyendo OQL y el cálculo y álgebra relacional.
+
+\section{Lenguajes de Consulta de Alto Nivel}
+
+Los lenguajes de consulta de alto nivel constituyen una categoría esencial en el ámbito de los LMD. Se distinguen por su enfoque declarativo, es decir, el usuario especifica \textit{qué} datos necesita recuperar o modificar, en lugar de detallar el \textit{cómo} obtenerlos.  Esta abstracción, lejos de ser una mera simplificación, permite una mayor productividad y facilita la optimización de las consultas por parte del sistema.  El SGBD se encarga de determinar la estrategia de acceso más eficiente a los datos.
+
+\subsection{Características y Ventajas}
+
+Las principales características y ventajas de los lenguajes de consulta de alto nivel son:
+
+\begin{itemize}
+    \item \textbf{Declaratividad:}  El usuario define el resultado deseado sin especificar el procedimiento detallado para obtenerlo.  Esto reduce la complejidad de las consultas y permite al SGBD optimizarlas sin intervención del usuario.
+    \item \textbf{Facilidad de Uso:}  La sintaxis, generalmente basada en un lenguaje natural o cercano a él, facilita el aprendizaje y la escritura de consultas, aumentando la productividad del desarrollador.
+    \item \textbf{Independencia de la Implementación Física:}  El usuario no necesita conocer la estructura física de almacenamiento de los datos (indexación, particionamiento, etc.).  El SGBD se encarga de traducir la consulta de alto nivel en operaciones de bajo nivel sobre los datos almacenados.
+    \item \textbf{Optimización:}  El SGBD puede optimizar las consultas de manera transparente para el usuario, seleccionando el plan de ejecución más eficiente basado en la información estadística sobre los datos y las características del hardware.  Esto puede resultar en mejoras significativas en el rendimiento sin requerir cambios en el código de la consulta.
+    \item \textbf{Portabilidad:}  Las consultas escritas en lenguajes estándar (como SQL) pueden ser portadas a diferentes SGBD con mínimas modificaciones, lo que facilita la migración entre plataformas.
+\end{itemize}
+
+\subsection{Ejemplos: SQL, OQL}
+
+Dos ejemplos prominentes de lenguajes de consulta de alto nivel son SQL y OQL.  SQL es el estándar de facto para la consulta y manipulación de datos en bases de datos relacionales.  OQL, por otro lado, es un lenguaje de consulta diseñado para bases de datos orientadas a objetos, aunque su adopción ha sido menor que la de SQL.  Ambos lenguajes ejemplifican los principios de la declaratividad y la abstracción.
+
+\section{El Lenguaje SQL (Structured Query Language)}
+
+SQL es el lenguaje estándar para la gestión de bases de datos relacionales.  Su popularidad radica en su versatilidad, su amplio soporte por parte de los SGBD y su estandarización por el ANSI (American National Standards Institute) y la ISO (International Organization for Standardization).
+
+\subsection{Características Básicas: Definición y Manipulación de Datos}
+
+SQL se divide en varios sublenguajes, incluyendo el Lenguaje de Definición de Datos (DDL) y el Lenguaje de Manipulación de Datos (DML):
+
+\begin{itemize}
+    \item \textbf{DDL (Data Definition Language):}  Se utiliza para definir la estructura de la base de datos, incluyendo la creación, modificación y eliminación de tablas, vistas, índices y otros objetos.  Comandos típicos son:
+    \begin{itemize}
+        \item \texttt{CREATE TABLE}: Crea una nueva tabla.
+        \item \texttt{ALTER TABLE}: Modifica la estructura de una tabla existente (añadir columnas, cambiar tipos de datos, etc.).
+        \item \texttt{DROP TABLE}: Elimina una tabla.
+        \item \texttt{CREATE INDEX}: Crea un índice para optimizar las búsquedas.
+        \item \texttt{CREATE VIEW}: Crea una vista (ver sección 3.2.5).
+    \end{itemize}
+    \item \textbf{DML (Data Manipulation Language):} Se utiliza para la manipulación de los datos almacenados en la base de datos.  Incluye comandos para la consulta (SELECT), inserción (INSERT), modificación (UPDATE) y eliminación (DELETE) de datos.
+\end{itemize}
+
+\subsection{Consultas SQL: SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY}
+
+El comando \texttt{SELECT} es el corazón de las consultas SQL y se utiliza para recuperar información de una o más tablas.  La sintaxis básica es:
+
+\begin{verbatim}
+SELECT  [DISTINCT] columna1, columna2, ...
+FROM    tabla1, tabla2, ...
+[WHERE  condición]
+[GROUP BY columna1, columna2, ...]
+[HAVING condición]
+[ORDER BY columna1 [ASC | DESC], columna2 [ASC | DESC], ...];
+\end{verbatim}
+
+A continuación, se describe cada cláusula:
+
+\begin{itemize}
+    \item \textbf{SELECT:} Especifica las columnas que se desean recuperar.  El asterisco (*) selecciona todas las columnas.  La cláusula \texttt{DISTINCT} elimina los registros duplicados.
+    \item \textbf{FROM:}  Especifica las tablas de las que se van a recuperar los datos.  Puede incluir múltiples tablas en operaciones de \textit{JOIN} (unión).
+    \item \textbf{WHERE:}  Filtra los registros basándose en una condición.  Utiliza operadores de comparación ( =, <, >, <=, >=, !=, <>), operadores lógicos (AND, OR, NOT) y otros operadores (LIKE, BETWEEN, IN, etc.).
+    \item \textbf{GROUP BY:} Agrupa los registros según los valores de una o más columnas. Se utiliza a menudo con funciones de agregación (SUM, AVG, COUNT, MIN, MAX).
+    \item \textbf{HAVING:} Filtra los grupos resultantes de la cláusula \texttt{GROUP BY} basándose en una condición.  Similar a \texttt{WHERE}, pero se aplica a los grupos, no a los registros individuales.
+    \item \textbf{ORDER BY:} Ordena los resultados según una o más columnas.  Puede utilizarse la opción \texttt{ASC} (ascendente, por defecto) o \texttt{DESC} (descendente).
+\end{itemize}
+
+\textbf{Ejemplo:}
+
+Considere una base de datos con tablas \texttt{Estudiantes} y \texttt{Cursos}.
+
+```sql
+SELECT e.nombre, c.nombre_curso
+FROM Estudiantes e
+JOIN Cursos c ON e.id_curso = c.id_curso
+WHERE c.nombre_curso LIKE 'Bases de Datos%'
+ORDER BY e.nombre;
+```
+
+Esta consulta recupera los nombres de los estudiantes y los cursos donde el nombre del curso comienza con "Bases de Datos", ordenando los resultados alfabéticamente por nombre de estudiante.
+
+\subsection{Modificación de Datos en SQL: INSERT, DELETE, UPDATE}
+
+Además de la consulta, SQL proporciona comandos para la modificación de datos:
+
+\begin{itemize}
+    \item \textbf{INSERT:}  Inserta nuevos registros en una tabla.  La sintaxis es:
+    \begin{verbatim}
+    INSERT INTO tabla (columna1, columna2, ...)
+    VALUES (valor1, valor2, ...);
+    \end{verbatim}
+    \item \textbf{DELETE:} Elimina registros de una tabla. La sintaxis es:
+    \begin{verbatim}
+    DELETE FROM tabla
+    WHERE condición;
+    \end{verbatim}
+    Si no se especifica la cláusula \texttt{WHERE}, se eliminan todos los registros de la tabla (cuidado!).
+    \item \textbf{UPDATE:} Modifica los valores de los registros existentes en una tabla.  La sintaxis es:
+    \begin{verbatim}
+    UPDATE tabla
+    SET columna1 = valor1, columna2 = valor2, ...
+    WHERE condición;
+    \end{verbatim}
+    La cláusula \texttt{WHERE} especifica qué registros se van a modificar.  Si no se especifica, se modifican todos los registros de la tabla (cuidado!).
+\end{itemize}
+
+\textbf{Ejemplos:}
+
+```sql
+-- Insertar un nuevo estudiante
+INSERT INTO Estudiantes (nombre, id_curso)
+VALUES ('Ana Pérez', 123);
+
+-- Eliminar un curso
+DELETE FROM Cursos
+WHERE id_curso = 456;
+
+-- Actualizar el precio de un curso
+UPDATE Cursos
+SET precio = precio * 1.10
+WHERE id_curso IN (123, 789);
+```
+
+\subsection{Restricciones de Integridad en SQL}
+
+Las restricciones de integridad son reglas que se definen en una base de datos para garantizar la consistencia y la validez de los datos.  SQL proporciona mecanismos para definir las siguientes restricciones:
+
+\begin{itemize}
+    \item \textbf{NOT NULL:}  Impide que una columna acepte valores nulos.
+    \item \textbf{UNIQUE:}  Garantiza que los valores de una columna o un conjunto de columnas sean únicos.
+    \item \textbf{PRIMARY KEY:}  Identifica de manera única cada registro en una tabla.  Implica \texttt{NOT NULL} y \texttt{UNIQUE}.
+    \item \textbf{FOREIGN KEY:}  Establece una relación entre dos tablas, asegurando la integridad referencial.  El valor de una clave externa en una tabla debe existir en la clave primaria de otra tabla.
+    \item \textbf{CHECK:}  Define una condición que deben cumplir los valores de una columna.
+\end{itemize}
+
+\textbf{Ejemplo:}
+
+```sql
+CREATE TABLE Estudiantes (
+    id_estudiante INT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    id_curso INT,
+    FOREIGN KEY (id_curso) REFERENCES Cursos(id_curso)
+);
+
+CREATE TABLE Cursos (
+    id_curso INT PRIMARY KEY,
+    nombre_curso VARCHAR(255) NOT NULL,
+    precio DECIMAL(10, 2) CHECK (precio >= 0)
+);
+```
+
+En este ejemplo, la tabla \texttt{Estudiantes} tiene una clave primaria (\texttt{id\_estudiante}), una restricción \texttt{NOT NULL} en el nombre, y una clave externa (\texttt{id\_curso}) que referencia la clave primaria de la tabla \texttt{Cursos}.  La tabla \texttt{Cursos} tiene una clave primaria (\texttt{id\_curso}) y una restricción \texttt{CHECK} para asegurar que el precio sea mayor o igual a cero.
+
+\subsection{Vistas en SQL}
+
+Una vista es una tabla virtual basada en el resultado de una consulta SQL.  No almacena datos físicamente, sino que proporciona una forma simplificada o personalizada de ver los datos almacenados en una o más tablas subyacentes.  Las vistas se crean utilizando la sentencia \texttt{CREATE VIEW}:
+
+\begin{verbatim}
+CREATE VIEW nombre_vista AS
+SELECT columna1, columna2, ...
+FROM tabla1, tabla2, ...
+WHERE condición;
+\end{verbatim}
+
+Las vistas pueden ser utilizadas en consultas SQL de la misma manera que las tablas.  Pueden simplificar consultas complejas, ocultar datos sensibles y proporcionar una abstracción adicional sobre la estructura física de la base de datos.
+
+\textbf{Ejemplo:}
+
+```sql
+CREATE VIEW EstudiantesEnBasesDeDatos AS
+SELECT e.nombre, c.nombre_curso
+FROM Estudiantes e
+JOIN Cursos c ON e.id_curso = c.id_curso
+WHERE c.nombre_curso LIKE 'Bases de Datos%';
+
+SELECT * FROM EstudiantesEnBasesDeDatos;
+```
+
+En este ejemplo, se crea una vista llamada \texttt{EstudiantesEnBasesDeDatos} que simplifica la consulta de estudiantes inscritos en cursos de Bases de Datos.  Luego, se puede consultar la vista como si fuera una tabla.  Las vistas también pueden ser actualizables, aunque existen ciertas restricciones en función de la complejidad de la vista y las operaciones subyacentes.
+
+\subsection{SQL Dinámico}
+
+El SQL dinámico se refiere a la capacidad de construir consultas SQL en tiempo de ejecución, es decir, utilizando variables y concatenación de cadenas.  Esto permite crear consultas más flexibles y adaptables a las necesidades del usuario o de la aplicación.  Sin embargo, debe tenerse precaución con las vulnerabilidades de seguridad, como la inyección SQL.
+
+Los SGBD proveen mecanismos para construir sentencias SQL dinámicas, como por ejemplo, la concatenación de strings:
+
+```sql
+DECLARE @tabla NVARCHAR(255);
+SET @tabla = 'Estudiantes';
+DECLARE @consulta NVARCHAR(MAX);
+SET @consulta = 'SELECT * FROM ' + @tabla;
+EXEC sp_executesql @consulta;
+```
+Otro ejemplo, en la mayoría de los SGBD, se puede realizar mediante el uso de cursores y sentencias preparadas.
+
+\subsection{Constructores Procedimentales en SQL}
+
+Los constructores procedimentales en SQL, como las sentencias \texttt{CREATE PROCEDURE} y \texttt{CREATE FUNCTION}, permiten definir bloques de código SQL que encapsulan una lógica específica.  Estos constructores amplían la funcionalidad de SQL, permitiendo la creación de procedimientos almacenados y funciones definidas por el usuario.
+
+\begin{itemize}
+    \item \textbf{Procedimientos Almacenados (Stored Procedures):} Son bloques de código SQL precompilados y almacenados en la base de datos. Pueden recibir parámetros de entrada y devolver resultados (variables de salida, conjuntos de resultados, etc.). Se invocan utilizando la sentencia \texttt{EXEC} (o una sintaxis similar, dependiendo del SGBD).  Proporcionan una capa de abstracción y modularización, mejorando el rendimiento y la seguridad.
+    \item \textbf{Funciones Definidas por el Usuario (User-Defined Functions - UDFs):}  Son funciones creadas por el usuario que realizan una operación específica y devuelven un valor. Pueden ser escalares (devuelven un único valor) o de tabla (devuelven un conjunto de resultados en forma de tabla).  Las UDFs pueden ser utilizadas en consultas SQL como si fueran funciones predefinidas.
+\end{itemize}
+
+\textbf{Ejemplo (Procedimiento Almacenado):}
+
+```sql
+CREATE PROCEDURE ObtenerEstudiantesPorCurso (@idCurso INT)
+AS
+BEGIN
+    SELECT nombre
+    FROM Estudiantes
+    WHERE id_curso = @idCurso;
+END;
+
+EXEC ObtenerEstudiantesPorCurso 123; -- Ejecutar el procedimiento con el ID del curso 123
+```
+
+\textbf{Ejemplo (Función Escalar):}
+
+```sql
+CREATE FUNCTION CalcularPromedioPrecioPorCurso (@idCurso INT)
+RETURNS DECIMAL(10, 2)
+AS
+BEGIN
+    DECLARE @promedio DECIMAL(10, 2);
+    SELECT @promedio = AVG(precio)
+    FROM Cursos
+    WHERE id_curso = @idCurso;
+    RETURN @promedio;
+END;
+
+SELECT nombre_curso, dbo.CalcularPromedioPrecioPorCurso(id_curso) AS PromedioPrecio
+FROM Cursos;
+```
+
+\subsection{Recursión en SQL}
+
+SQL, a partir de la versión SQL:1999, permite realizar consultas recursivas mediante el uso de la cláusula \texttt{WITH RECURSIVE} (o simplemente \texttt{WITH} en algunos SGBD).  Esto es útil para consultar datos jerárquicos, como estructuras de árbol o grafos.
+
+La sintaxis general es:
+
+```sql
+WITH RECURSIVE nombre_tabla_temporal AS (
+    -- Parte inicial (ancla)
+    SELECT ...
+    FROM ...
+    WHERE ...
+    UNION ALL
+    -- Parte recursiva
+    SELECT ...
+    FROM nombre_tabla_temporal
+    JOIN ... ON ...
+)
+SELECT ...
+FROM nombre_tabla_temporal;
+```
+
+La consulta se divide en dos partes:
+
+\begin{itemize}
+    \item \textbf{Ancla (Anchor):} Define el punto de partida de la recursión.  Es una consulta que devuelve el conjunto inicial de resultados.
+    \item \textbf{Parte Recursiva:} Define cómo extender la consulta en cada iteración.  Se referencia a sí misma mediante el nombre de la tabla temporal (en el ejemplo, \texttt{nombre\_tabla\_temporal}).  La recursión continúa hasta que la parte recursiva no devuelve más resultados.
+\end{itemize}
+
+\textbf{Ejemplo (Tabla de Empleados con relación Jefe-Empleado):}
+
+```sql
+CREATE TABLE Empleados (
+    id_empleado INT PRIMARY KEY,
+    nombre VARCHAR(255),
+    id_jefe INT NULL,  -- Referencia al ID del jefe (puede ser NULL para el empleado raíz)
+    FOREIGN KEY (id_jefe) REFERENCES Empleados(id_empleado)
+);
+
+INSERT INTO Empleados (id_empleado, nombre, id_jefe) VALUES
+(1, 'Juan Pérez', NULL),
+(2, 'Ana García', 1),
+(3, 'Pedro López', 1),
+(4, 'Laura Sánchez', 2),
+(5, 'Carlos Ruiz', 3);
+```
+
+Ahora, una consulta recursiva para obtener todos los subordinados de Juan Pérez (ID 1):
+
+```sql
+WITH RECURSIVE Subordinados AS (
+    -- Ancla: Buscar el jefe directo
+    SELECT id_empleado, nombre, id_jefe
+    FROM Empleados
+    WHERE id_empleado = 1
+    UNION ALL
+    -- Parte recursiva: Buscar los subordinados del nivel inferior
+    SELECT e.id_empleado, e.nombre, e.id_jefe
+    FROM Empleados e
+    JOIN Subordinados s ON e.id_jefe = s.id_empleado
+)
+SELECT id_empleado, nombre
+FROM Subordinados;
+```
+
+Esta consulta devolverá:  Juan Pérez, Ana García, Pedro López, Laura Sánchez, Carlos Ruiz, que conforman la jerarquía.
+
+\subsection{SQL/XML}
+
+SQL/XML es una extensión del estándar SQL que permite trabajar con datos XML (Extensible Markup Language) dentro de la base de datos.  Proporciona funciones y tipos de datos para almacenar, consultar, modificar y generar documentos XML.  SQL/XML facilita la integración de bases de datos relacionales con aplicaciones que utilizan XML para el intercambio de datos.
+
+Las principales funcionalidades de SQL/XML incluyen:
+
+\begin{itemize}
+    \item \textbf{Tipo de Datos XML:} Permite almacenar documentos XML en columnas de tipo \texttt{XML}.
+    \item \textbf{Funciones de Consulta XML:} Proporciona funciones para consultar datos XML utilizando XPath y XQuery, como \texttt{XMLQUERY}, \texttt{XMLTABLE}, y \texttt{XMLFOREST}.
+    \item \textbf{Funciones de Creación XML:} Permite crear documentos XML a partir de datos relacionales, como \texttt{XMLELEMENT}, \texttt{XMLATTRIBUTES}, y \texttt{XMLCONCAT}.
+    \item \textbf{Funciones de Modificación XML:} Permite modificar el contenido de documentos XML, aunque el soporte varía entre los diferentes SGBD.
+\end{itemize}
+
+\textbf{Ejemplo:}
+
+```sql
+-- Crear una tabla con una columna XML
+CREATE TABLE Productos (
+    id_producto INT PRIMARY KEY,
+    nombre VARCHAR(255),
+    descripcion XML
+);
+
+-- Insertar un documento XML
+INSERT INTO Productos (id_producto, nombre, descripcion)
+VALUES (
+    1,
+    'Portátil',
+    '<producto><nombre>Portátil XYZ</nombre><precio>1200</precio><caracteristicas><procesador>Intel i7</procesador><ram>16GB</ram></caracteristicas></producto>'
+);
+
+-- Consultar datos XML usando XMLQUERY (ejemplo de XQuery)
+SELECT id_producto, nombre,
+       XMLQUERY('$d/producto/precio' PASSING descripcion AS "d") AS precio
+FROM Productos;
+
+-- Consultar datos XML usando XMLTABLE (ejemplo de mapeo XML a filas)
+SELECT p.id_producto, p.nombre, x.procesador, x.ram
+FROM Productos p,
+     XMLTABLE('//caracteristicas' PASSING p.descripcion as "d"
+              COLUMNS
+                  procesador VARCHAR(50) PATH 'procesador',
+                  ram VARCHAR(50) PATH 'ram') AS x;
+```
+
+En este ejemplo, se crea una tabla \texttt{Productos} con una columna de tipo XML.  Luego, se inserta un documento XML en la columna \texttt{descripcion}.  Finalmente, se muestran ejemplos de consultas XML utilizando \texttt{XMLQUERY} y \texttt{XMLTABLE} para extraer información específica del documento XML.
+
+\section{Otros Lenguajes de Consulta}
+
+Además de SQL, existen otros lenguajes de consulta que ofrecen diferentes enfoques y ventajas.  Algunos de estos lenguajes se mencionan a continuación.  La profundidad de su análisis puede variar en función de los objetivos del curso y el tiempo disponible.
+
+\subsection{Cálculo Relacional}
+
+El cálculo relacional es un lenguaje de consulta formal basado en la lógica de predicados.  Existen dos variantes principales: el cálculo relacional de tuplas y el cálculo relacional de dominios.  Aunque puede ser omitido en cursos introductorios, es fundamental para comprender los fundamentos teóricos de los lenguajes de consulta y la optimización de consultas.  El cálculo relacional proporciona una base matemática para la definición de consultas, permitiendo expresar consultas complejas de manera precisa y concisa.
+
+\subsection{Álgebra Relacional}
+
+El álgebra relacional es otro lenguaje de consulta formal, pero a diferencia del cálculo relacional, es un lenguaje procedimental.  Se basa en un conjunto de operadores que manipulan relaciones (tablas) para producir nuevos resultados.  Estos operadores incluyen selección ($\sigma$), proyección ($\Pi$), unión ($\cup$), intersección ($\cap$), diferencia (-), producto cartesiano ($\times$), y join ($\Join$), entre otros. El álgebra relacional es la base para la optimización de consultas en los SGBD.  El optimizador de consultas transforma las consultas SQL en expresiones algebraicas relacionales, y luego aplica reglas de optimización para encontrar el plan de ejecución más eficiente.
+
+\subsection{QBE (Query By Example)}
+
+QBE (Query By Example) es un lenguaje de consulta gráfico que permite a los usuarios especificar las consultas utilizando ejemplos de datos.  El usuario crea una "plantilla" que representa la estructura de la tabla y luego introduce ejemplos de los valores que desea recuperar.  QBE se describe en el Apéndice C.
+
+\subsection{Datalog}
+
+Datalog es un lenguaje de consulta deductivo que extiende el álgebra relacional con la capacidad de inferir nuevos hechos a partir de los existentes.  Está basado en la lógica de Horn y permite definir reglas recursivas.  Aunque puede ser omitido en cursos introductorios, es útil para modelar conocimiento y resolver problemas complejos que requieren razonamiento lógico.
+
+\subsection{Lenguajes de Consulta para XML (XQuery, XSLT)}
+
+Para consultar y transformar documentos XML, se utilizan lenguajes especializados como XQuery y XSLT:
+
+\begin{itemize}
+    \item \textbf{XQuery:}  Es un lenguaje de consulta diseñado para XML.  Similar a SQL, permite extraer información de documentos XML utilizando XPath y otras funciones.  Es más poderoso que XPath y permite consultas complejas.
+    \item \textbf{XSLT (Extensible Stylesheet Language Transformations):}  Es un lenguaje de transformación de XML.  Permite transformar un documento XML en otro formato, como HTML, texto plano, o incluso otro documento XML. Se basa en el uso de plantillas y expresiones XPath para manipular el contenido del documento.
+\end{itemize}
+
+\subsection{El Lenguaje de Consulta de Objetos OQL (Object Query Language)}
+
+OQL (Object Query Language) es un lenguaje de consulta diseñado para bases de datos orientadas a objetos (BD orientadas a objetos).  Permite consultar objetos y sus atributos, además de navegar por las relaciones entre objetos. OQL es un lenguaje de consulta de alto nivel que se integra con lenguajes de programación orientados a objetos como Java o C++.  Si bien OQL no ha alcanzado la misma popularidad que SQL, su estudio proporciona una perspectiva valiosa sobre las alternativas a los modelos relacionales y la consulta de datos complejos.  Las bases de datos orientadas a objetos han disminuido su popularidad, por lo que, a pesar de sus ventajas, su estudio es opcional.
+```
