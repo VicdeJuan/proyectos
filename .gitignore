@@ -1,3 +1,19 @@
+##LaTeX
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+ask*
+*.py
 */*.metadata
 # Compiled class file
 *.class

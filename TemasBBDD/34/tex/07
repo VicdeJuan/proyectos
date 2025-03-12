@@ -1,0 +1,68 @@
+\chapter{Estudio de Casos (Opcional, si el espacio lo permite)}
+
+\label{chap:estudio_casos}
+
+Este capítulo, de carácter opcional, se dedica a ilustrar la aplicación práctica de los conceptos aprendidos a lo largo del curso mediante el análisis de casos concretos de Sistemas Gestores de Bases de Datos (SGBD). El objetivo es proporcionar una visión más profunda de cómo se implementan y utilizan los diferentes paradigmas de SGBD en el mundo real, permitiendo a los estudiantes comprender las ventajas, desventajas y consideraciones específicas de cada tipo. El estudio de casos se centra en ejemplos de SGBD relacionales y no relacionales, mostrando sus funcionalidades clave, arquitectura y las mejores prácticas para su uso.
+
+\section{Ejemplo de un SGBD Relacional Comercial (p. ej., PostgreSQL, Oracle, SQL Server)}
+\label{sec:ejemplo_sgbd_relacional}
+
+En esta sección, se analiza en detalle un ejemplo de un SGBD relacional comercial. La elección del SGBD específico (PostgreSQL, Oracle, SQL Server) dependerá de la disponibilidad y familiaridad del lector con alguno de ellos, aunque los principios fundamentales son similares. A continuación, se presenta un análisis comparativo de los SGBD relacionales más comunes, analizando sus pros y contras, así como las diferencias clave en su implementación y características. Se recomienda que el estudiante se familiarice con al menos uno de estos sistemas.
+
+\subsection{PostgreSQL: Un Ejemplo de SGBD Relacional Open Source}
+\label{subsec:postgresql}
+
+PostgreSQL es un sistema gestor de bases de datos relacional de código abierto (open source), robusto y con una gran capacidad de extensión, siendo una excelente opción para ilustrar los conceptos fundamentales de este tipo de SGBD.  Se revisarán los siguientes aspectos fundamentales:
+
+\begin{itemize}
+    \item \textbf{Arquitectura y Componentes}: Se describirá la arquitectura de PostgreSQL, incluyendo sus principales componentes como el \textit{postmaster} (el proceso servidor principal), los procesos *backend* (procesos separados para cada conexión cliente), los procesos *autovacuum* para la limpieza automática de datos obsoletos, el administrador de consultas y el gestor de almacenamiento. Se detallará cómo estos componentes interactúan para procesar consultas, administrar transacciones y garantizar la integridad de los datos.
+    \item \textbf{Modelo de Datos y Lenguaje SQL}: Se revisará la estructura del modelo de datos relacional, incluyendo tablas, atributos, claves primarias, claves foráneas e índices. Se profundizará en el lenguaje SQL (Structured Query Language), estándar para la definición y manipulación de datos en SGBD relacionales. Se explicarán ejemplos de sentencias SQL para la creación de bases de datos, tablas, la inserción, actualización y eliminación de datos (DML - Data Manipulation Language) y la consulta de información (DQL - Data Query Language), incluyendo el uso de \textit{JOINs}, subconsultas, funciones de agregación y cláusulas como \textit{WHERE}, \textit{GROUP BY} y \textit{ORDER BY}.  Se profundizará en los tipos de datos soportados y las extensiones específicas de PostgreSQL al SQL estándar.
+    \item \textbf{Transacciones y Concurrencia}: Se explicará el concepto de transacción ACID (Atomicidad, Consistencia, Aislamiento y Durabilidad) y cómo PostgreSQL garantiza la integridad de las transacciones mediante el uso de logs (WAL - Write-Ahead Logging) y el control de concurrencia. Se analizarán los diferentes niveles de aislamiento de transacciones (READ COMMITTED, READ REPEATABLE, SERIALIZABLE) y cómo afectan al rendimiento y la consistencia de los datos. Se discutirán las estrategias de bloqueo (optimistas y pesimistas) y su implicación en la concurrencia.
+    \item \textbf{Índices y Optimización de Consultas}: Se analizarán los diferentes tipos de índices soportados por PostgreSQL (B-tree, hash, GiST, GIN, SP-GiST, BRIN) y su impacto en el rendimiento de las consultas. Se explicará cómo el optimizador de consultas de PostgreSQL elige el plan de ejecución más eficiente. Se proporcionarán técnicas de optimización de consultas, como el uso de índices apropiados, la reescritura de consultas y la utilización de herramientas de análisis de planes de ejecución (EXPLAIN).
+    \item \textbf{Administración y Seguridad}: Se abordarán los aspectos relacionados con la administración de PostgreSQL, incluyendo la creación y gestión de usuarios y roles, la asignación de permisos, la configuración de parámetros del servidor, la monitorización del rendimiento y el respaldo y recuperación de datos. Se discutirán las mejores prácticas para la seguridad de la base de datos, como el uso de contraseñas fuertes, el cifrado de datos y la protección contra ataques.
+    \item \textbf{Ejemplo de Aplicación}: Se presentará un ejemplo práctico de una aplicación que utiliza PostgreSQL, como un sistema de gestión de contenido (CMS) o una tienda en línea. Se analizará el diseño de la base de datos, la interacción con la aplicación a través de un lenguaje de programación (e.g., Python, Java, PHP) y el uso de bibliotecas de acceso a bases de datos (e.g., psycopg2, JDBC, PDO).
+\end{itemize}
+
+\subsection{Oracle y SQL Server: Alternativas Comerciales}
+\label{subsec:oracle_sqlserver}
+
+Aunque PostgreSQL es un excelente ejemplo, es importante conocer las alternativas comerciales más extendidas: Oracle y SQL Server. Se compararán y contrastarán las siguientes características:
+
+\begin{itemize}
+    \item \textbf{Características Avanzadas}: Se analizarán las características avanzadas de Oracle (p.ej., Real Application Clusters (RAC) para alta disponibilidad y escalabilidad, Oracle Multitenant para consolidación de bases de datos) y SQL Server (p.ej., Always On Availability Groups para alta disponibilidad y recuperación ante desastres, PolyBase para la integración con datos de otras fuentes).
+    \item \textbf{Herramientas de Administración}: Se compararán las herramientas de administración de Oracle (SQL Developer, Enterprise Manager) y SQL Server (SQL Server Management Studio), resaltando sus funcionalidades y facilidad de uso.
+    \item \textbf{Escalabilidad y Rendimiento}: Se discutirán las estrategias de escalabilidad horizontal y vertical implementadas en Oracle y SQL Server, así como las opciones de configuración para optimizar el rendimiento en entornos de alto tráfico. Se analizarán benchmarks y pruebas de rendimiento para comparar la eficiencia de estos sistemas.
+    \item \textbf{Costos y Licencias}: Se explicarán los modelos de licenciamiento de Oracle y SQL Server, incluyendo las diferencias entre las diferentes ediciones (p.ej., Standard, Enterprise, Express). Se discutirán los costos asociados con la adquisición, implementación y mantenimiento de estos SGBD, y se compararán con el costo total de propiedad (TCO) de PostgreSQL.
+    \item \textbf{Consideraciones de Migración}: Se analizarán las estrategias y herramientas disponibles para la migración de bases de datos entre diferentes SGBD relacionales, incluyendo la migración desde PostgreSQL a Oracle o SQL Server, y viceversa.
+\end{itemize}
+
+\section{Ejemplo de un SGBD No Relacional}
+\label{sec:ejemplo_sgbd_no_relacional}
+
+En esta sección, se explorará un ejemplo de SGBD No Relacional, también conocido como NoSQL. La elección del SGBD específico (MongoDB, Cassandra, Redis, etc.) dependerá de las tendencias actuales y la pertinencia para la aplicación de ejemplo. Se profundizará en la arquitectura, modelos de datos, las características y casos de uso principales de este tipo de SGBD.
+
+\subsection{MongoDB: Un Ejemplo de SGBD NoSQL Orientado a Documentos}
+\label{subsec:mongodb}
+
+MongoDB se utilizará como ejemplo de un SGBD NoSQL orientado a documentos, debido a su popularidad y facilidad de uso. Se cubrirán los siguientes aspectos:
+
+\begin{itemize}
+    \item \textbf{Modelo de Datos Orientado a Documentos}: Se explicará el concepto de documento como la unidad fundamental de almacenamiento en MongoDB, representado en formato JSON (o BSON, su representación binaria). Se describirán las ventajas de este modelo, como la flexibilidad para almacenar datos semiestructurados y la capacidad de evolucionar el esquema de datos sin necesidad de migración. Se ilustrará la estructura de los documentos y cómo se organizan en colecciones, que son análogas a las tablas en SGBD relacionales.
+    \item \textbf{Arquitectura y Componentes}: Se revisará la arquitectura de MongoDB, incluyendo los componentes principales como el servidor \textit{mongod}, el \textit{mongo shell} (interfaz de línea de comandos), los replicasets para alta disponibilidad y la sharding para escalabilidad horizontal. Se detallará el proceso de lectura y escritura de datos, así como el funcionamiento del administrador de consultas y el gestor de almacenamiento.
+    \item \textbf{Consultas y Agregación}: Se analizará el lenguaje de consulta de MongoDB, basado en el uso de operadores de consulta para filtrar, proyectar y ordenar los datos. Se explicará el concepto de agregación, que permite realizar operaciones complejas sobre los datos, como la agrupación, el cálculo de estadísticas y la transformación de datos. Se mostrarán ejemplos de consultas utilizando el \textit{mongo shell} y los drivers de MongoDB para diferentes lenguajes de programación.
+    \item \textbf{Índices y Rendimiento}: Se explicará el uso de índices en MongoDB para optimizar el rendimiento de las consultas. Se analizarán los diferentes tipos de índices soportados (índices de campo único, índices compuestos, índices geoespaciales) y cómo afectan a la velocidad de las consultas. Se proporcionarán técnicas de optimización de consultas, como el uso de índices apropiados, la reestructuración de los documentos y la limitación de la cantidad de datos retornados.
+    \item \textbf{Replicación y Sharding}: Se explicarán los conceptos de replicación y sharding en MongoDB para garantizar la alta disponibilidad y la escalabilidad horizontal. Se describirán los replicasets, que permiten mantener múltiples copias de los datos y proporcionar redundancia en caso de fallo de un nodo. Se explicará el proceso de sharding, que permite dividir los datos en diferentes fragmentos (chunks) y distribuirlos entre múltiples servidores.
+    \item \textbf{Casos de Uso y Comparación con SGBD Relacionales}: Se presentarán ejemplos de casos de uso donde MongoDB es una opción adecuada, como aplicaciones web con datos semiestructurados, sistemas de gestión de contenido (CMS), aplicaciones de redes sociales y sistemas de registro y analítica. Se comparará MongoDB con los SGBD relacionales, resaltando las ventajas y desventajas de cada tipo de SGBD para diferentes escenarios.
+\end{itemize}
+
+\subsection{Alternativas a MongoDB}
+\label{subsec:alternativas_mongodb}
+
+Se analizarán otras alternativas a MongoDB, como Cassandra, Redis y otros SGBD NoSQL, destacando las siguientes consideraciones:
+
+\begin{itemize}
+    \item \textbf{Cassandra}: Se explorará este SGBD NoSQL de columna ancha, destacando su diseño distribuido y su escalabilidad horizontal, así como sus casos de uso en aplicaciones con grandes volúmenes de datos y alta disponibilidad.
+    \item \textbf{Redis}: Se analizará este SGBD NoSQL clave-valor, caracterizado por su alto rendimiento y su capacidad para almacenar datos en memoria. Se explorarán sus casos de uso en aplicaciones de caché, colas de mensajes y almacenamiento temporal de datos.
+    \item \textbf{Otros SGBD NoSQL}: Se mencionarán brevemente otros SGBD NoSQL, como Neo4j (orientado a grafos) y CouchDB (orientado a documentos), resaltando sus características distintivas y sus casos de uso específicos.
+    \item \textbf{Selección del SGBD NoSQL adecuado}: Se proporcionarán pautas para seleccionar el SGBD NoSQL más adecuado para un proyecto, considerando factores como el modelo de datos, los requisitos de rendimiento, la escalabilidad, la disponibilidad y la consistencia de los datos.
+\end{itemize}

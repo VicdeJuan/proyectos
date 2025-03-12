@@ -1,0 +1,318 @@
+\chapter{Funciones de un Sistema Gestor de Bases de Datos}
+
+Este capítulo se sumerge en las funcionalidades esenciales que definen a un Sistema Gestor de Bases de Datos (SGBD). Abordaremos en detalle cómo un SGBD proporciona las herramientas para gestionar, proteger, optimizar y garantizar la integridad de los datos.  Entender las funciones de un SGBD es crucial para cualquier ingeniero informático que trabaje con sistemas de información, desde el diseño de la base de datos hasta la optimización del rendimiento de las consultas.
+
+\section{Definición y Manipulación de Datos}
+
+La base de cualquier SGBD reside en su capacidad para definir y manipular los datos.  Esto se logra a través de lenguajes especializados que permiten tanto la descripción de la estructura de la base de datos como la interacción con los datos almacenados.
+
+\subsection{Lenguaje de Definición de Datos (LDD)}
+
+El Lenguaje de Definición de Datos (LDD), o Data Definition Language (DDL), es el componente responsable de la creación, modificación y eliminación de la estructura de la base de datos.  El LDD no opera sobre los datos en sí mismos, sino sobre los *esquemas*, es decir, la forma en que se organizan y relacionan los datos.  Esto incluye la definición de:
+
+\begin{itemize}
+    \item \textbf{Tablas}: Se definen las tablas, que son la unidad fundamental de almacenamiento de datos. Se especifican los nombres de las tablas, los nombres y tipos de datos de cada columna (atributos), y las restricciones que se deben cumplir para mantener la integridad de los datos.  Por ejemplo, se puede definir una tabla `Clientes` con columnas como `ID\_Cliente` (entero, clave primaria), `Nombre` (cadena), `Apellido` (cadena), `Direccion` (cadena) y `Telefono` (cadena).
+    \item \textbf{Índices}: Se definen los índices para acelerar la búsqueda de datos. Los índices son estructuras de datos auxiliares que permiten acceder a los datos de forma más rápida, similar al índice de un libro.  Un índice sobre la columna `ID\_Cliente` permitiría una búsqueda más rápida de un cliente específico.
+    \item \textbf{Vistas}: Las vistas son tablas virtuales basadas en el resultado de una consulta. Permiten simplificar consultas complejas, proporcionar una capa de abstracción para proteger los datos subyacentes y personalizar la forma en que los usuarios ven los datos.  Una vista podría mostrar solo los datos de contacto de los clientes (nombre, teléfono, dirección), ocultando otra información sensible.
+    \item \textbf{Restricciones}: Se definen restricciones que garantizan la consistencia e integridad de los datos.  Ejemplos incluyen claves primarias (que identifican de forma única cada fila de una tabla), claves foráneas (que establecen relaciones entre tablas), restricciones de unicidad (que aseguran que un valor no se repita en una columna) y restricciones de chequeo (que validan los datos ingresados según una condición especificada).
+    \item \textbf{Esquemas}: Los esquemas son contenedores lógicos para los objetos de la base de datos (tablas, vistas, etc.). Permiten organizar y modularizar la base de datos, y controlar el acceso a los objetos.
+    \item \textbf{Otros objetos}: Dependiendo del SGBD, el LDD también puede incluir comandos para definir otros objetos como procedimientos almacenados, funciones, triggers, etc.
+\end{itemize}
+
+El LDD generalmente utiliza comandos como `CREATE`, `ALTER`, `DROP` y `TRUNCATE`. Por ejemplo:
+
+\begin{verbatim}
+CREATE TABLE Clientes (
+    ID\_Cliente INT PRIMARY KEY,
+    Nombre VARCHAR(255) NOT NULL,
+    Apellido VARCHAR(255) NOT NULL,
+    Direccion VARCHAR(255),
+    Telefono VARCHAR(20)
+);
+
+ALTER TABLE Clientes ADD COLUMN Fecha\_Registro DATE;
+
+DROP INDEX Indice\_Apellido;
+\end{verbatim}
+
+\subsection{Lenguaje de Manipulación de Datos (LMD)}
+
+El Lenguaje de Manipulación de Datos (LMD), o Data Manipulation Language (DML), proporciona las instrucciones para acceder y modificar los datos almacenados en la base de datos.  A diferencia del LDD, el LMD opera directamente sobre los datos, permitiendo realizar operaciones como consultas, inserciones, actualizaciones y eliminaciones.
+
+\subsection{Operaciones básicas: consultas, actualizaciones, inserciones y eliminaciones}
+
+Las operaciones básicas del LMD son fundamentales para la interacción con los datos.  Estas operaciones, que son típicamente expresadas a través del lenguaje SQL (Structured Query Language), permiten a los usuarios y aplicaciones interactuar con la base de datos de manera efectiva:
+
+\begin{itemize}
+    \item \textbf{Consultas (SELECT)}:  Permiten recuperar datos de la base de datos según criterios específicos.  La cláusula `SELECT` especifica las columnas a recuperar, la cláusula `FROM` especifica la tabla (o tablas) donde se encuentran los datos, y la cláusula `WHERE` especifica las condiciones de filtrado.  Las cláusulas `ORDER BY` y `GROUP BY` permiten ordenar y agrupar los resultados, respectivamente.  Ejemplo:
+    \begin{verbatim}
+    SELECT Nombre, Apellido FROM Clientes WHERE Ciudad = 'Madrid' ORDER BY Apellido;
+    \end{verbatim}
+
+    \item \textbf{Inserciones (INSERT)}: Permiten agregar nuevos datos a la base de datos. Se especifica la tabla y los valores de los atributos para la nueva fila. Ejemplo:
+    \begin{verbatim}
+    INSERT INTO Clientes (Nombre, Apellido, Direccion, Telefono) VALUES ('Ana', 'Gomez', 'Calle Mayor 12', '555-1234');
+    \end{verbatim}
+
+    \item \textbf{Actualizaciones (UPDATE)}:  Permiten modificar los datos existentes en la base de datos. Se especifica la tabla, las columnas a actualizar y los nuevos valores. La cláusula `WHERE` se utiliza para especificar qué filas se deben actualizar. Ejemplo:
+    \begin{verbatim}
+    UPDATE Clientes SET Telefono = '555-5678' WHERE ID\_Cliente = 123;
+    \end{verbatim}
+
+    \item \textbf{Eliminaciones (DELETE)}: Permiten eliminar datos de la base de datos. Se especifica la tabla y la condición `WHERE` para determinar qué filas se deben eliminar. Ejemplo:
+    \begin{verbatim}
+    DELETE FROM Clientes WHERE ID\_Cliente = 456;
+    \end{verbatim}
+\end{itemize}
+
+\section{Control de Acceso y Seguridad}
+
+La seguridad es una función crítica de cualquier SGBD, que garantiza la protección de los datos contra el acceso no autorizado y las modificaciones maliciosas. Esto implica el control de acceso, la autorización y la aplicación de políticas de seguridad.
+
+\subsection{Autorizaciones y privilegios}
+
+El control de acceso se basa en la asignación de *privilegios* a los *usuarios* o *roles*.  Un privilegio es el derecho a realizar una operación específica en un objeto de la base de datos.  Los SGBD típicamente ofrecen una granularidad de privilegios, lo que permite un control preciso sobre qué puede hacer cada usuario.
+
+*   \textbf{Usuarios}: Entidades individuales o aplicaciones que interactúan con la base de datos. Cada usuario se identifica mediante un nombre de usuario y una contraseña.
+*   \textbf{Roles}:  Grupos de usuarios con privilegios comunes.  Los roles simplifican la gestión de privilegios, permitiendo asignar privilegios a un rol y luego asignar ese rol a varios usuarios.
+*   \textbf{Privilegios comunes}:
+    \begin{itemize}
+        \item `SELECT`:  Permite consultar datos de una tabla o vista.
+        \item `INSERT`: Permite insertar nuevos datos en una tabla o vista.
+        \item `UPDATE`: Permite modificar los datos de una tabla o vista.
+        \item `DELETE`: Permite eliminar datos de una tabla o vista.
+        \item `CREATE`: Permite crear objetos de la base de datos (tablas, vistas, índices, etc.).
+        \item `ALTER`:  Permite modificar la estructura de objetos de la base de datos.
+        \item `DROP`: Permite eliminar objetos de la base de datos.
+        \item `GRANT OPTION`:  Permite al usuario otorgar (grant) el mismo privilegio a otros usuarios.
+    \end{itemize}
+
+La asignación de privilegios se realiza a través de comandos como `GRANT` y `REVOKE`.
+
+\begin{verbatim}
+-- Otorgar privilegio SELECT a un usuario
+GRANT SELECT ON Clientes TO usuario1;
+
+-- Otorgar privilegio SELECT a un rol
+GRANT SELECT ON Clientes TO rol\_lectores;
+
+-- Revocar un privilegio
+REVOKE SELECT ON Clientes FROM usuario1;
+\end{verbatim}
+
+\subsection{Mecanismos de control de acceso}
+
+Además de la asignación de privilegios, los SGBD implementan varios mecanismos de control de acceso para fortalecer la seguridad:
+
+*   \textbf{Autenticación}:  Verificación de la identidad del usuario.  Implica la presentación de credenciales (nombre de usuario y contraseña) que el SGBD valida.  Los métodos de autenticación pueden incluir contraseñas, autenticación multifactor (MFA) y otras opciones de seguridad.
+
+*   \textbf{Autorización}:  Determina si un usuario tiene permiso para realizar una acción específica.  Después de la autenticación, el SGBD verifica si el usuario tiene los privilegios necesarios para acceder a los datos o ejecutar una operación.
+
+*   \textbf{Control de acceso basado en roles (RBAC)}:  El uso de roles para agrupar privilegios y asignar esos roles a usuarios simplifica la gestión y el mantenimiento de la seguridad.
+
+*   \textbf{Enmascaramiento de datos}:  Oculta o modifica información sensible para usuarios no autorizados. Por ejemplo, enmascarar parte de un número de tarjeta de crédito.
+
+*   \textbf{Auditoría}:  Registra las acciones realizadas en la base de datos, incluyendo quién realizó la acción, cuándo y qué se hizo.  La auditoría es crucial para la detección de intrusiones y el cumplimiento normativo.
+
+*   \textbf{Cifrado}:  Protege los datos almacenados en la base de datos al convertirlos a un formato ilegible sin la clave de descifrado.  El cifrado puede aplicarse a toda la base de datos (cifrado a nivel de base de datos) o a campos específicos (cifrado a nivel de columna).
+
+\subsection{Integridad de los datos y restricciones}
+
+La integridad de los datos se refiere a la exactitud, consistencia y validez de los datos almacenados en la base de datos. Las restricciones, definidas en el LDD, juegan un papel crucial en la implementación de la integridad de los datos:
+
+*   \textbf{Integridad de entidad}: Asegura que cada fila de una tabla sea identificable de forma única. Se implementa mediante claves primarias.
+*   \textbf{Integridad referencial}:  Asegura la consistencia de las relaciones entre tablas. Se implementa mediante claves foráneas.  Una clave foránea referencia la clave primaria de otra tabla, garantizando que no haya referencias a valores inexistentes.
+*   \textbf{Integridad de dominio}:  Asegura que los valores en una columna pertenezcan a un dominio válido (tipo de dato, rango de valores, formato). Se implementa mediante tipos de datos, restricciones de chequeo (`CHECK`) y otros mecanismos específicos del SGBD.
+*   \textbf{Integridad definida por el usuario}: Permite definir reglas de validación de datos complejas y específicas para las necesidades de la aplicación.  Esto se puede lograr mediante restricciones de chequeo, triggers (disparadores) y procedimientos almacenados.
+
+Las restricciones se definen en el momento de la creación de la tabla o se pueden agregar posteriormente utilizando el comando `ALTER TABLE`.
+
+\begin{verbatim}
+CREATE TABLE Pedidos (
+    ID\_Pedido INT PRIMARY KEY,
+    ID\_Cliente INT,
+    Fecha\_Pedido DATE,
+    Estado VARCHAR(20) CHECK (Estado IN ('Pendiente', 'Enviado', 'Entregado')),
+    FOREIGN KEY (ID\_Cliente) REFERENCES Clientes(ID\_Cliente)
+);
+\end{verbatim}
+
+\section{Gestión del Almacenamiento}
+
+La gestión del almacenamiento es una función fundamental del SGBD que se encarga de la organización física y el acceso eficiente a los datos en el almacenamiento persistente (disco duro, SSD, etc.). Un buen diseño y gestión del almacenamiento impacta directamente en el rendimiento de las consultas y la eficiencia del sistema.
+
+\subsection{Organización de archivos y estructuras de almacenamiento}
+
+El SGBD organiza los datos en archivos y utiliza diversas estructuras de almacenamiento para optimizar el acceso a los datos. Las estrategias de organización de archivos incluyen:
+
+*   \textbf{Asignación de espacio}:  El SGBD gestiona la asignación y desasignación de espacio en disco para los archivos de datos. Esto incluye la gestión de bloques (unidades básicas de almacenamiento) y la optimización de la fragmentación.
+*   \textbf{Organización de archivos}:  Define cómo se almacenan las filas de las tablas en los archivos.  Las opciones más comunes son:
+    *   \textbf{Heap file organization (Organización por montones)}: Las filas se almacenan sin un orden específico.  Es la más sencilla, pero las búsquedas son lentas a menos que se utilicen índices.
+    *   \textbf{Sorted file organization (Organización ordenada)}: Las filas se almacenan ordenadas por una clave de ordenamiento.  Las búsquedas son más rápidas para la clave de ordenamiento, pero las inserciones y actualizaciones pueden ser costosas.
+    *   \textbf{Hash file organization (Organización por hash)}:  Las filas se almacenan en "cubetas" (buckets) basadas en una función hash aplicada a una clave.  Ofrece búsquedas muy rápidas para la clave hash, pero no es adecuada para búsquedas por rango.
+    *   \textbf{Clustered file organization (Organización agrupada)}:  Las filas de varias tablas relacionadas se almacenan físicamente juntas en el mismo archivo, optimizando las operaciones de join.
+*   \textbf{Estructuras de datos para el almacenamiento}: El SGBD utiliza diversas estructuras de datos internas para representar los datos en memoria y en disco, optimizando las operaciones de acceso:
+    *   \textbf{Árboles B/B+}: Estructuras de árbol balanceadas que se utilizan ampliamente para almacenar índices debido a su eficiencia en búsquedas, inserciones y eliminaciones, especialmente en bases de datos grandes.
+    *   \textbf{Tablas hash}:  Se utilizan para implementar índices hash, que proporcionan búsquedas muy rápidas para valores específicos.
+    *   \textbf{Bitmap indexes (Índices de mapa de bits)}:  Utilizados para columnas con un número limitado de valores distintos, optimizando las consultas con filtros múltiples.
+
+\subsection{Gestión de la memoria intermedia (buffer)}
+
+La gestión de la memoria intermedia, también conocida como buffer pool, es crucial para el rendimiento.  La memoria intermedia es una porción de la memoria principal (RAM) que el SGBD utiliza para almacenar temporalmente los datos y las estructuras de datos que se están utilizando.
+
+*   \textbf{Funcionamiento}:  Cuando una consulta necesita acceder a datos, el SGBD primero busca esos datos en la memoria intermedia. Si los datos están en el buffer (cache hit), se acceden directamente.  Si los datos no están en el buffer (cache miss), el SGBD debe leerlos del almacenamiento persistente (disco) y cargarlos en el buffer.
+*   \textbf{Reemplazo de páginas}:  Cuando el buffer está lleno, el SGBD debe decidir qué páginas (bloques de datos) reemplazar para hacer espacio para las nuevas páginas.  Se utilizan algoritmos de reemplazo de páginas, como LRU (Least Recently Used - Menos Usado Recientemente), para seleccionar las páginas menos importantes para ser reemplazadas.  El objetivo es minimizar el número de lecturas desde el disco.
+*   \textbf{Escritura diferida (Write-back):}  Las modificaciones a los datos en el buffer no se escriben inmediatamente en el disco. En su lugar, se marcan como "sucias" y se escriben en el disco en un momento posterior, generalmente por lotes. Esto mejora el rendimiento, pero requiere mecanismos para garantizar la durabilidad en caso de fallos.
+*   \textbf{Tuning}:  El tamaño del buffer pool es un parámetro importante para el rendimiento del SGBD. Un buffer más grande puede mejorar el rendimiento al reducir el número de lecturas desde el disco, pero también consume más memoria. La configuración óptima del buffer pool depende de la carga de trabajo y las características de la base de datos.
+
+\subsection{Estructuras de datos para un procesamiento eficiente de consultas (índices)}
+
+Los índices son estructuras de datos que mejoran significativamente el rendimiento de las consultas, especialmente en bases de datos grandes. Permiten al SGBD localizar rápidamente las filas que cumplen con una condición de búsqueda sin tener que escanear toda la tabla.
+
+*   \textbf{Tipos de índices comunes}:
+    *   \textbf{Índices B-Tree/B+Tree}:  Son los índices más comunes y se utilizan para una amplia variedad de consultas, incluyendo búsquedas por rango, igualdad y ordenamiento.
+    *   \textbf{Índices hash}:  Proporcionan búsquedas muy rápidas para valores de igualdad (ej: `WHERE columna = valor`), pero no son adecuados para búsquedas por rango.
+    *   \textbf{Bitmap indexes (Índices de mapa de bits)}: Eficientes para columnas con pocos valores distintos y consultas con múltiples condiciones de filtro.
+    *   \textbf{Índices espaciales}: Diseñados para optimizar consultas que involucran datos espaciales (coordenadas, polígonos, etc.).
+    *   \textbf{Índices de texto completo}: Permiten realizar búsquedas de texto dentro de documentos o campos de texto.
+
+*   \textbf{Creación y uso de índices}:
+    *   Los índices se crean utilizando el LDD (`CREATE INDEX`).
+    \begin{verbatim}
+    CREATE INDEX Indice\_Apellido ON Clientes (Apellido);
+    \end{verbatim}
+    *   El SGBD optimiza automáticamente las consultas utilizando los índices disponibles. El optimizador de consultas (ver sección 2.4) elige los índices más apropiados para cada consulta.
+    *   El mantenimiento de los índices (inserciones, actualizaciones, eliminaciones) tiene un costo, por lo que es importante elegir los índices correctos.  Demasiados índices pueden ralentizar las operaciones de modificación, mientras que muy pocos pueden ralentizar las búsquedas.
+*   \textbf{Consideraciones de diseño de índices}:
+    *   \textbf{Columnas en cláusulas `WHERE`}:  Se deben indexar las columnas que se utilizan frecuentemente en las cláusulas `WHERE` de las consultas.
+    *   \textbf{Columnas en cláusulas `ORDER BY` y `GROUP BY`}: Indexar las columnas que se utilizan para ordenar o agrupar los resultados puede mejorar el rendimiento.
+    *   \textbf{Cardinalidad}:  Es más eficiente indexar columnas con una alta cardinalidad (muchos valores distintos) que columnas con baja cardinalidad.
+    *   \textbf{Coste de mantenimiento}:  Se debe considerar el costo de mantener los índices cuando se realizan inserciones, actualizaciones y eliminaciones en la tabla.
+    *   \textbf{Índices compuestos}:  Pueden ser útiles para consultas que involucran múltiples columnas.
+
+\section{Procesamiento y Optimización de Consultas}
+
+El procesador de consultas es el componente del SGBD responsable de convertir una consulta SQL en un plan de ejecución eficiente. La optimización de consultas es un proceso crítico que impacta directamente en el rendimiento del sistema.
+
+\subsection{Componentes del procesador de consultas}
+
+El procesador de consultas se compone de varios componentes clave que trabajan en conjunto para procesar las consultas:
+
+*   \textbf{Analizador léxico y sintáctico (Lexer/Parser)}:
+    *   El analizador léxico (lexer) divide la consulta SQL en tokens (palabras clave, identificadores, operadores, etc.).
+    *   El analizador sintáctico (parser) verifica la sintaxis de la consulta y construye un árbol de sintaxis abstracta (AST) que representa la estructura lógica de la consulta.
+
+*   \textbf{Optimizador de consultas (Query Optimizer)}:
+    *   Es el componente más importante. Recibe el AST y genera múltiples planes de ejecución posibles para la consulta.
+    *   Estima el costo de cada plan de ejecución basándose en estadísticas sobre los datos (tamaño de las tablas, número de filas, distribución de valores, etc.).
+    *   Selecciona el plan de ejecución con el costo estimado más bajo.
+
+*   \textbf{Generador de plan de ejecución (Query Execution Planner)}:
+    *   Convierte el plan de ejecución seleccionado por el optimizador en una secuencia de operaciones que el motor de ejecución puede entender y ejecutar.  Este plan puede incluir operaciones como escaneo de tablas, uso de índices, joins, filtrado y agregación.
+
+*   \textbf{Motor de ejecución (Query Executor)}:
+    *   Ejecuta el plan de ejecución.  Recupera los datos del almacenamiento, realiza las operaciones especificadas en el plan y devuelve los resultados al usuario.
+
+\subsection{Traducción y compilación de consultas}
+
+El procesamiento de una consulta SQL se puede dividir en varios pasos:
+
+1.  \textbf{Análisis}: La consulta SQL se analiza léxicamente y sintácticamente para verificar su validez y construir el AST.
+2.  \textbf{Reescritura (Opcional)}: El optimizador de consultas puede reescribir el AST para simplificar la consulta o aplicar transformaciones que puedan mejorar el rendimiento.
+3.  \textbf{Optimización}: El optimizador genera varios planes de ejecución posibles, estima su costo y selecciona el plan de ejecución más eficiente.
+4.  \textbf{Generación del plan de ejecución}: El plan de ejecución se genera en un formato que el motor de ejecución puede comprender y ejecutar.
+5.  \textbf{Ejecución}:  El motor de ejecución ejecuta el plan de ejecución, accediendo a los datos del almacenamiento y generando los resultados.
+
+Algunos SGBD compilan las consultas en un código de bajo nivel (ej: código de máquina o bytecode) para mejorar el rendimiento. La compilación puede eliminar la necesidad de interpretar la consulta en cada ejecución, lo que agiliza el proceso.
+
+\subsection{Optimización para hallar el método de coste mínimo}
+
+El objetivo principal del optimizador de consultas es encontrar el plan de ejecución con el menor costo.  El costo se refiere al tiempo de ejecución estimado de la consulta, que se ve afectado por varios factores:
+
+*   \textbf{Acceso a datos}:  El costo de acceder a los datos, incluyendo el número de lecturas desde el disco y el uso de índices.
+*   \textbf{Operaciones de Join}:  El costo de realizar operaciones de join entre tablas, incluyendo los algoritmos de join utilizados (ej: nested loops, merge join, hash join).
+*   \textbf{Filtrado y selección}: El costo de aplicar condiciones de filtrado (cláusula `WHERE`) y seleccionar las columnas deseadas.
+*   \textbf{Ordenamiento y agregación}: El costo de ordenar los resultados (cláusula `ORDER BY`) y realizar operaciones de agregación (cláusula `GROUP BY`).
+
+El optimizador utiliza varias técnicas para encontrar el plan de menor costo:
+
+*   \textbf{Estadísticas}: El optimizador utiliza estadísticas sobre los datos (tamaño de las tablas, número de filas, distribución de valores, etc.) para estimar el costo de cada plan de ejecución.  Es crucial mantener las estadísticas actualizadas para que el optimizador pueda tomar decisiones precisas.
+*   \textbf{Costos heurísticos}:  Se aplican reglas heurísticas para reducir el espacio de búsqueda de planes de ejecución. Por ejemplo, un optimizador podría preferir el uso de índices siempre que sea posible.
+*   \textbf{Costos basados en modelos}:  Los optimizadores modernos a menudo utilizan modelos de costo más sofisticados que consideran una variedad de factores, incluyendo la configuración de hardware y las características del sistema.
+*   \textbf{Transformaciones de consultas}:  El optimizador puede aplicar transformaciones a la consulta para mejorar el rendimiento.  Ejemplos incluyen:
+    *   \textbf{Simplificación de expresiones}:  Simplificar expresiones booleanas o aritméticas.
+    *   \textbf{Reordenamiento de joins}:  Reordenar las operaciones de join para optimizar el acceso a los datos.
+    *   \textbf{Eliminación de subconsultas}:  Convertir subconsultas en joins u otras construcciones.
+    *   \textbf{Agrupación de operaciones}:  Agrupar operaciones similares para reducir la carga de procesamiento.
+*   \textbf{Estimación del cardinalidad}:  Estimar el número de filas que se devolverán de una operación.  Una estimación precisa de la cardinalidad es crucial para calcular el costo de un plan de ejecución.
+
+El optimizador de consultas es uno de los componentes más complejos y sofisticados de un SGBD.  Su eficacia es fundamental para el rendimiento general del sistema. Los ingenieros de bases de datos a menudo deben "ajustar" las consultas y los índices para ayudar al optimizador a elegir el mejor plan de ejecución.
+
+\section{Gestión de Transacciones}
+
+Una transacción es una unidad lógica de trabajo que se realiza en una base de datos.  La gestión de transacciones es una función crítica del SGBD que garantiza la consistencia y la fiabilidad de las operaciones.
+
+\subsection{Concepto de transacción y sus propiedades (atomicidad, consistencia, aislamiento, durabilidad - ACID)}
+
+Una transacción es una secuencia de operaciones de base de datos que se trata como una única unidad de trabajo. Una transacción tiene dos posibles resultados: se completa con éxito (commit) o falla (rollback).  Las transacciones deben cumplir con las propiedades ACID para garantizar la integridad y la consistencia de los datos:
+
+*   \textbf{Atomicidad (Atomicity)}:  Una transacción es atómica, es decir, todas las operaciones de la transacción se realizan con éxito o ninguna se realiza.  Si alguna operación falla, la transacción se revierte y la base de datos vuelve a su estado anterior (antes de la transacción).
+
+*   \textbf{Consistencia (Consistency)}:  Una transacción debe mantener la consistencia de la base de datos.  La base de datos debe estar en un estado válido tanto antes como después de la transacción.  Esto implica que se deben cumplir las restricciones de integridad (claves primarias, claves foráneas, etc.) y las reglas de negocio definidas.
+
+*   \textbf{Aislamiento (Isolation)}:  Las transacciones se deben ejecutar de forma aislada entre sí.  Una transacción no debe ser afectada por otras transacciones que se ejecutan simultáneamente.  El aislamiento previene problemas como lecturas sucias (una transacción lee datos modificados por otra transacción que aún no se ha confirmado), lecturas no repetibles (una transacción lee los mismos datos dos veces y obtiene diferentes valores debido a las modificaciones de otra transacción) y fantasmas (una transacción lee un conjunto de filas que cambian debido a la inserción o eliminación de filas por otra transacción). Los niveles de aislamiento definen el grado en que se aísla una transacción de otras transacciones.
+
+*   \textbf{Durabilidad (Durability)}:  Una vez que una transacción se ha confirmado, los cambios realizados en la base de datos deben ser permanentes y sobrevivir a fallos del sistema (ej: caídas del sistema, cortes de energía).  El SGBD garantiza la durabilidad escribiendo los cambios en el almacenamiento persistente (disco) y utilizando mecanismos como el registro de transacciones.
+
+\subsection{Control de la concurrencia}
+
+El control de la concurrencia es el mecanismo que el SGBD utiliza para gestionar el acceso concurrente a los datos por múltiples transacciones.  El objetivo es garantizar el aislamiento y prevenir conflictos entre las transacciones.
+
+*   \textbf{Problemas de concurrencia}:
+    *   \textbf{Pérdida de actualizaciones}:  Dos transacciones intentan actualizar la misma fila simultáneamente, y la última actualización sobrescribe la anterior, perdiendo información.
+    *   \textbf{Lecturas sucias}: Una transacción lee datos que han sido modificados por otra transacción que aún no ha sido confirmada.
+    *   \textbf{Lecturas no repetibles}: Una transacción lee los mismos datos dos veces y obtiene diferentes valores debido a las modificaciones de otra transacción.
+    *   \textbf{Fantasmas}: Una transacción lee un conjunto de filas que cambian debido a la inserción o eliminación de filas por otra transacción.
+
+*   \textbf{Mecanismos de control de concurrencia}:
+    *   \textbf{Bloqueo (Locking)}:
+        *   Es el mecanismo más común para controlar la concurrencia.  Una transacción solicita un bloqueo (lock) sobre los datos que necesita acceder o modificar.  El SGBD permite diferentes tipos de bloqueos:
+            *   \textbf{Bloqueos compartidos (shared locks)}:  Permiten a múltiples transacciones leer los datos simultáneamente.
+            *   \textbf{Bloqueos exclusivos (exclusive locks)}:  Permiten a una sola transacción modificar los datos.  Ninguna otra transacción puede leer o modificar los datos bloqueados.
+        *   \textbf{Protocolos de bloqueo}:  Definen cómo y cuándo se adquieren y liberan los bloqueos.  Ejemplos:
+            *   \textbf{Bloqueo de dos fases (two-phase locking - 2PL)}:  Una transacción crece (adquiere bloqueos) hasta que necesita liberar un bloqueo.  Luego, se encoge (libera bloqueos) y no puede volver a adquirir bloqueos.  Garantiza la serialización de las transacciones, pero puede causar interbloqueos (deadlocks).
+    *   \textbf{Control de concurrencia multiversión (Multiversion Concurrency Control - MVCC)}:  Cada transacción ve una versión consistente de los datos en un momento dado, incluso si otras transacciones están modificando los datos.  Permite que las transacciones de lectura no bloqueen las operaciones de escritura, lo que mejora la concurrencia.  Es común en muchos SGBD modernos.
+    *   \textbf{Optimistic concurrency control (Control de concurrencia optimista)}: Las transacciones no adquieren bloqueos explícitamente.  Antes de confirmar una transacción, el SGBD verifica si los datos que la transacción leyó han sido modificados por otras transacciones. Si hay conflictos, la transacción se aborta y se debe reintentar.  Puede ser más eficiente que el bloqueo en situaciones con baja contención.
+    *   \textbf{Serialización (Serializability)}:  El nivel de aislamiento más alto. Las transacciones se ejecutan como si se ejecutaran una tras otra, en serie.  Esto elimina los problemas de concurrencia, pero puede reducir el rendimiento.
+
+*   \textbf{Interbloqueos (Deadlocks)}:  Se producen cuando dos o más transacciones se bloquean entre sí, esperando que la otra libere un recurso que necesitan.  Los SGBD implementan mecanismos de detección y resolución de interbloqueos, como el tiempo de espera (timeout) y la selección de una transacción para ser abortada (victim selection).
+
+*   \textbf{Niveles de aislamiento (Isolation Levels)}:  Los niveles de aislamiento definen el grado en que una transacción está aislada de otras transacciones.  Los niveles de aislamiento estándar son:
+    *   \textbf{Read uncommitted}:  El nivel de aislamiento más bajo.  Permite lecturas sucias.
+    *   \textbf{Read committed}:  Garantiza que una transacción solo lea datos que han sido confirmados por otras transacciones.  Evita lecturas sucias.
+    *   \textbf{Repeatable read}:  Garantiza que una transacción lea los mismos datos consistentemente durante toda la transacción. Evita lecturas sucias y lecturas no repetibles.
+    *   \textbf{Serializable}:  El nivel de aislamiento más alto. Las transacciones se ejecutan como si se ejecutaran en serie. Evita todos los problemas de concurrencia (lecturas sucias, lecturas no repetibles y fantasmas).
+
+\subsection{Mecanismos de recuperación ante fallos}
+
+Los SGBD deben ser capaces de recuperarse de fallos del sistema (caídas del sistema, cortes de energía, etc.) sin perder datos ni comprometer la consistencia de la base de datos. Los mecanismos de recuperación ante fallos se basan en el registro de transacciones y los puntos de control.
+
+*   \textbf{Registro de transacciones (Transaction log/Write-ahead logging - WAL)}:
+    *   El registro de transacciones es un archivo que almacena un registro de todas las operaciones realizadas en la base de datos.
+    *   Antes de que se modifiquen los datos en el almacenamiento persistente (disco), se escribe una entrada en el registro de transacciones que describe la operación (ej: inserción, actualización, eliminación).  Esto se conoce como WAL (Write-Ahead Logging).
+    *   El registro de transacciones es esencial para la durabilidad.
+    *   Si ocurre un fallo, el SGBD puede utilizar el registro de transacciones para rehacer (re-apply) las transacciones confirmadas que no se hayan escrito en el disco y deshacer (undo) las transacciones que no se hayan confirmado.
+
+*   \textbf{Puntos de control (Checkpointing)}:
+    *   Los puntos de control son momentos en el tiempo en los que el SGBD escribe todos los datos "sucios" (modificados) del buffer en el disco.
+    *   Esto reduce la cantidad de trabajo que el SGBD debe hacer durante la recuperación ante fallos, ya que solo necesita rehacer las transacciones que se produjeron después del último punto de control.
+    *   El SGBD guarda un registro del último punto de control para acelerar el proceso de recuperación.
+
+*   \textbf{Procedimiento de recuperación ante fallos}:
+    1.  \textbf{Análisis del registro de transacciones}: El SGBD analiza el registro de transacciones desde el último punto de control hasta el final para identificar las transacciones que deben ser rehacer (re-apply) o deshacer (undo).
+    2.  \textbf{Rehacer (Redo)}: Se rehacen (re-apply) las transacciones confirmadas que no se hayan escrito en el disco.
+    3.  \textbf{Deshacer (Undo)}: Se deshacen (undo) las transacciones que no se hayan confirmado, para garantizar que no haya cambios incompletos en la base de datos.
+    4.  \textbf{Restauración de la consistencia}: Una vez que se han rehecho y deshecho las transacciones, la base de datos debe estar en un estado consistente.
+
+El sistema de recuperación ante fallos es un componente crítico del SGBD. Su diseño y eficiencia influyen en la fiabilidad y disponibilidad de la base de datos.
+```

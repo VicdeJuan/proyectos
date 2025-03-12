@@ -1,0 +1,219 @@
+\chapter{Tipos de Sistemas Gestores de Bases de Datos}
+
+\label{cap:tipos_sgbd}
+
+En este capítulo, profundizaremos en los distintos tipos de Sistemas Gestores de Bases de Datos (SGBD) existentes, explorando sus características, modelos de datos subyacentes, lenguajes de consulta y aplicaciones. La comprensión de estos diferentes enfoques es crucial para la selección del SGBD más adecuado para una tarea específica, teniendo en cuenta los requisitos de la aplicación, el volumen de datos, la complejidad de las consultas y las necesidades de escalabilidad y rendimiento.
+
+\section{Sistemas de Bases de Datos Relacionales}
+\label{sec:sgbd_relacionales}
+
+Los Sistemas de Bases de Datos Relacionales (SGBDR) han dominado el mercado durante décadas y siguen siendo la opción preferida para una amplia gama de aplicaciones empresariales. Su éxito se debe a su solidez teórica, basada en el modelo relacional de Edgar F. Codd, y a la madurez de las herramientas y tecnologías asociadas.
+
+\subsection{El modelo relacional: tablas, filas, columnas, claves}
+\label{sec:modelo_relacional}
+
+El modelo relacional se basa en la representación de datos mediante tablas. Una tabla (o relación) se define como un conjunto de filas (o tuplas), donde cada fila representa una instancia de la entidad que se está modelando. Cada fila está compuesta por un conjunto de columnas (o atributos), que describen las propiedades de la entidad.
+
+\begin{itemize}
+    \item \textbf{Tablas (Relaciones):} Representan entidades o conjuntos de datos.
+    \item \textbf{Filas (Tuplas):}  Representan instancias individuales de una entidad. Cada fila es única dentro de la tabla.
+    \item \textbf{Columnas (Atributos):} Describen las características o propiedades de una entidad. Cada columna tiene un tipo de dato asociado (e.g., entero, cadena, fecha).
+    \item \textbf{Claves:} Son atributos o conjuntos de atributos que permiten identificar de manera única cada fila en una tabla.
+    \begin{itemize}
+        \item \textbf{Clave Primaria:} Un atributo o conjunto de atributos que identifica de manera única cada fila de una tabla. No puede contener valores nulos.
+        \item \textbf{Clave Foránea:} Un atributo en una tabla que hace referencia a la clave primaria de otra tabla. Se utiliza para establecer relaciones entre tablas.
+        \item \textbf{Clave Candidata:} Cualquier atributo o conjunto de atributos que pueda servir como clave primaria.
+    \end{itemize}
+\end{itemize}
+
+Las relaciones entre las tablas se establecen mediante el uso de claves foráneas, permitiendo modelar la complejidad del mundo real. Por ejemplo, una base de datos que gestione información sobre clientes y pedidos podría tener dos tablas: `Clientes` y `Pedidos`. La tabla `Clientes` tendría una columna `ID\_Cliente` (clave primaria) y la tabla `Pedidos` tendría una columna `ID\_Cliente` (clave foránea) que hace referencia a la clave primaria de la tabla `Clientes`.
+
+\subsection{Lenguaje de consulta SQL}
+\label{sec:sql}
+
+El Lenguaje de Consulta Estructurado (SQL) es el lenguaje estándar para interactuar con los SGBDR. SQL proporciona un conjunto de comandos para la definición de datos (DDL), la manipulación de datos (DML) y la consulta de datos (DQL).  La versatilidad de SQL lo convierte en una herramienta poderosa para el manejo de bases de datos.
+
+\begin{itemize}
+    \item \textbf{DDL (Data Definition Language):} Permite definir la estructura de la base de datos, incluyendo la creación, modificación y eliminación de tablas, vistas, índices y otros objetos de la base de datos. Comandos comunes incluyen:
+    \begin{itemize}
+        \item `CREATE TABLE`: Crea una nueva tabla.
+        \item `ALTER TABLE`: Modifica la estructura de una tabla.
+        \item `DROP TABLE`: Elimina una tabla.
+        \item `CREATE INDEX`: Crea un índice para acelerar las consultas.
+    \end{itemize}
+    \item \textbf{DML (Data Manipulation Language):} Permite la manipulación de los datos almacenados en la base de datos, incluyendo la inserción, modificación y eliminación de filas. Comandos comunes incluyen:
+    \begin{itemize}
+        \item `INSERT`: Inserta nuevas filas en una tabla.
+        \item `UPDATE`: Modifica los valores de las filas existentes.
+        \item `DELETE`: Elimina filas de una tabla.
+    \end{itemize}
+    \item \textbf{DQL (Data Query Language):}  Permite la consulta de los datos almacenados en la base de datos. El comando principal es `SELECT`, que permite especificar las columnas a recuperar, las tablas de donde obtener los datos, las condiciones de filtrado (`WHERE`), la agrupación de datos (`GROUP BY`), la ordenación (`ORDER BY`) y las relaciones entre tablas (`JOIN`).
+    \begin{itemize}
+        \item `SELECT`: Recupera datos de una o más tablas.
+        \item `WHERE`: Filtra las filas basadas en una condición.
+        \item `JOIN`: Combina datos de dos o más tablas basándose en una columna común.
+        \item `GROUP BY`: Agrupa filas con los mismos valores en una o más columnas.
+        \item `ORDER BY`: Ordena los resultados.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Diseño de bases de datos relacionales y normalización}
+\label{sec:diseno_relacional}
+
+El diseño de una base de datos relacional implica la creación de un esquema de tablas, columnas y relaciones que represente de manera eficiente y precisa los datos a almacenar. El proceso de diseño debe considerar:
+
+\begin{itemize}
+    \item \textbf{Identificación de entidades y atributos:} Determinar las entidades del dominio de la aplicación y los atributos que las describen.
+    \item \textbf{Definición de relaciones:} Establecer las relaciones entre las entidades, incluyendo la cardinalidad (uno a uno, uno a muchos, muchos a muchos).
+    \item \textbf{Elección de tipos de datos:} Seleccionar los tipos de datos apropiados para cada atributo (e.g., entero, cadena, fecha).
+    \item \textbf{Diseño de claves:} Definir las claves primarias y foráneas para garantizar la integridad de los datos.
+\end{itemize}
+
+La normalización es un proceso sistemático que se utiliza para mejorar el diseño de una base de datos relacional, reduciendo la redundancia de datos y mejorando la integridad. Se basa en una serie de reglas, denominadas formas normales, que se aplican de manera incremental. Las formas normales más comunes son:
+
+\begin{itemize}
+    \item \textbf{Primera Forma Normal (1FN):} Elimina los atributos multivaluados. Cada columna debe contener un valor único y atómico.
+    \item \textbf{Segunda Forma Normal (2FN):} Debe estar en 1FN y eliminar la redundancia de datos basada en dependencias funcionales parciales.
+    \item \textbf{Tercera Forma Normal (3FN):} Debe estar en 2FN y eliminar la redundancia de datos basada en dependencias funcionales transitivas.
+    \item \textbf{Forma Normal de Boyce-Codd (BCNF):} Una forma normal más estricta que 3FN, que aborda ciertas anomalías de redundancia que no se cubren en 3FN.
+    \item \textbf{Cuarta Forma Normal (4FN):} Elimina las dependencias multivaluadas.
+    \item \textbf{Quinta Forma Normal (5FN):} Elimina las dependencias de unión.
+\end{itemize}
+
+El proceso de normalización es iterativo, y a menudo implica la descomposición de tablas en tablas más pequeñas para evitar la redundancia y las anomalías de actualización. El objetivo final es crear una base de datos que sea eficiente, consistente y fácil de mantener.
+
+\section{Sistemas de Bases de Datos Orientadas a Objetos}
+\label{sec:sgbd_orientadas_objetos}
+
+Los Sistemas de Bases de Datos Orientadas a Objetos (SGBDOO) surgieron como una respuesta a las limitaciones de los SGBDR para modelar aplicaciones complejas, especialmente aquellas que involucran tipos de datos complejos, relaciones jerárquicas y comportamiento.  Se basan en los principios de la programación orientada a objetos (POO).
+
+\subsection{Conceptos de orientación a objetos: objetos, clases, herencia, polimorfismo}
+\label{sec:conceptos_oo}
+
+Los SGBDOO integran los conceptos de la POO en el contexto de la persistencia de datos. Los conceptos clave incluyen:
+
+\begin{itemize}
+    \item \textbf{Objetos:}  Representaciones de entidades del mundo real. Cada objeto tiene un estado (atributos) y un comportamiento (métodos).
+    \item \textbf{Clases:} Plantillas o moldes para crear objetos. Definen la estructura y el comportamiento de los objetos.
+    \item \textbf{Herencia:}  Mecanismo que permite a una clase (subclase) heredar atributos y métodos de otra clase (superclase), promoviendo la reutilización de código y la organización jerárquica.
+    \item \textbf{Polimorfismo:}  Capacidad de un objeto para tomar diferentes formas. Permite que diferentes clases implementen métodos con el mismo nombre de manera diferente.
+    \item \textbf{Encapsulamiento:} Mecanismo que permite agrupar los datos (atributos) y los métodos (comportamiento) que operan sobre esos datos dentro de una misma unidad (la clase), protegiendo la integridad de los datos y controlando el acceso a ellos.
+\end{itemize}
+
+En un SGBDOO, los datos se almacenan como objetos, y las relaciones entre objetos se representan mediante referencias. Esto permite modelar estructuras de datos complejas de manera más natural que con los SGBDR.
+
+\subsection{El modelo de objeto ODMG}
+\label{sec:odmg}
+
+El Grupo de Gestión de Bases de Datos Orientadas a Objetos (ODMG) definió un estándar para SGBDOO, el cual incluye un modelo de datos, un lenguaje de consulta (OQL) y una API para la integración con lenguajes de programación orientados a objetos. Aunque el estándar ODMG ya no es el más popular, sí que jugó un papel importante en la estandarización y promoción de los SGBDOO.
+
+El modelo de datos ODMG define los siguientes conceptos:
+
+\begin{itemize}
+    \item \textbf{Objeto:}  Una instancia de una clase.
+    \item \textbf{Clase:} Una plantilla para crear objetos.
+    \item \textbf{Atributo:} Una propiedad de un objeto.
+    \item \textbf{Método:}  Una operación que puede ser realizada por un objeto.
+    \item \textbf{Relación:}  Una conexión entre objetos.
+\end{itemize}
+
+El estándar ODMG también define las interfaces para la persistencia de objetos, la gestión de transacciones y el control de concurrencia.
+
+\subsection{Lenguaje de consulta OQL}
+\label{sec:oql}
+
+El Lenguaje de Consulta Orientado a Objetos (OQL) es el lenguaje de consulta definido por el estándar ODMG. OQL está diseñado para consultar objetos almacenados en un SGBDOO.  OQL se basa en la sintaxis de SQL, pero está adaptado para trabajar con objetos y sus atributos.
+
+\begin{itemize}
+    \item \textbf{Sintaxis similar a SQL:} OQL utiliza la cláusula `SELECT` para especificar los objetos o atributos a recuperar, la cláusula `FROM` para especificar las colecciones de objetos a consultar, y la cláusula `WHERE` para filtrar los resultados.
+    \item \textbf{Navegación por relaciones:} OQL permite navegar por las relaciones entre objetos utilizando operadores de punto (.) para acceder a los atributos y métodos de objetos relacionados.
+    \item \textbf{Soporte para tipos de datos complejos:} OQL soporta tipos de datos complejos, como colecciones (e.g., conjuntos, listas, arrays) y tipos definidos por el usuario.
+\end{itemize}
+
+Aunque OQL proporcionó una funcionalidad importante para la consulta de datos en SGBDOO, su adopción fue limitada en comparación con SQL, principalmente debido a la falta de un soporte generalizado y la competencia de los SGBDR que evolucionaron para incorporar algunas características orientadas a objetos.
+
+\section{Sistemas de Bases de Datos Objeto-Relacionales}
+\label{sec:sgbd_objeto_relacionales}
+
+Los Sistemas de Bases de Datos Objeto-Relacionales (SGBDOR) representan una evolución de los SGBDR, incorporando algunas de las características de los SGBDOO.  Su objetivo es combinar las fortalezas de ambos modelos: la solidez y madurez de los SGBDR con la capacidad de modelado de datos complejos de los SGBDOO.
+
+\subsection{Extensión del modelo relacional con características orientadas a objetos}
+\label{sec:extension_relacional}
+
+Los SGBDOR extienden el modelo relacional con las siguientes características orientadas a objetos:
+
+\begin{itemize}
+    \item \textbf{Tipos de datos definidos por el usuario (UDT):} Permiten definir nuevos tipos de datos complejos, como estructuras, objetos y colecciones, para representar datos más allá de los tipos de datos básicos (e.g., entero, cadena, fecha).
+    \item \textbf{Métodos:} Permiten asociar métodos (comportamiento) a los UDT, permitiendo la encapsulación de datos y la funcionalidad relacionada.
+    \item \textbf{Herencia:} Permiten definir jerarquías de tipos de datos, donde los tipos de datos hijos heredan los atributos y métodos de los tipos de datos padres.
+    \item \textbf{Objetos y referencias:} Permiten almacenar objetos directamente en las tablas, en lugar de solo datos primitivos.  Las referencias permiten establecer relaciones entre objetos.
+\end{itemize}
+
+Los SGBDOR conservan el modelo relacional subyacente, lo que significa que los datos se almacenan en tablas, pero se pueden utilizar tipos de datos complejos y métodos para modelar datos más complejos.
+
+\subsection{Ejemplos y características}
+\label{sec:ejemplos_sgbdor}
+
+Ejemplos de SGBDOR incluyen PostgreSQL, Oracle y DB2.  Estas bases de datos ofrecen las siguientes características:
+
+\begin{itemize}
+    \item \textbf{Soporte para SQL extendido:}  SQL se extiende para soportar los nuevos tipos de datos, métodos y la herencia.
+    \item \textbf{Soporte para transacciones y concurrencia:}  Mantienen las características robustas de gestión de transacciones y concurrencia de los SGBDR.
+    \item \textbf{Escalabilidad y rendimiento:}  Buscan mantener la escalabilidad y el rendimiento de los SGBDR, aunque el manejo de tipos de datos complejos puede afectar al rendimiento en algunos casos.
+    \item \textbf{Compatibilidad con estándares:}  Cumplen con los estándares SQL, pero también ofrecen extensiones específicas de cada proveedor.
+\end{itemize}
+
+Los SGBDOR son una opción atractiva cuando se necesita la solidez de un SGBDR, pero también se requiere la capacidad de modelar datos complejos, como tipos de datos geográficos, multimedia o tipos de datos definidos por el usuario para modelar la complejidad de los objetos.
+
+\section{Sistemas de Bases de Datos NoSQL}
+\label{sec:sgbd_nosql}
+
+\textbf{Nota:} Este tipo de SGBD no se detalla en las fuentes, pero es relevante para un curso de último año. Se recomienda introducirlo brevemente indicando que va más allá del material de las fuentes y puede requerir verificación independiente.
+
+Los Sistemas de Bases de Datos NoSQL (Not Only SQL) representan un alejamiento de los modelos relacionales tradicionales.  Surgieron para abordar las limitaciones de los SGBDR en el manejo de grandes volúmenes de datos, la escalabilidad horizontal y la flexibilidad en el modelado de datos, especialmente en aplicaciones web a gran escala.
+
+\subsection{Características generales y categorías (clave-valor, documentos, columnas, grafos)}
+\label{sec:caracteristicas_nosql}
+
+Los SGBD NoSQL se caracterizan por:
+
+\begin{itemize}
+    \item \textbf{Esquema dinámico:} No requieren un esquema de datos fijo, lo que permite una mayor flexibilidad en el modelado y la adaptación a los cambios en los requisitos.
+    \item \textbf{Escalabilidad horizontal:}  Diseñados para escalar horizontalmente, añadiendo más servidores para manejar el crecimiento de los datos y el tráfico.
+    \item \textbf{Rendimiento y disponibilidad:}  Optimizados para un alto rendimiento y disponibilidad, a menudo sacrificando la consistencia fuerte en favor de la disponibilidad y la partición.
+    \item \textbf{Modelos de datos variados:}  Ofrecen una variedad de modelos de datos para adaptarse a diferentes casos de uso.
+\end{itemize}
+
+Las principales categorías de SGBD NoSQL incluyen:
+
+\begin{itemize}
+    \item \textbf{Bases de datos clave-valor:}  Almacenan datos como pares clave-valor. Son simples y eficientes para recuperar datos por clave. Ejemplos: Redis, Memcached.
+    \item \textbf{Bases de datos de documentos:}  Almacenan datos en formato de documento, generalmente en formato JSON o XML. Son flexibles y adecuados para datos semiestructurados. Ejemplos: MongoDB, Couchbase.
+    \item \textbf{Bases de datos orientadas a columnas:}  Almacenan datos en columnas en lugar de filas.  Son eficientes para consultas que acceden a un subconjunto de columnas. Ejemplos: Cassandra, HBase.
+    \item \textbf{Bases de datos de grafos:}  Almacenan datos como nodos y aristas, representando relaciones complejas. Son ideales para analizar redes sociales, sistemas de recomendación y otras aplicaciones que involucran relaciones. Ejemplos: Neo4j, Amazon Neptune.
+\end{itemize}
+
+\subsection{Casos de uso y diferencias con los SGBD relacionales tradicionales}
+\label{sec:casos_uso_nosql}
+
+Los SGBD NoSQL son adecuados para los siguientes casos de uso:
+
+\begin{itemize}
+    \item \textbf{Aplicaciones web y móviles a gran escala:}  Manejan grandes volúmenes de datos y tráfico de usuarios.
+    \item \textbf{Datos semiestructurados o no estructurados:}  Procesamiento de datos de sensores, logs, redes sociales, etc.
+    \item \textbf{Escalabilidad y flexibilidad:}  Requieren escalabilidad horizontal y la capacidad de adaptarse rápidamente a los cambios en los datos y los requisitos.
+    \item \textbf{Sistemas de caché:}  Almacenan datos en memoria para acelerar el acceso.
+\end{itemize}
+
+Las principales diferencias entre los SGBD NoSQL y los SGBDR tradicionales son:
+
+\begin{itemize}
+    \item \textbf{Modelo de datos:} NoSQL ofrece una mayor variedad de modelos de datos, mientras que los SGBDR se basan en el modelo relacional.
+    \item \textbf{Esquema:} NoSQL utiliza un esquema dinámico (sin esquema o con esquema flexible), mientras que los SGBDR utilizan un esquema fijo.
+    \item \textbf{Escalabilidad:} NoSQL está diseñado para la escalabilidad horizontal, mientras que la escalabilidad de los SGBDR puede ser más compleja.
+    \item \textbf{Consistencia:} NoSQL puede ofrecer diferentes niveles de consistencia (e.g., eventual consistency), mientras que los SGBDR tradicionalmente ofrecen consistencia fuerte (ACID).
+    \item \textbf{Complejidad de las consultas:} Las consultas en NoSQL pueden ser más sencillas para operaciones básicas, pero las consultas complejas pueden ser más difíciles.
+\end{itemize}
+
+La elección entre un SGBDR y un SGBD NoSQL depende de los requisitos específicos de la aplicación. En muchos casos, se utilizan ambos tipos de SGBD en un mismo sistema, utilizando las fortalezas de cada uno.  La elección debe considerar el modelo de datos, los requisitos de escalabilidad, el rendimiento, la disponibilidad, la consistencia y la complejidad de las consultas.
+```
