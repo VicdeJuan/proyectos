@@ -1,0 +1,222 @@
+\section{2.3 Independencia de Datos}
+
+La \textbf{independencia de datos} es un principio de diseño esencial en los sistemas de bases de datos, directamente ligado a la arquitectura de tres esquemas.  Se define como la \textbf{capacidad de alterar el esquema en un nivel del sistema sin requerir modificaciones en el esquema del siguiente nivel superior}.  Esta propiedad es crucial para asegurar la \textbf{flexibilidad y la mantenibilidad a largo plazo} de la base de datos. Se distinguen dos clases fundamentales de independencia de datos: la independencia lógica y la independencia física.
+
+\subsection{Independencia Lógica de Datos}
+
+La \textbf{independencia lógica de datos} se refiere a la \textbf{capacidad de modificar el esquema conceptual (nivel lógico) sin forzar cambios en los esquemas externos (nivel de vistas) o en los programas de aplicación}.  Esto implica que se pueden introducir cambios significativos en la estructura lógica de la base de datos, tales como:
+
+\begin{itemize}
+    \item \textbf{Adición o eliminación de tipos de entidades o atributos:} Por ejemplo, añadir un nuevo atributo a la entidad "Cliente" (e.g., "Fecha de Nacimiento") o eliminar un atributo obsoleto.
+    \item \textbf{Modificación de restricciones de integridad:}  Cambiar las reglas que validan la consistencia de los datos, como la longitud máxima de un campo de texto o las restricciones de unicidad.
+    \item \textbf{Reorganización de datos:} Modificar la estructura de las tablas,  como la normalización o desnormalización, para optimizar el rendimiento.
+\end{itemize}
+
+Sin embargo, estas modificaciones no deben afectar la funcionalidad de las aplicaciones de usuario que acceden a la base de datos a través de vistas predefinidas.  Por ejemplo, si una vista solo muestra el nombre y el ID de un cliente, la adición de un nuevo atributo (como la fecha de nacimiento) en el esquema conceptual no debería romper la funcionalidad de las aplicaciones que utilizan esa vista.
+
+Para lograr la independencia lógica de datos, el DBMS debe ser capaz de \textbf{actualizar automáticamente las definiciones de las vistas y los mapeados entre los esquemas externos y el esquema conceptual}.  Este proceso de actualización puede ser complejo, ya que implica la reescritura de las consultas que definen las vistas para que sigan funcionando correctamente después de los cambios en el esquema conceptual.  En esencia, el DBMS debe actuar como un traductor, adaptando las solicitudes de las aplicaciones a la nueva estructura lógica de la base de datos.
+
+\textbf{La independencia lógica de datos es, en la práctica, más difícil de alcanzar} que la independencia física.  Esto se debe a que los cambios estructurales y de restricciones en el esquema conceptual pueden tener un impacto significativo en la semántica de las vistas y en la lógica de las aplicaciones.  Implementar mecanismos robustos para mantener la compatibilidad requiere una ingeniería cuidadosa y, a menudo, implica un compromiso entre la flexibilidad del esquema y la complejidad de los mapeados.
+
+\subsection{Independencia Física de Datos}
+
+La \textbf{independencia física de datos} se define como la \textbf{capacidad de modificar el esquema interno (nivel físico) sin requerir cambios en el esquema conceptual (nivel lógico)}.  Esto permite optimizar la forma en que los datos se almacenan y se acceden físicamente sin afectar la forma en que los usuarios y las aplicaciones perciben la estructura lógica de la base de datos.  Las modificaciones que se pueden realizar en el esquema interno incluyen:
+
+\begin{itemize}
+    \item \textbf{Cambio de estructuras de archivos:} Pasar de archivos secuenciales a archivos indexados o utilizar diferentes tipos de estructuras de índices (e.g., B-trees, hash tables).
+    \item \textbf{Modificación de técnicas de indexación:} Ajustar la estrategia de indexación para optimizar el rendimiento de las consultas, como la creación de índices compuestos o la modificación de los factores de relleno.
+    \item \textbf{Optimización de estrategias de almacenamiento:} Cambiar la forma en que se almacenan los datos en el disco, como la compresión de datos o la partición de tablas.
+    \item \textbf{Actualización del hardware utilizado:} Migrar la base de datos a un nuevo sistema de almacenamiento o actualizar el hardware del servidor.
+\end{itemize}
+
+Por ejemplo, se podría decidir utilizar una nueva técnica de indexación para mejorar el rendimiento de las consultas que buscan clientes por su nombre sin que esto requiera cambios en la definición lógica de la tabla "Clientes" o en las aplicaciones que acceden a esa tabla.
+
+La independencia física de datos es \textbf{más común en los sistemas de bases de datos} que la independencia lógica.  Esto se debe a que los detalles de la ubicación exacta de los datos en el disco y las estructuras de almacenamiento de bajo nivel generalmente se ocultan a los usuarios y a las aplicaciones.  El DBMS actúa como una capa de abstracción, proporcionando una interfaz lógica para acceder a los datos independientemente de su implementación física.
+
+\subsection{Mecanismos para Lograr la Independencia de Datos}
+
+La \textbf{independencia de datos se logra mediante el uso del catálogo del DBMS}, que almacena las descripciones de los esquemas y los \textbf{mapeados entre los diferentes niveles}.  Cuando se realiza un cambio en un esquema a un nivel determinado, solo es necesario \textbf{actualizar el mapeado entre ese nivel y el siguiente nivel más alto}, manteniendo inalterado el esquema del nivel superior.  Esto evita la necesidad de modificar las aplicaciones que hacen referencia al esquema del nivel superior.
+
+Por ejemplo, si se cambia la estructura de indexación de una tabla, se debe actualizar el mapeado entre el esquema interno y el esquema conceptual para reflejar la nueva estructura de acceso.  Sin embargo, el esquema conceptual en sí mismo no se modifica, y las aplicaciones que acceden a la tabla a través de ese esquema conceptual no necesitan ser modificadas.
+
+Es importante reconocer que los \textbf{mapeados pueden generar un sobrecoste durante la compilación o ejecución de consultas}, ya que el DBMS debe traducir las solicitudes de los usuarios a la estructura física subyacente.  Este sobrecoste es una de las razones por las que \textbf{pocos DBMS implementan completamente la arquitectura de tres esquemas}.  Sin embargo, los conceptos de abstracción e independencia de datos siguen siendo \textbf{pilares fundamentales en el diseño y la gestión de los sistemas de bases de datos modernos}, guiando la evolución de las arquitecturas y las tecnologías de bases de datos. La complejidad de los mapeados y la necesidad de un rendimiento óptimo a menudo llevan a compromisos en la implementación práctica de la independencia de datos.
+
+\section{2.4 Modelos de Datos y Niveles de Abstracción}
+
+Los \textbf{modelos de datos} son herramientas fundamentales para lograr la \textbf{abstracción de datos} en los sistemas de bases de datos.  Permiten que diferentes usuarios perciban los datos con el nivel de detalle apropiado para sus necesidades, ocultando la complejidad subyacente y simplificando la interacción con la información.  Existen diversos modelos de datos, clasificados según los tipos de conceptos que utilizan para describir la estructura de la base de datos.
+
+\subsection{Clasificación de los Modelos de Datos}
+
+Los modelos de datos se pueden clasificar en tres categorías principales, correspondientes a los niveles de abstracción de la arquitectura de tres esquemas:
+
+\subsubsection{Modelos de Datos de Alto Nivel o Conceptuales}
+
+Estos modelos ofrecen conceptos que son cercanos a la forma en que muchos usuarios perciben los datos.  Se centran en la representación semántica de la información, utilizando conceptos intuitivos para describir la estructura de la base de datos.
+
+\begin{itemize}
+    \item \textbf{Modelo Entidad-Relación (E-R):} Un modelo ampliamente utilizado para el diseño conceptual de bases de datos.  Utiliza conceptos como \textit{entidades} (objetos del mundo real), \textit{atributos} (propiedades de las entidades) y \textit{relaciones} (asociaciones entre entidades) para describir la estructura de la base de datos.  Es especialmente útil como un primer paso en el diseño de esquemas de bases de datos, permitiendo una representación clara de las entidades y sus interrelaciones.
+    \item \textbf{Modelo EER (Entidad-Relación Mejorado):} Una extensión del modelo E-R que introduce conceptos adicionales como \textit{especialización/generalización}, \textit{categorización} y \textit{agregación}, permitiendo una modelización más rica y precisa de la realidad.
+    \item \textbf{UML (Unified Modeling Language):} Aunque no es exclusivamente un modelo de datos, UML ofrece diagramas de clase basados principalmente en las extensiones del modelo EER, proporcionando una herramienta visual para el modelado de la estructura de las bases de datos.
+\end{itemize}
+
+\subsubsection{Modelos de Datos de Bajo Nivel o Físicos}
+
+Estos modelos ofrecen conceptos que describen los detalles de \textbf{cómo se almacenan los datos en el computador}.  Están diseñados principalmente para especialistas en computación y se centran en la estructura de almacenamiento físico de la base de datos, incluyendo detalles como la organización de los datos en el disco, las estructuras de índices y las rutas de acceso.
+
+\begin{itemize}
+    \item \textbf{Esquema Interno:} El esquema interno de la arquitectura de tres esquemas corresponde a este nivel.  Utiliza un modelo de datos físico para describir cómo se implementa el esquema conceptual en el almacenamiento físico. Los Capítulos 13 y 14 profundizan en las técnicas de almacenamiento físico y las estructuras de acceso.
+\end{itemize}
+
+\subsubsection{Modelos de Datos Representativos (o de Implementación)}
+
+Estos modelos ofrecen conceptos que son comprensibles para los usuarios finales, pero que también están estrechamente relacionados con la forma en que se organizan los datos dentro del computador.  Ocultan algunos detalles del almacenamiento, pero pueden implementarse directamente en un computador.
+
+\begin{itemize}
+    \item \textbf{Modelo Relacional:} El modelo de datos representativo más ampliamente usado.  Utiliza una colección de \textit{tablas} para representar los datos y sus relaciones.  Cada tabla contiene \textit{registros} de formato fijo (tuplas), y cada registro define un número fijo de \textit{campos} o atributos.
+    \item \textbf{Modelos de Datos Orientados a Objetos:} Estos modelos extienden el modelo E-R con conceptos de encapsulación, métodos e identidad de objetos.
+    \item \textbf{Modelos Objeto-Relacionales:} Estos modelos extienden el modelo relacional con características orientadas a objetos, como tipos estructurados y colecciones.
+\end{itemize}
+
+\subsection{La Arquitectura de Tres Esquemas y los Modelos de Datos}
+
+La \textbf{arquitectura de tres esquemas} tiene como objetivo separar las aplicaciones de usuario y las bases de datos físicas, definiendo esquemas en tres niveles:
+
+\begin{itemize}
+    \item \textbf{Nivel Interno:} (Esquema interno, nivel físico) Describe cómo se almacenan realmente los datos.
+    \item \textbf{Nivel Conceptual:} (Esquema conceptual, nivel lógico) Describe qué datos se almacenan y las relaciones entre ellos.
+    \item \textbf{Nivel Externo:} (Esquemas externos, nivel de vistas) Define las vistas personalizadas para diferentes usuarios o aplicaciones.
+\end{itemize}
+
+Los modelos de datos conceptuales se utilizan para definir el esquema conceptual, los modelos físicos para el esquema interno, y los modelos representativos pueden utilizarse en el esquema conceptual y se corresponden más directamente con cómo se implementa la base de datos.  Esta arquitectura permite la independencia de datos, lo que significa que se pueden realizar cambios en un nivel del esquema sin afectar a los otros niveles.
+
+\section{2.5 Modelos de Datos Históricos}
+
+El \textbf{modelo de datos de red} y el \textbf{modelo de datos jerárquico} precedieron cronológicamente al modelo relacional.  Estos modelos estaban \textbf{íntimamente ligados a la implementación subyacente}, lo que \textbf{complicaba la tarea del modelado de datos}.  En consecuencia, hoy en día se usan muy poco, excepto en código de bases de datos antiguas aún en servicio. Una descripción más completa de estos modelos se puede encontrar en los \textbf{Apéndices A y B} o en el \textbf{sitio web complementario} del libro.
+
+\section{2.6 Modelos de Datos Modernos}
+
+Entre los \textbf{modelos de datos más utilizados en la actualidad} se encuentran:
+
+\subsection{Modelo Relacional}
+
+Utiliza una colección de tablas para representar tanto los datos como sus relaciones. Su simplicidad conceptual ha llevado a su adopción generalizada, siendo la base de la mayoría de los productos de bases de datos actuales. La Parte 2 del libro se centra en el modelo relacional.
+
+\subsection{Modelos Orientados a Objetos y Objeto-Relacionales}
+
+El \textbf{modelo de datos orientado a objetos} está recibiendo creciente atención y se puede considerar una extensión del modelo E-R con conceptos de encapsulación, métodos e identidad de objetos. El \textbf{modelo relacional orientado a objetos} extiende el modelo relacional tradicional con características como tipos estructurados y orientación a objetos. Estos modelos surgen para tratar con dominios de aplicación limitados por las restricciones del modelo relacional. Los Capítulos 9, 20, 21 y 22 examinan estos modelos. Una diferencia clave con el modelo relacional es la manipulación de relaciones mediante atributos de referencia y la integración de estructuras de herencia.
+
+\subsection{Modelos Semiestructurados}
+
+Permiten la especificación de datos donde elementos del mismo tipo pueden tener diferentes conjuntos de atributos. Esto contrasta con los modelos anteriores, donde cada elemento de un tipo particular debe tener el mismo conjunto de atributos. El \textbf{lenguaje de marcas extensible (XML)} se emplea mucho para representar datos semiestructurados y se estudia en el Capítulo 10 y 27. XML utiliza una estructura de árbol jerárquico para representar los datos. Una diferencia fundamental con los modelos estructurados es que la información del esquema está mezclada con los valores de los datos.
+
+Estos modelos modernos difieren fundamentalmente en la forma en que \textbf{estructuran y representan los datos}. El modelo relacional utiliza tablas planas, los modelos orientados a objetos se basan en objetos con atributos y métodos, los modelos objeto-relacionales combinan características de ambos, y los modelos semiestructurados ofrecen flexibilidad en la estructura de los datos.
+
+\chapter{3: Lenguajes para la Definición de Datos}
+
+La base de cualquier sistema de gestión de bases de datos (SGBD) radica en su capacidad para estructurar y manipular la información de manera eficiente y coherente. El diseño de la base de datos, que abarca la definición de los datos, sus relaciones, su semántica y las restricciones de consistencia, se articula a través de modelos de datos. Estos modelos, como el relacional, el orientado a objetos o el semiestructurado, proporcionan un conjunto de herramientas conceptuales para la descripción de los datos en los diferentes niveles de abstracción: físico, lógico y de vistas. Una vez que se selecciona un modelo de datos para la implementación, es necesario un mecanismo formal para especificar el esquema de la base de datos y para interactuar con los datos almacenados. Este mecanismo se materializa a través de los \textbf{lenguajes de bases de datos}.
+
+\section{3.1 Lenguajes de Bases de Datos}
+
+Los sistemas de bases de datos proporcionan fundamentalmente dos tipos de lenguajes para interactuar con los datos: el \textbf{Lenguaje de Definición de Datos (LDD)} y el \textbf{Lenguaje de Manipulación de Datos (LMD)}. Esta distinción, aunque conceptualmente clara, puede no siempre traducirse en dos lenguajes sintácticamente separados en la práctica, ya que muchos SGBD modernos integran ambas funcionalidades en un único lenguaje comprensivo, siendo \textbf{SQL (Structured Query Language)} el ejemplo más paradigmático.
+
+\begin{itemize}
+    \item El \textbf{Lenguaje de Definición de Datos (LDD)} se utiliza para \textbf{especificar el esquema de la base de datos}. Esto incluye la definición de las relaciones (tablas en el modelo relacional), los atributos (columnas), los tipos de datos asociados a cada atributo, las restricciones de integridad que deben cumplir los datos, y otros aspectos estructurales de la base de datos. El LDD permite, por tanto, la creación, eliminación y modificación de la estructura de la base de datos.
+
+    \item El \textbf{Lenguaje de Manipulación de Datos (LMD)}, por otro lado, se emplea para \textbf{acceder y manipular los datos almacenados en la base de datos}. Esto abarca operaciones esenciales como la consulta o recuperación de datos, la inserción de nuevas instancias de datos, la eliminación de datos existentes y la modificación de los valores de los datos. Los LMD pueden clasificarse a su vez en \textbf{de alto nivel (no procedimentales o declarativos)}, donde el usuario especifica qué datos se necesitan sin indicar cómo obtenerlos (ejemplo: la mayoría de las consultas SQL), y \textbf{de bajo nivel (procedimentales u orientados a registros)}, donde se especifica la secuencia de operaciones para acceder a los datos (ejemplos históricos incluyen DL/1 para el modelo jerárquico). Los lenguajes de consulta, como la parte de consulta de SQL, se consideran DML de alto nivel.
+\end{itemize}
+
+En la práctica, como se mencionó, muchos SGBD, especialmente los relacionales basados en SQL, \textbf{integran las funcionalidades de LDD y LMD dentro del mismo lenguaje}. SQL, por ejemplo, no solo permite la definición de tablas y sus atributos (LDD), sino también la realización de complejas consultas, la inserción, eliminación y modificación de datos (LMD). Además, SQL incluye mecanismos para especificar restricciones de integridad y aspectos de seguridad. Esta integración simplifica el desarrollo y la administración de bases de datos al proporcionar una única interfaz lingüística para la mayoría de las tareas.
+
+Es importante notar que la distinción entre LDD y LMD se mantiene a nivel conceptual para comprender las diferentes funciones que un lenguaje de bases de datos debe ofrecer. La capacidad de definir la estructura (LDD) es un paso previo y fundamental para poder manipular los datos que se ajustan a esa estructura (LMD).
+
+\section{3.2 El Lenguaje de Definición de Datos (LDD)}
+
+El \textbf{Lenguaje de Definición de Datos (LDD)} es el componente del lenguaje de bases de datos responsable de la \textbf{especificación del esquema de la base de datos}. El esquema, en esencia, es la descripción formal de la estructura de la base de datos y de las restricciones que deben cumplir los datos almacenados. Las sentencias del LDD se utilizan para definir y modificar esta estructura, proporcionando un marco para la organización y la integridad de la información.
+
+La especificación del esquema a través del LDD abarca diversos aspectos cruciales de la base de datos:
+
+\begin{itemize}
+    \item \textbf{Definición de las relaciones (tablas):} El LDD permite crear las tablas que almacenarán los datos, especificando el nombre de cada tabla y el conjunto de atributos que la componen. En el contexto del modelo relacional, cada tabla representa una relación, y sus filas corresponden a las tuplas o registros.
+
+    \item \textbf{Definición de los atributos (columnas):} Para cada tabla, el LDD permite definir los atributos o columnas, incluyendo el nombre de cada atributo y el \textbf{dominio de valores asociado o tipo de datos} que puede almacenar. Los tipos de datos pueden ser primitivos (enteros, reales, cadenas de caracteres, fechas, etc.) o definidos por el usuario en algunos SGBD.
+
+    \item \textbf{Especificación de las restricciones de integridad:} Un aspecto fundamental del LDD es la capacidad de definir las \textbf{reglas que garantizan la validez y la consistencia de los datos} en la base de datos. Estas restricciones pueden incluir:
+
+    \begin{itemize}
+        \item \textbf{Restricciones de clave primaria:} Identifican de manera única cada tupla en una relación.
+        \item \textbf{Restricciones de clave externa:} Establecen y mantienen relaciones entre tablas, asegurando la integridad referencial.
+        \item \textbf{Restricciones de dominio (o de tipo):} Limitan los valores que puede tomar un atributo a un conjunto específico.
+        \item \textbf{Restricciones CHECK:} Definen condiciones que deben cumplir los datos de una o más columnas.
+        \item \textbf{Aserciones (Assertions):} Permiten especificar restricciones más generales que involucran a varias tablas.
+        \item \textbf{Disparadores (Triggers):} Definen acciones que se ejecutan automáticamente en respuesta a ciertos eventos (como la inserción, eliminación o modificación de datos).
+    \end{itemize}
+
+    \item \textbf{Definición de índices:} Para optimizar el acceso a los datos, el LDD puede incluir la especificación de los \textbf{índices} que se deben mantener para ciertas relaciones. Los índices son estructuras de datos que facilitan la búsqueda eficiente de tuplas basadas en los valores de uno o más atributos. (Es importante notar que la creación y eliminación de índices a veces se gestionan con comandos separados del LDD principal o a través de extensiones específicas del SGBD).
+
+    \item \textbf{Información de seguridad y autorización:} El LDD también puede incluir comandos para especificar los \textbf{derechos de acceso a las relaciones y a las vistas}, definiendo quién puede realizar qué operaciones sobre los datos.
+\end{itemize}
+
+Cuando se ejecutan las sentencias del LDD, un componente del SGBD conocido como el \textbf{intérprete del LDD} analiza estas instrucciones y \textbf{registra las definiciones del esquema (metadata)} en una estructura centralizada denominada \textbf{diccionario de datos} o \textbf{catálogo del DBMS}. El diccionario de datos contiene información sobre la estructura de cada archivo (tabla), el tipo y formato de almacenamiento de cada elemento de datos (atributo), las restricciones definidas, la información de seguridad, y otros detalles del esquema. Esta metadata es crucial para el funcionamiento del SGBD, ya que es consultada por otros módulos del sistema (como el compilador del LMD y el procesador de consultas) para entender la estructura de la base de datos y cómo acceder a los datos. El diccionario de datos confiere al sistema de bases de datos la propiedad de ser \textbf{autodescriptivo}.
+
+Un ejemplo fundamental de una sentencia LDD en SQL es la instrucción \texttt{CREATE TABLE}, que permite definir una nueva tabla especificando su nombre y la lista de sus atributos con sus respectivos tipos de datos. También existen sentencias como \texttt{ALTER TABLE} para modificar la estructura de una tabla existente (por ejemplo, añadiendo o eliminando columnas, modificando tipos de datos o añadiendo/eliminando restricciones) y \texttt{DROP TABLE} para eliminar una tabla completa.
+
+\section{3.3 Lenguaje de Almacenamiento y Definición de Datos (SDL)}
+
+El \textbf{Lenguaje de Almacenamiento y Definición de Datos (SDL)} se centra en la \textbf{especificación de la estructura de almacenamiento físico de los datos} en el disco y los \textbf{métodos de acceso} utilizados por el SGBD. A diferencia del LDD, que se ocupa de la estructura lógica de los datos tal como la perciben los usuarios y las aplicaciones, el SDL se adentra en los detalles de \textbf{cómo se implementa físicamente el esquema de la base de datos}.
+
+El SDL permite definir aspectos como:
+
+\begin{itemize}
+    \item \textbf{La estructura de almacenamiento físico de cada relación (tabla) en el disco:} Esto puede incluir la organización de los registros en los archivos (por ejemplo, archivos secuenciales, archivos indexados), la asignación de espacio en disco y la gestión de los bloques de almacenamiento.
+
+    \item \textbf{Los métodos de acceso utilizados por el sistema de bases de datos:} Esto abarca la especificación de las estructuras de datos que facilitan el acceso eficiente a los datos, como los \textbf{índices} (por ejemplo, índices B-tree, índices hash) y otras técnicas de \textbf{asociación (hashing)}. El SDL permite definir qué atributos se indexarán y el tipo de índice a utilizar.
+
+    \item \textbf{Detalles de implementación de los esquemas de las bases de datos:} En general, el SDL proporciona un nivel de control sobre la implementación física que \textbf{suele estar oculto a los usuarios finales} y a los programadores de aplicaciones, ya que su principal objetivo es \textbf{optimizar el rendimiento del sistema} en términos de eficiencia en el acceso y la gestión del almacenamiento.
+\end{itemize}
+
+En algunos SGBD, el SDL puede ser un \textbf{lenguaje distinto del LDD}, con su propio conjunto de instrucciones. En otros casos, las funcionalidades del SDL pueden estar \textbf{integradas como extensiones específicas dentro del LDD} o gestionarse a través de \textbf{comandos especiales para el Administrador de la Base de Datos (DBA)}.
+
+Es importante destacar que en muchos \textbf{SGBD relacionales modernos}, especialmente aquellos basados en SQL, \textbf{no existe un lenguaje SDL explícito y separado}. En su lugar, la especificación del esquema interno y la definición del almacenamiento físico se realizan a través de una \textbf{combinación de parámetros de configuración del SGBD y comandos específicos para el DBA}, que pueden incluir opciones dentro de las sentencias de creación de tablas o comandos administrativos independientes para la creación y gestión de índices y el ajuste del almacenamiento.
+
+Históricamente, \textbf{versiones anteriores del estándar SQL incluían comandos para la creación de índices}, lo que podría considerarse una función del SDL. Sin embargo, estos comandos se \textbf{eliminaron del estándar} con el tiempo, ya que se consideró que pertenecían al nivel de implementación física más que al esquema conceptual. Esta decisión refleja la tendencia a separar la definición lógica de los datos (LDD) de los detalles de su almacenamiento físico (SDL), promoviendo la \textbf{independencia de datos física}.
+
+En resumen, el SDL, aunque pueda no manifestarse siempre como un lenguaje sintácticamente distinto en los SGBD contemporáneos, representa la capa de definición crucial para la \textbf{implementación eficiente del esquema de la base de datos en el nivel físico}, permitiendo al DBA ajustar el almacenamiento y los métodos de acceso para optimizar el rendimiento del sistema.
+
+\section{3.4 Lenguaje de Definición de Vistas (VDL) y Abstracción de Datos}
+
+El propósito primordial de un lenguaje de definición de vistas es permitir la creación de \textbf{esquemas externos} o \textbf{vistas de usuario} personalizadas de la base de datos. Estos esquemas externos representan una parte específica de la base de datos que es de interés para un grupo particular de usuarios, ocultando el resto de la información y la complejidad del esquema conceptual subyacente.
+
+La introducción del nivel de vistas en la arquitectura de tres esquemas (nivel físico, nivel lógico o conceptual, y nivel de vistas o externo) proporciona un \textbf{nivel significativo de abstracción de datos}. La abstracción de datos se refiere a la \textbf{supresión de los detalles de la organización y el almacenamiento de los datos}, presentando solo las características esenciales para una mejor comprensión. Las vistas actúan como una capa de abstracción que simplifica la interacción de los usuarios finales con el sistema de bases de datos. En lugar de tener que comprender la totalidad del esquema lógico, que puede ser vasto y complejo en bases de datos grandes, los usuarios interactúan con una \textbf{representación más sencilla y enfocada} de los datos que necesitan.
+
+En la práctica, la definición de estas vistas de usuario se realiza a menudo utilizando el \textbf{Lenguaje de Definición de Datos (LDD)}. En los DBMS relacionales, \textbf{SQL actúa como un lenguaje de definición de vistas (VDL)} al permitir definir vistas de usuario o de aplicación como resultado de consultas predefinidas. Estas vistas se definen en términos del esquema conceptual subyacente.
+
+Las vistas ofrecen varias ventajas cruciales:
+
+\begin{itemize}
+    \item \textbf{Independencia lógica de los datos:} Al interactuar con vistas, las aplicaciones de usuario se vuelven menos dependientes de la estructura precisa del esquema lógico.
+    \item \textbf{Seguridad:} Las vistas pueden restringir el acceso a ciertos datos sensibles.
+    \item \textbf{Simplicidad:} Las vistas presentan una visión más simple y enfocada de los datos.
+    \item \textbf{Personalización:} Las vistas se pueden adaptar a las necesidades específicas de diferentes usuarios o aplicaciones.
+\end{itemize}
+
+\section{3.5 El Papel de los Lenguajes en los Niveles de Descripción}
+
+*   \textbf{Nivel Interno:}  El \textbf{Lenguaje de Definición de Almacenamiento (SDL)} se utiliza para especificar el esquema interno.
+
+*   \textbf{Nivel Conceptual:} El \textbf{Lenguaje de Definición de Datos (LDD)} (o DDL en inglés) se emplea para definir el esquema conceptual.
+
+*   \textbf{Nivel Externo (de Vistas):}  El \textbf{Lenguaje de Definición de Vistas (VDL)} tiene como función especificar estas vistas de usuario. En los DBMS relacionales, \textbf{SQL, actuando como VDL}, permite definir estas vistas.
+
+La separación de estos tres niveles de abstracción es fundamental para lograr la independencia de datos:
+
+*   \textbf{Independencia Física de Datos:} Capacidad de modificar el esquema físico sin afectar el esquema lógico.
+
+*   \textbf{Independencia Lógica de Datos:} Capacidad de modificar el esquema lógico sin afectar los esquemas externos.
+
+\section{Conclusión del Capítulo 3}
+
+Los lenguajes para la definición de datos, con el LDD como componente principal, son fundamentales para \textbf{establecer la estructura y las reglas de integridad de una base de datos}. A través del LDD, se define el esquema lógico que sirve como base para el almacenamiento y la manipulación de la información. Aunque el SDL, encargado de la especificación física, puede estar implícito o integrado en los SGBD modernos, su función de optimizar el almacenamiento y el acceso sigue siendo esencial para el rendimiento general del sistema. La comprensión de estos lenguajes y sus roles es, por lo tanto, un pilar fundamental en el estudio y la práctica de los sistemas de bases de datos a nivel de postgrado.
+
+\chapter{4: El Diccionario de Datos (o Catálogo del Sistema)}
+
+El \textbf{diccionario de datos}, también conocido como \textbf{catálogo del sistema}, constituye un componente esencial en la arquitectura de un sistema de gestión de bases de datos (DBMS). Se erige como un \textbf{repositorio centralizado de metadatos}, es decir, datos que describen la estructura, las propiedades y otras características de los datos primarios almacenados en la base de datos, así como de los diversos objetos que componen el sistema de bases de datos.

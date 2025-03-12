@@ -1,0 +1,63 @@
+\section{La Arquitectura de Tres Esquemas}
+
+La \textbf{arquitectura de tres esquemas} representa un paradigma fundamental en la gestión de bases de datos, concebida para promover el aislamiento entre programas y datos, facilitar la coexistencia de múltiples perspectivas de usuario y garantizar la centralización de la descripción de la base de datos a través de un catálogo.  Su propósito primordial es establecer una barrera de independencia entre las aplicaciones de usuario y la implementación física de la base de datos. Esta arquitectura se articula mediante la definición de esquemas en tres niveles diferenciados, cada uno con responsabilidades y características específicas.
+
+\subsection{Esquemas en la Arquitectura de Tres Esquemas}
+
+\subsubsection{Esquema Interno (Nivel Físico)}
+
+El \textbf{esquema interno}, también conocido como nivel físico, se ocupa de la representación detallada de la estructura de almacenamiento físico de la base de datos. Se basa en un \textbf{modelo de datos físico} y abarca la especificación minuciosa de todos los aspectos concernientes al almacenamiento de datos y las rutas de acceso a la base de datos. La esencia del esquema interno radica en la descripción de \textbf{cómo se materializa el almacenamiento de los datos} a nivel de estructuras de archivos y almacenamiento interno.
+
+Dentro de las especificaciones comprendidas en este nivel, se incluyen la longitud de los registros, la ubicación precisa de los campos dentro de los registros y las técnicas de indexación empleadas para optimizar el acceso a los datos. Consideremos, por ejemplo, una base de datos relacional implementada con un motor como PostgreSQL. En el esquema interno, se definirían aspectos como:
+
+\begin{itemize}
+    \item El formato de los archivos de datos (e.g., archivos planos, archivos de índice B-tree).
+    \item La estructura de los índices, incluyendo el tipo de índice (e.g., B-tree, hash) y los parámetros de configuración (e.g., fillfactor).
+    \item El tamaño de los bloques de disco y la estrategia de asignación de espacio.
+    \item La estrategia de compresión de datos, si se utiliza.
+    \item  La ubicación física de los archivos de datos e índices en el sistema de almacenamiento.
+\end{itemize}
+
+La modificación del esquema interno, como la alteración de una técnica de indexación, debe ser transparente para los niveles superiores (esquema conceptual y esquemas externos).  Esto permite a los administradores de bases de datos (DBAs) optimizar el rendimiento del almacenamiento sin afectar la lógica de las aplicaciones que acceden a la base de datos.  La optimización del esquema interno requiere un conocimiento profundo de las características del hardware subyacente y del motor de la base de datos.
+
+\subsubsection{Esquema Conceptual (Nivel Lógico)}
+
+El \textbf{esquema conceptual}, o nivel lógico, proporciona una descripción completa de la estructura de la base de datos, ofreciendo una \textbf{visión integrada de los datos} para toda una comunidad de usuarios. Se define en términos de entidades, atributos, relaciones, tipos de datos, operaciones de los usuarios y restricciones de integridad. A diferencia del esquema interno, el esquema conceptual \textbf{abstrae los detalles de las estructuras de almacenamiento físico}, concentrándose en la definición de los datos almacenados y las relaciones existentes entre ellos.
+
+En la práctica, el esquema conceptual se implementa mediante un \textbf{modelo de datos representativo}, como el modelo relacional, el modelo orientado a objetos o el modelo NoSQL. No obstante, su diseño se basa en un diseño conceptual inicial elaborado con un modelo de datos de alto nivel, como el \textbf{modelo entidad-relación (E-R)}.
+
+Los administradores de bases de datos (DBAs) desempeñan un papel fundamental en la definición del esquema conceptual, ya que son responsables de determinar la información que se almacena en la base de datos. El diseño del esquema conceptual es una fase crítica del diseño de la base de datos, en la que se traducen los requisitos de los usuarios a una representación formal.
+
+El modelo entidad-relación (E-R) se utiliza comúnmente en esta fase para representar el diseño conceptual, especificando las entidades, sus atributos, las relaciones entre ellas y las restricciones. Por ejemplo, en una base de datos para una biblioteca, las entidades podrían ser "Libro", "Autor" y "Socio".  Las relaciones podrían ser "escrito\_por" (entre Libro y Autor) y "presta" (entre Socio y Libro). Los atributos de la entidad "Libro" podrían ser "Título", "ISBN" y "Editorial".
+
+Es fundamental que el esquema conceptual sea estable y bien documentado, ya que sirve como base para el desarrollo de las aplicaciones y para la administración de la base de datos.
+
+\subsubsection{Esquemas Externos (Nivel de Vistas)}
+
+El nivel de \textbf{esquemas externos}, o nivel de vistas, comprende una colección de esquemas externos o vistas de usuario. Cada esquema externo \textbf{describe una porción específica de la base de datos que es relevante para un grupo de usuarios en particular}, ocultando el resto de la información. Al igual que el esquema conceptual, los esquemas externos se implementan normalmente mediante un \textbf{modelo de datos representativo}, que puede estar basado en un diseño de esquema externo de un modelo de datos de alto nivel.
+
+Las vistas se adaptan a las \textbf{necesidades específicas de diferentes grupos de usuarios}, proporcionando una \textbf{perspectiva personalizada de los datos}. Esto permite que múltiples usuarios interactúen con la misma base de datos subyacente, pero cada uno con una visión que se ajusta a sus requerimientos.
+
+Consideremos el ejemplo de la base de datos de la biblioteca. Un esquema externo para los bibliotecarios podría incluir información detallada sobre los libros (e.g., título, ISBN, editorial, número de copias, estado de préstamo), mientras que un esquema externo para los usuarios podría incluir solo información relevante para la búsqueda y el préstamo de libros (e.g., título, autor, disponibilidad).
+
+Las vistas ofrecen varios beneficios:
+
+\begin{itemize}
+    \item \textbf{Seguridad:} Permiten restringir el acceso a datos sensibles.
+    \item \textbf{Simplicidad:} Presentan una visión simplificada de la base de datos para los usuarios.
+    \item \textbf{Independencia de datos:}  Protegen a las aplicaciones de los cambios en el esquema conceptual.
+\end{itemize}
+
+Las vistas se definen típicamente utilizando el lenguaje de consulta de la base de datos (e.g., SQL).
+
+\subsection{Mapeados entre los Niveles}
+
+La arquitectura de tres esquemas enfatiza la necesidad de \textbf{mapeados} entre los distintos niveles.  El Sistema de Gestión de Bases de Datos (DBMS) debe ser capaz de \textbf{traducir una solicitud especificada en un esquema externo a una solicitud equivalente en el esquema conceptual, y posteriormente a una solicitud en el esquema interno} para su procesamiento sobre la base de datos almacenada.
+
+De manera inversa, si la solicitud implica la recuperación de datos, la información extraída del nivel físico debe ser \textbf{reformatada para que coincida con la vista externa del usuario}. Los \textbf{mapeados conceptual/interno y conceptual/externo} son fundamentales para esta transformación.
+
+El mapeado conceptual/interno define la correspondencia entre las entidades y relaciones del esquema conceptual y las estructuras de almacenamiento físico del esquema interno.  Por ejemplo, puede especificar cómo una entidad "Cliente" se representa en una tabla relacional específica y cómo sus atributos se almacenan en columnas específicas de esa tabla. También puede especificar cómo las relaciones se implementan mediante claves foráneas o mediante estructuras de datos más complejas.
+
+El mapeado conceptual/externo define la correspondencia entre las vistas del esquema externo y las entidades y relaciones del esquema conceptual.  Por ejemplo, puede especificar cómo una vista que muestra solo el nombre y la dirección de los clientes se deriva de la entidad "Cliente" del esquema conceptual.
+
+Aunque la mayoría de los DBMS no implementan una separación completa y explícita de los tres niveles, sí \textbf{brindan soporte a esta arquitectura en cierta medida}. La arquitectura de tres esquemas constituye una \textbf{estructura valiosa para visualizar los diferentes niveles de abstracción en un sistema de bases de datos}, facilitando la comprensión de la independencia de datos y la flexibilidad en la gestión de la información.  Comprender los mapeados es crucial para el diseño de bases de datos escalables y mantenibles.

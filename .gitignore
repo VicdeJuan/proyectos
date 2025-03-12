@@ -1,4 +1,5 @@
 ##LaTeX
+*.pdf
 *.aux
 *.lof
 *.log

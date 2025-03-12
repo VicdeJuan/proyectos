@@ -1,0 +1,74 @@
+\chapter{Introducción a la Definición de Datos en Sistemas de Bases de Datos}
+
+\section{Motivación}
+
+En el corazón de cada sistema de base de datos se encuentra la necesidad fundamental de definir y estructurar los datos que almacenará.  Esta definición, crucial para la organización, consistencia y la facilidad de acceso a la información, es el tema central de este capítulo. Exploraremos por qué la definición de datos es vital, los componentes clave de la misma, y cómo las diferentes herramientas y técnicas se utilizan para lograr una definición robusta y eficiente.
+
+\section{La Importancia de la Definición de Datos}
+
+La definición de datos actúa como el plano para la construcción de la base de datos.  Una definición bien elaborada ofrece múltiples beneficios, incluyendo:
+
+\begin{itemize}
+    \item \textbf{Consistencia de Datos:} Define los tipos de datos permitidos para cada atributo, asegurando la uniformidad y previniendo la inserción de datos incorrectos o inconsistentes.
+    \item \textbf{Integridad de Datos:} Permite la definición de reglas y restricciones (claves primarias, claves foráneas, validaciones, etc.) para garantizar la validez y la exactitud de la información almacenada.
+    \item \textbf{Eficiencia en el Acceso a Datos:} Una estructura de datos bien definida facilita la optimización de las consultas y la recuperación de información, mejorando el rendimiento general del sistema.
+    \item \textbf{Interoperabilidad:} Facilita el intercambio de datos entre diferentes sistemas al proporcionar una definición clara y estandarizada.
+    \item \textbf{Escalabilidad:} Proporciona una base sólida para el crecimiento y la evolución de la base de datos a medida que cambian las necesidades de la organización.
+\end{itemize}
+
+\section{Componentes Clave de la Definición de Datos}
+
+La definición de datos involucra varios componentes interrelacionados, entre los que destacan:
+
+\subsection{Esquema de la Base de Datos}
+
+El esquema representa la estructura lógica de la base de datos, incluyendo las tablas, las columnas (atributos), los tipos de datos y las relaciones entre las tablas.  Define cómo los datos se organizan y se relacionan entre sí.
+
+\subsection{Tipos de Datos}
+
+Cada atributo de una tabla debe tener un tipo de datos específico asignado.  Los tipos de datos comunes incluyen:
+
+\begin{itemize}
+    \item \textbf{Numéricos:} Enteros (INTEGER, SMALLINT, BIGINT), números de punto flotante (FLOAT, DOUBLE), números decimales (DECIMAL).
+    \item \textbf{Textuales:} Cadenas de caracteres (VARCHAR, CHAR, TEXT).
+    \item \textbf{Booleanos:} Valores lógicos (TRUE, FALSE).
+    \item \textbf{Fechas y Horas:} DATE, TIME, DATETIME, TIMESTAMP.
+    \item \textbf{Binarios:} BLOB (Binary Large Object).
+\end{itemize}
+
+La selección del tipo de datos correcto es crucial para asegurar la integridad y la eficiencia del almacenamiento.
+
+\subsection{Restricciones de Integridad}
+
+Las restricciones de integridad son reglas que se aplican a los datos para garantizar su validez y consistencia.  Ejemplos de restricciones comunes incluyen:
+
+\begin{itemize}
+    \item \textbf{Clave Primaria (Primary Key):} Identifica de forma única cada fila de una tabla.
+    \item \textbf{Clave Foránea (Foreign Key):} Establece una relación entre dos tablas, asegurando que los valores en una columna coincidan con los valores en la clave primaria de otra tabla.
+    \item \textbf{Restricción NOT NULL:}  Impide que una columna contenga valores nulos.
+    \item \textbf{Restricción UNIQUE:} Asegura que los valores en una columna sean únicos.
+    \item \textbf{Restricción CHECK:} Define una condición que debe cumplirse para que un valor sea aceptado en una columna.
+\end{itemize}
+
+\subsection{Vistas}
+
+Las vistas son tablas virtuales basadas en una consulta SQL.  Proporcionan una forma de simplificar la complejidad de la base de datos y de controlar el acceso a los datos. Permiten presentar una perspectiva específica de los datos sin necesidad de almacenarlos físicamente.
+
+\section{Lenguajes de Definición de Datos (DDL)}
+
+El Lenguaje de Definición de Datos (DDL) es un subconjunto del lenguaje SQL utilizado para definir la estructura de la base de datos.  Los comandos DDL más comunes incluyen:
+
+\begin{itemize}
+    \item \textbf{CREATE:} Crea objetos de la base de datos (tablas, vistas, índices, etc.).
+    \item \textbf{ALTER:} Modifica la estructura de los objetos existentes.
+    \item \textbf{DROP:} Elimina objetos de la base de datos.
+    \item \textbf{TRUNCATE:} Elimina todos los datos de una tabla, pero mantiene la estructura.
+\end{itemize}
+
+\section{Ejemplos Prácticos}
+
+[Aquí irían ejemplos de código DDL en un dialecto SQL específico, como PostgreSQL, MySQL, etc., mostrando la creación de tablas con diferentes tipos de datos y restricciones.]
+
+\section{Conclusión}
+
+La definición de datos es un aspecto fundamental del diseño y la implementación de sistemas de bases de datos.  Una definición cuidadosa y bien planificada es esencial para garantizar la integridad, la consistencia y la eficiencia de los datos, así como para facilitar su acceso y manipulación.  En los capítulos siguientes, exploraremos en detalle los diferentes aspectos del modelado de datos y las técnicas para diseñar esquemas de bases de datos robustos y escalables.
