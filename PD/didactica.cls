@@ -57,7 +57,7 @@
 \fancyfoot{} % Limpiar pies de página
 
 % Comando para definir el nombre y apellidos del aspirante (se debe redefinir en el preámbulo del documento)
-\newcommand{\aspirantenombre}{Nombre y Apellidos del Aspirante}
+\newcommand{\aspirantenombre}{Víctor de Juan}
 
 % Se coloca el nombre del aspirante en la cabecera de cada página (a la derecha)
 \fancyhead[R]{\aspirantenombre}
@@ -100,7 +100,7 @@
 % Portada (Cover Page)
 % --------------------
 % Comando para definir la especialidad (se debe redefinir en el documento)
-\newcommand{\especialidad}{Especialidad}
+\newcommand{\especialidad}{Informática}
 
 % Entorno para la portada. La portada incluye los datos de identificación y la firma.
 % Se considera que la portada no se incluye en la numeración final del documento.
