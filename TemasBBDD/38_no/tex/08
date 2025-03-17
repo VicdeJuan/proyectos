@@ -1,0 +1,172 @@
+\chapter{Modelo de Datos Relacional y Álgebra Relacional}
+
+\section{Introducción}
+\label{sec:introduccion}
+
+El modelo de datos relacional, propuesto por E.F. Codd en 1970, revolucionó el campo de la gestión de bases de datos.  Este modelo proporciona una estructura formal y matemática para organizar y manipular datos.  Su base teórica, fundamentada en la teoría de conjuntos y el álgebra relacional, ofrece una gran flexibilidad, integridad y facilidad de comprensión. Este capítulo profundiza en los conceptos clave del modelo relacional, incluyendo su estructura, restricciones, y el álgebra relacional como herramienta fundamental para la manipulación de datos.
+
+\section{Conceptos Fundamentales del Modelo Relacional}
+
+\subsection{Relaciones y Esquemas de Relaciones}
+\label{sec:relaciones}
+
+En el modelo relacional, los datos se organizan en \textit{relaciones}. Una relación, conceptualmente, es una tabla bidimensional.  Formalmente, una relación es un subconjunto del producto cartesiano de una serie de dominios.
+
+\begin{itemize}
+    \item \textbf{Relación}: Una tabla compuesta por filas (tuplas) y columnas (atributos).
+    \item \textbf{Tupla}: Representa una instancia de la relación (una fila en la tabla). Cada tupla representa un elemento de la relación.
+    \item \textbf{Atributo}:  Una columna en la relación. Cada atributo tiene un nombre y un tipo de dato asociado (dominio).
+    \item \textbf{Dominio}:  El conjunto de valores posibles para un atributo.  Por ejemplo, el dominio de un atributo "Edad" podría ser el conjunto de números enteros positivos.
+\end{itemize}
+
+El \textit{esquema de una relación} define la estructura de la relación, incluyendo el nombre de la relación y los nombres y dominios de sus atributos.  Se expresa típicamente de la siguiente forma:
+
+\begin{verbatim}
+    NombreRelacion (Atributo1: Dominio1, Atributo2: Dominio2, ..., AtributoN: DominioN)
+\end{verbatim}
+
+Por ejemplo:
+
+\begin{verbatim}
+    Estudiantes (ID: Entero, Nombre: Cadena, Apellido: Cadena, FechaNacimiento: Fecha)
+\end{verbatim}
+
+\subsection{Claves Primarias y Claves Candidatas}
+\label{sec:claves}
+
+Las \textit{claves} son atributos o conjuntos de atributos que identifican de forma única cada tupla en una relación.
+
+\begin{itemize}
+    \item \textbf{Clave Candidata}: Un atributo o conjunto de atributos que cumple con las propiedades de unicidad y minimalidad (no se puede quitar ningún atributo y seguir siendo única).
+    \item \textbf{Clave Primaria}: Una clave candidata elegida para identificar de forma única cada tupla en la relación.  No puede contener valores nulos.
+\end{itemize}
+
+La elección de la clave primaria es crucial para la integridad de los datos. Un ejemplo, usando el esquema `Estudiantes` del ejemplo anterior: el atributo `ID` podría ser la clave primaria.
+
+\subsection{Claves Foráneas (Llaves Externas)}
+\label{sec:claves_foraneas}
+
+Las \textit{claves foráneas} (o llaves externas) establecen relaciones entre diferentes relaciones. Una clave foránea es un atributo o conjunto de atributos en una relación que referencia la clave primaria de otra relación. Garantiza la integridad referencial, asegurando que los valores de la clave foránea existan en la clave primaria de la relación referenciada.
+
+Consideremos dos relaciones:
+
+\begin{verbatim}
+    Estudiantes (ID: Entero (Clave Primaria), Nombre: Cadena, Apellido: Cadena, IDDepartamento: Entero (Clave Foránea))
+    Departamentos (ID: Entero (Clave Primaria), Nombre: Cadena)
+\end{verbatim}
+
+En este caso, `IDDepartamento` en `Estudiantes` es una clave foránea que referencia la clave primaria `ID` en `Departamentos`.  Esto indica que cada estudiante pertenece a un departamento específico.
+
+\subsection{Integridad de Datos}
+\label{sec:integridad}
+
+El modelo relacional impone reglas para asegurar la consistencia y la exactitud de los datos, denominadas \textit{restricciones de integridad}.  Las principales son:
+
+\begin{itemize}
+    \item \textbf{Integridad de Entidad}: Cada tupla en una relación debe tener un valor no nulo para la clave primaria.
+    \item \textbf{Integridad Referencial}: Los valores de la clave foránea deben existir en la clave primaria de la relación referenciada o ser nulos (si se permite).  Esta restricción asegura la consistencia entre las relaciones.
+    \item \textbf{Integridad de Dominio}: Los valores de un atributo deben ser del tipo de dato definido en su dominio.
+\end{itemize}
+
+\section{Álgebra Relacional}
+\label{sec:algebra}
+
+El álgebra relacional es un lenguaje de consulta procedimental que proporciona un conjunto de operaciones para manipular datos en el modelo relacional.  Estas operaciones toman una o más relaciones como entrada y producen una nueva relación como salida.
+
+\subsection{Operaciones Fundamentales}
+
+Las operaciones fundamentales del álgebra relacional son:
+
+\begin{itemize}
+    \item \textbf{Selección ($\sigma$)}: Selecciona tuplas de una relación que satisfacen una condición especificada.  La condición se aplica a los atributos de la relación.  La sintaxis es:  $\sigma_{Condicion}(Relacion)$.
+    \item \textbf{Proyección ($\Pi$)}: Selecciona atributos (columnas) de una relación. La sintaxis es: $\Pi_{Atributos}(Relacion)$.
+    \item \textbf{Producto Cartesiano ($\times$)}: Combina todas las tuplas de dos relaciones.  La sintaxis es: $Relacion_1 \times Relacion_2$.
+    \item \textbf{Unión ($\cup$)}: Combina tuplas de dos relaciones, eliminando duplicados.  Las relaciones deben ser uniones compatibles (tener el mismo esquema). La sintaxis es: $Relacion_1 \cup Relacion_2$.
+    \item \textbf{Diferencia ($-$)}:  Devuelve las tuplas que están en una relación pero no en otra. Las relaciones deben ser uniones compatibles. La sintaxis es: $Relacion_1 - Relacion_2$.
+    \item \textbf{Renombrar ($\rho$)}: Cambia el nombre de una relación o de sus atributos. La sintaxis es: $\rho_{NuevoNombre(Atributo1, Atributo2, ...)}(Relacion)$.
+\end{itemize}
+
+\subsection{Operaciones Derivadas}
+
+Las operaciones derivadas se pueden expresar utilizando las operaciones fundamentales.  Las más importantes son:
+
+\begin{itemize}
+    \item \textbf{Intersección ($\cap$)}: Devuelve las tuplas que están en ambas relaciones.  Se define como: $R \cap S = R - (R - S)$.  Las relaciones deben ser uniones compatibles.
+    \item \textbf{Join ($\Join$)}: Combina tuplas de dos relaciones basándose en una condición de unión.  Existen diferentes tipos de join:
+    \begin{itemize}
+        \item \textbf{Theta-join ($\Join_{\theta}$)}:  Una combinación de producto cartesiano y selección.  La sintaxis es: $R \Join_{\theta} S = \sigma_{\theta}(R \times S)$.
+        \item \textbf{Equi-join}: Un theta-join donde la condición de unión implica una igualdad.
+        \item \textbf{Natural Join ($\Join$)}: Un equi-join donde los atributos con el mismo nombre en ambas relaciones se comparan y se proyectan los atributos duplicados.  Es la operación de join más común.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Ejemplos de Consultas en Álgebra Relacional}
+
+Consideremos las relaciones `Estudiantes` y `Departamentos` definidas previamente.
+
+\begin{itemize}
+    \item \textbf{Ejemplo 1: Seleccionar los nombres y apellidos de todos los estudiantes}:
+
+    $\Pi_{Nombre, Apellido}(Estudiantes)$
+
+    \item \textbf{Ejemplo 2: Seleccionar los estudiantes que pertenecen al departamento con ID 123}:
+
+    $\sigma_{IDDepartamento = 123}(Estudiantes)$
+
+    \item \textbf{Ejemplo 3: Obtener el nombre de los estudiantes y el nombre de su departamento}:
+
+    $\Pi_{Estudiantes.Nombre, Estudiantes.Apellido, Departamentos.Nombre} (Estudiantes \Join_{Estudiantes.IDDepartamento = Departamentos.ID} Departamentos)$
+
+    Este ejemplo ilustra el uso del Natural Join para combinar información de dos relaciones.
+\end{itemize}
+
+\section{Formalización del Álgebra Relacional y su poder expresivo}
+
+El álgebra relacional, aunque originalmente diseñado para la comprensión teórica, es fundamental para comprender el poder expresivo de los lenguajes de consulta de bases de datos.
+
+\subsection{Definición Formal}
+
+Una expresión del álgebra relacional se define recursivamente:
+
+\begin{enumerate}
+    \item Una relación es una expresión del álgebra relacional.
+    \item Si $E_1$ y $E_2$ son expresiones del álgebra relacional, entonces:
+    \begin{itemize}
+        \item $\sigma_C(E_1)$ es una expresión del álgebra relacional.
+        \item $\Pi_A(E_1)$ es una expresión del álgebra relacional.
+        \item $E_1 \times E_2$ es una expresión del álgebra relacional.
+        \item $E_1 \cup E_2$ es una expresión del álgebra relacional.
+        \item $E_1 - E_2$ es una expresión del álgebra relacional.
+        \item $\rho_N(E_1)$ es una expresión del álgebra relacional.
+        \item $E_1 \cap E_2$ es una expresión del álgebra relacional.
+        \item $E_1 \Join E_2$ es una expresión del álgebra relacional.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Poder Expresivo y Completitud}
+
+El álgebra relacional se considera \textit{completamente expresiva} (o Turing-completa) en el sentido de que cualquier consulta que pueda ser definida utilizando cálculo relacional (otro lenguaje formal de consulta) puede ser expresada también en álgebra relacional, y viceversa.  Esto significa que el álgebra relacional es un lenguaje poderoso y flexible.
+
+\section{Ventajas y Limitaciones del Modelo Relacional}
+
+\subsection{Ventajas}
+
+\begin{itemize}
+    \item \textbf{Simplicidad}:  La estructura de tablas es intuitiva y fácil de comprender.
+    \item \textbf{Flexibilidad}: Permite representar una amplia gama de datos.
+    \item \textbf{Integridad}: Las restricciones de integridad aseguran la consistencia de los datos.
+    \item \textbf{Lenguajes de Consulta}:  Permite el uso de lenguajes de consulta declarativos (SQL) que facilitan la extracción de información.
+    \item \textbf{Base Teórica Sólida}: El álgebra relacional y el cálculo relacional proveen una base matemática para la optimización de consultas.
+\end{itemize}
+
+\subsection{Limitaciones}
+
+\begin{itemize}
+    \item \textbf{Representación de Datos Complejos}:  El modelo relacional puede ser menos adecuado para representar datos complejos, como datos jerárquicos o grafos, sin recurrir a soluciones complejas o extensiones.
+    \item \textbf{Rendimiento}: El rendimiento puede ser un problema en bases de datos muy grandes o con consultas complejas.
+    \item \textbf{Esquema Rígido}:  Los cambios en el esquema pueden ser costosos.
+\end{itemize}
+
+\section{Conclusión}
+
+El modelo relacional, fundamentado en el álgebra relacional, sigue siendo el modelo de datos dominante en la gestión de bases de datos.  Su simplicidad, integridad y base teórica sólida lo convierten en una herramienta fundamental para el almacenamiento y la manipulación de datos.  Aunque existen modelos alternativos (como los modelos NoSQL) que son más adecuados para ciertos tipos de datos y aplicaciones, el conocimiento profundo del modelo relacional y el álgebra relacional es esencial para cualquier ingeniero informático que trabaje con bases de datos. El modelo relacional sigue evolucionando, con nuevas funcionalidades y optimizaciones, y continúa siendo relevante en la actualidad.

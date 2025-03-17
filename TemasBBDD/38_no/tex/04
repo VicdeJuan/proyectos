@@ -1,0 +1,420 @@
+\chapter{Álgebra Relacional}
+
+\section{Fundamentos del Álgebra Relacional}
+
+El álgebra relacional (AR) constituye el lenguaje de consulta fundamental para el modelo relacional de bases de datos.  Es un álgebra, en el sentido matemático, definida sobre relaciones, donde una relación es un conjunto de tuplas, cada una representando un hecho o entidad.  El álgebra relacional proporciona un conjunto de operaciones, llamadas operaciones del álgebra relacional, que permiten manipular y consultar los datos almacenados en las relaciones.
+
+\subsection{Definición}
+
+El álgebra relacional se define formalmente como un conjunto de operaciones que se aplican a una o más relaciones y producen como resultado una nueva relación.  Estas operaciones se basan en principios matemáticos y lógicos, permitiendo una manipulación precisa y no ambigua de los datos.  Las operaciones del álgebra relacional se pueden clasificar en operaciones básicas y operaciones derivadas o adicionales, dependiendo de si son fundamentales para el modelo o se pueden expresar utilizando las básicas.
+
+\subsection{Propiedad de Clausura}
+
+Una característica esencial del álgebra relacional es la \emph{propiedad de clausura}. Esta propiedad establece que el resultado de aplicar cualquier operación del álgebra relacional a una o más relaciones es, a su vez, una relación. Esto significa que las salidas de cada operación son nuevamente entradas válidas para otras operaciones del álgebra, permitiendo la composición de operaciones y la construcción de consultas complejas de manera modular y recursiva.  La propiedad de clausura es fundamental para la expresividad y la flexibilidad del álgebra relacional.
+
+\subsection{Importancia}
+
+El álgebra relacional es de suma importancia por varias razones:
+
+\begin{itemize}
+    \item \textbf{Fundamento Formal}: Sirve como base matemática formal para las operaciones de consulta en el modelo relacional.  Proporciona una semántica clara e inequívoca para la manipulación de datos, lo que facilita el diseño, la optimización y la implementación de sistemas de gestión de bases de datos relacionales (SGBDR).
+    \item \textbf{Lenguaje Intermedio}:  Actúa como un lenguaje intermedio en la traducción de consultas expresadas en lenguajes de consulta de alto nivel, como SQL, a un formato que el motor de base de datos puede ejecutar de manera eficiente.  El optimizador de consultas utiliza las reglas del álgebra relacional para transformar las expresiones, buscando la forma más eficiente de ejecutar una consulta.
+    \item \textbf{Optimización de Consultas}: Permite la optimización de consultas. Las reglas de equivalencia del álgebra relacional permiten reescribir las consultas de diferentes maneras, buscando la expresión más eficiente en términos de tiempo de ejecución y recursos utilizados.
+    \item \textbf{Comprobación de la Correctitud}:  Facilita la verificación de la correctitud y la consistencia de las consultas y de las bases de datos.
+\end{itemize}
+
+
+\section{Operaciones Fundamentales del Álgebra Relacional}
+
+Las operaciones fundamentales del álgebra relacional son el conjunto mínimo de operaciones necesarias para expresar cualquier consulta que pueda realizarse en el modelo relacional.  Estas operaciones son: Selección, Proyección, Unión, Intersección, Diferencia, Producto Cartesiano y Renombramiento.
+
+\subsection{Selección ($\sigma$)}
+\subsubsection{Sintaxis}
+La operación de selección se denota como:
+\begin{verbatim}
+σ<condición>(R)
+\end{verbatim}
+donde:
+
+\begin{itemize}
+    \item  $\sigma$ es el símbolo de la operación de selección.
+    \item  $<$condición$>$ es una expresión booleana que especifica el criterio de selección. Esta condición puede involucrar atributos de la relación $R$, operadores de comparación (=, $\neq$, <, >, $\leq$, $\geq$) y operadores lógicos (AND, OR, NOT).
+    \item  $R$ es la relación sobre la cual se aplica la selección.
+\end{itemize}
+\subsubsection{Semántica}
+La operación de selección devuelve una nueva relación que contiene solo aquellas tuplas de $R$ que satisfacen la $<$condición$>$.  La estructura (esquema) de la relación resultante es idéntica a la de la relación original $R$.
+\subsubsection{Ejemplos}
+Consideremos la relación \texttt{Estudiantes} con los atributos (\texttt{id}, \texttt{nombre}, \texttt{edad}, \texttt{ciudad}).
+
+\begin{itemize}
+    \item \texttt{$\sigma_{edad > 20}$(Estudiantes)}:  Selecciona todos los estudiantes mayores de 20 años.
+    \item \texttt{$\sigma_{ciudad = \text{'Madrid'}}$(Estudiantes)}: Selecciona todos los estudiantes que viven en Madrid.
+    \item \texttt{$\sigma_{edad > 20 \text{ AND ciudad = 'Madrid'}}$(Estudiantes)}: Selecciona todos los estudiantes mayores de 20 años que viven en Madrid.
+\end{itemize}
+
+\subsection{Proyección ($\pi$)}
+\subsubsection{Sintaxis}
+La operación de proyección se denota como:
+\begin{verbatim}
+π<lista de atributos>(R)
+\end{verbatim}
+donde:
+\begin{itemize}
+    \item  $\pi$ es el símbolo de la operación de proyección.
+    \item  $<$lista de atributos$>$ es una lista de atributos (nombres de columnas) de la relación $R$.
+    \item  $R$ es la relación sobre la cual se aplica la proyección.
+\end{itemize}
+\subsubsection{Semántica}
+La operación de proyección devuelve una nueva relación que contiene solo las columnas especificadas en $<$lista de atributos$>$, eliminando las demás.  Si existen tuplas duplicadas en el resultado, se eliminan para mantener la definición de relación (conjunto de tuplas).
+\subsubsection{Ejemplos}
+Considerando la relación \texttt{Estudiantes} nuevamente:
+
+\begin{itemize}
+    \item \texttt{$\pi_{nombre, edad}$(Estudiantes)}: Proyecta los nombres y las edades de todos los estudiantes.
+    \item \texttt{$\pi_{ciudad}$(Estudiantes)}: Proyecta las ciudades de todos los estudiantes.  El resultado contendrá solo una columna y eliminará duplicados (las ciudades repetidas).
+\end{itemize}
+
+\subsection{Unión ($\cup$)}
+\subsubsection{Sintaxis}
+La operación de unión se denota como:
+\begin{verbatim}
+R ∪ S
+\end{verbatim}
+donde:
+\begin{itemize}
+    \item  $\cup$ es el símbolo de la operación de unión.
+    \item  $R$ y $S$ son relaciones.
+\end{itemize}
+\subsubsection{Semántica}
+La operación de unión devuelve una nueva relación que contiene todas las tuplas que pertenecen a $R$, a $S$, o a ambas. Se eliminan las tuplas duplicadas.
+\subsubsection{Condiciones para la Unión Compatible}
+Para que la operación de unión sea válida, las relaciones $R$ y $S$ deben ser \emph{unión compatibles}.  Esto significa que deben satisfacer las siguientes condiciones:
+
+\begin{itemize}
+    \item  Deben tener el mismo número de atributos (mismo grado).
+    \item  Los dominios de los atributos correspondientes deben ser compatibles (del mismo tipo o que puedan ser convertidos).  Por ejemplo, un atributo de tipo entero y otro de tipo real son generalmente compatibles.
+\end{itemize}
+Si las relaciones no son unión compatibles, la operación de unión no está definida.
+\subsubsection{Ejemplos}
+Consideremos las relaciones \texttt{Estudiantes\_Madrid} y \texttt{Estudiantes\_Barcelona}, ambas con los atributos (\texttt{id}, \texttt{nombre}, \texttt{edad}, \texttt{ciudad}).
+
+\begin{itemize}
+    \item \texttt{Estudiantes\_Madrid $\cup$ Estudiantes\_Barcelona}:  Devuelve todos los estudiantes de Madrid y Barcelona (sin duplicados).
+\end{itemize}
+
+\subsection{Intersección ($\cap$)}
+\subsubsection{Sintaxis}
+La operación de intersección se denota como:
+\begin{verbatim}
+R ∩ S
+\end{verbatim}
+donde:
+\begin{itemize}
+    \item  $\cap$ es el símbolo de la operación de intersección.
+    \item  $R$ y $S$ son relaciones.
+\end{itemize}
+\subsubsection{Semántica}
+La operación de intersección devuelve una nueva relación que contiene solo las tuplas que pertenecen tanto a $R$ como a $S$.  La intersección, al igual que la unión, solo es aplicable a relaciones unión compatibles.
+\subsubsection{Derivación}
+La operación de intersección se puede derivar a partir de las operaciones de unión y diferencia de la siguiente manera:
+
+\begin{verbatim}
+R ∩ S  ≡  R - (R - S)
+\end{verbatim}
+Esta equivalencia se deduce de las leyes de conjuntos.  Si las relaciones $R$ y $S$ son unión compatibles, la intersección de $R$ y $S$ es equivalente a la diferencia de $R$ menos la diferencia entre $R$ y $S$.
+\subsubsection{Ejemplo}
+Considerando las relaciones \texttt{Estudiantes\_Mayores\_20} y \texttt{Estudiantes\_Madrid}, ambas con los atributos (\texttt{id}, \texttt{nombre}, \texttt{edad}, \texttt{ciudad}).
+
+\begin{itemize}
+    \item \texttt{Estudiantes\_Mayores\_20 $\cap$ Estudiantes\_Madrid}: Devuelve los estudiantes mayores de 20 años que viven en Madrid.
+\end{itemize}
+
+\subsection{Diferencia (–)}
+\subsubsection{Sintaxis}
+La operación de diferencia se denota como:
+\begin{verbatim}
+R – S
+\end{verbatim}
+donde:
+\begin{itemize}
+    \item  $-$ es el símbolo de la operación de diferencia.
+    \item  $R$ y $S$ son relaciones.
+\end{itemize}
+\subsubsection{Semántica}
+La operación de diferencia devuelve una nueva relación que contiene las tuplas que pertenecen a $R$ pero no a $S$. La diferencia, al igual que la unión y la intersección, solo es aplicable a relaciones unión compatibles.
+\subsubsection{Orden de los Operandos}
+El orden de los operandos en la operación de diferencia es significativo.  $R - S$ es diferente de $S - R$.
+
+\begin{itemize}
+    \item  $R - S$: Contiene las tuplas que están en $R$ pero no en $S$.
+    \item  $S - R$: Contiene las tuplas que están en $S$ pero no en $R$.
+\end{itemize}
+\subsubsection{Ejemplo}
+Considerando las relaciones \texttt{Estudiantes} y \texttt{Estudiantes\_Graduados}, ambas con los atributos (\texttt{id}, \texttt{nombre}, \texttt{edad}, \texttt{ciudad}).
+
+\begin{itemize}
+    \item \texttt{Estudiantes - Estudiantes\_Graduados}: Devuelve los estudiantes que no se han graduado.
+    \item \texttt{Estudiantes\_Graduados - Estudiantes}: Devuelve los estudiantes graduados que no están actualmente en la relación \texttt{Estudiantes} (lo que podría ser un error).
+\end{itemize}
+
+\subsection{Producto Cartesiano (×)}
+\subsubsection{Sintaxis}
+La operación de producto cartesiano se denota como:
+\begin{verbatim}
+R × S
+\end{verbatim}
+donde:
+\begin{itemize}
+    \item  $\times$ es el símbolo de la operación de producto cartesiano.
+    \item  $R$ y $S$ son relaciones.
+\end{itemize}
+\subsubsection{Semántica}
+La operación de producto cartesiano combina cada tupla de la relación $R$ con cada tupla de la relación $S$.  El resultado es una nueva relación cuyas tuplas son la concatenación de las tuplas de $R$ y $S$.  Si una tupla de $R$ tiene $n$ atributos y una tupla de $S$ tiene $m$ atributos, la tupla resultante del producto cartesiano tendrá $n+m$ atributos. Los nombres de los atributos pueden duplicarse, en cuyo caso se suele renombrar (ver Renombramiento).
+\subsubsection{Tamaño del Resultado}
+El tamaño (cardinalidad) de la relación resultante del producto cartesiano es el producto del tamaño de las relaciones originales.  Si $|R|$ es el número de tuplas en $R$ y $|S|$ es el número de tuplas en $S$, entonces $|R \times S| = |R| \times |S|$.  El producto cartesiano puede generar relaciones muy grandes, por lo que debe utilizarse con precaución y, a menudo, se combina con otras operaciones (especialmente la selección) para obtener resultados significativos.
+\subsubsection{Ejemplo}
+Consideremos las relaciones \texttt{Estudiantes} (\texttt{id}, \texttt{nombre}) y \texttt{Cursos} (\texttt{curso\_id}, \texttt{nombre\_curso}).
+
+\begin{itemize}
+    \item \texttt{Estudiantes $\times$ Cursos}:  Devuelve todas las combinaciones posibles de estudiantes y cursos.  Cada tupla resultante tendrá cuatro atributos: \texttt{id}, \texttt{nombre}, \texttt{curso\_id}, \texttt{nombre\_curso}.
+\end{itemize}
+\subsection{Renombramiento (ρ)}
+\subsubsection{Sintaxis}
+La operación de renombramiento se denota como:
+
+\begin{verbatim}
+ρ<nuevo nombre de relación>(R)
+\end{verbatim}
+o, para renombrar atributos también:
+\begin{verbatim}
+ρ<nuevo nombre de relación>(A1, A2, ..., An)(R)
+\end{verbatim}
+donde:
+\begin{itemize}
+    \item  $\rho$ es el símbolo de la operación de renombramiento.
+    \item  $<$nuevo nombre de relación$>$ es el nuevo nombre que se asignará a la relación resultante (en la primera forma).
+    \item  $A1, A2, ..., An$ son los nuevos nombres de los atributos.
+    \item  $R$ es la relación a renombrar.
+\end{itemize}
+\subsubsection{Semántica}
+La operación de renombramiento permite asignar un nuevo nombre a una relación o a sus atributos.  Esta operación es esencial para:
+
+\begin{itemize}
+    \item \textbf{Evitar ambigüedades}:  Cuando se realiza un producto cartesiano, es común que las relaciones involucradas tengan atributos con el mismo nombre. El renombramiento permite distinguir entre esos atributos.
+    \item \textbf{Simplificar expresiones}:  Facilita la escritura de expresiones complejas, especialmente cuando se realizan auto-joins (joins de una relación consigo misma).
+\end{itemize}
+\subsubsection{Ejemplo}
+
+Consideremos la relación \texttt{Estudiantes} (\texttt{id}, \texttt{nombre}, \texttt{edad}, \texttt{ciudad}).
+
+\begin{itemize}
+    \item \texttt{$\rho_{Estudiantes2}$(Estudiantes)}: Renombra la relación \texttt{Estudiantes} a \texttt{Estudiantes2}.
+    \item \texttt{$\rho_{Estudiantes2(id\_estudiante, nombre\_estudiante, edad\_estudiante, ciudad\_estudiante)}$(Estudiantes)}: Renombra la relación \texttt{Estudiantes} a \texttt{Estudiantes2} y cambia el nombre de sus atributos.
+\end{itemize}
+
+\section{Operaciones Adicionales del Álgebra Relacional}
+
+Las operaciones adicionales del álgebra relacional se pueden derivar de las operaciones fundamentales.  Proporcionan una forma más concisa y legible de expresar consultas complejas. Las operaciones adicionales más importantes son el Join y la División.
+
+\subsection{Join (⋈)}
+La operación de Join (también conocida como "Join") es una operación fundamental en el álgebra relacional que permite combinar tuplas de dos o más relaciones basándose en una condición de unión.  Existen diferentes tipos de Join:
+
+\subsubsection{Theta-join ($\bowtie_{\theta}$)}
+\begin{itemize}
+    \item \textbf{Sintaxis}:  $R \bowtie_{\theta} S$, donde $\theta$ es una condición booleana que involucra atributos de $R$ y $S$.
+    \item \textbf{Semántica}:  El Theta-join combina tuplas de $R$ y $S$ que satisfacen la condición $\theta$.  Es equivalente a realizar el producto cartesiano de $R$ y $S$ y luego seleccionar las tuplas que satisfacen $\theta$: $R \bowtie_{\theta} S \equiv \sigma_{\theta}(R \times S)$.
+\end{itemize}
+\subsubsection{Equi-join}
+\begin{itemize}
+    \item \textbf{Sintaxis}:  $R \bowtie_{R.A = S.B} S$, donde $R.A$ y $S.B$ son atributos de $R$ y $S$, respectivamente, sobre los cuales se realiza la unión.
+    \item \textbf{Semántica}:  El Equi-join es un caso especial del Theta-join donde la condición de unión es una igualdad (=) entre dos atributos. El resultado contiene todas las columnas de $R$ y $S$.
+\end{itemize}
+\subsubsection{Natural Join ($\bowtie^{*}$)}
+\begin{itemize}
+    \item \textbf{Sintaxis}:  $R \bowtie^{*} S$.
+    \item \textbf{Semántica}: El Natural Join es un tipo de Equi-join donde la condición de unión se basa en la igualdad de atributos que tienen el mismo nombre y el mismo dominio en ambas relaciones.  Se eliminan las columnas duplicadas.  Es la forma más común de Join.  El resultado del Natural Join contiene todas las columnas de $R$ y $S$, pero solo una instancia de cada columna de unión.
+\end{itemize}
+\subsubsection{Left Outer Join (⟕)}
+\begin{itemize}
+    \item \textbf{Sintaxis}:  $R \stackrel{⟕}{_{\theta}} S$ (Left Outer Join),  $R \stackrel{⟕}{_{R.A = S.B}} S$ (Left Outer Equi-Join),  $R \stackrel{⟕}{*} S$ (Left Outer Natural Join).
+    \item \textbf{Semántica}: El Left Outer Join devuelve todas las tuplas de la relación izquierda ($R$) y las tuplas coincidentes de la relación derecha ($S$) basadas en la condición de unión ($\theta$, igualdad de atributos, o atributos con mismo nombre y dominio). Si una tupla de $R$ no tiene una tupla coincidente en $S$, se incluyen las columnas de $S$ con valores nulos (NULL).  La relación de la izquierda ($R$) es preservada.
+\end{itemize}
+\subsubsection{Right Outer Join (⟖)}
+\begin{itemize}
+    \item \textbf{Sintaxis}: $R \stackrel{⟖}{_{\theta}} S$ (Right Outer Join), $R \stackrel{⟖}{_{R.A = S.B}} S$ (Right Outer Equi-Join),  $R \stackrel{⟖}{*} S$ (Right Outer Natural Join).
+    \item \textbf{Semántica}: El Right Outer Join devuelve todas las tuplas de la relación derecha ($S$) y las tuplas coincidentes de la relación izquierda ($R$). Si una tupla de $S$ no tiene una tupla coincidente en $R$, se incluyen las columnas de $R$ con valores nulos (NULL).  La relación de la derecha ($S$) es preservada.
+\end{itemize}
+\subsubsection{Full Outer Join (Outer ⟗)}
+\begin{itemize}
+    \item \textbf{Sintaxis}: $R \stackrel{Outer ⟗}{_{\theta}} S$ (Full Outer Join), $R \stackrel{Outer ⟗}{_{R.A = S.B}} S$ (Full Outer Equi-Join),  $R \stackrel{Outer ⟗}{*} S$ (Full Outer Natural Join).
+    \item \textbf{Semántica}: El Full Outer Join devuelve todas las tuplas de ambas relaciones ($R$ y $S$). Si una tupla de $R$ no tiene coincidencia en $S$, se incluyen las columnas de $S$ con NULL. Si una tupla de $S$ no tiene coincidencia en $R$, se incluyen las columnas de $R$ con NULL.  Ninguna de las relaciones se pierde.
+\end{itemize}
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}[
+        node distance = 2cm,
+        every node/.style = {draw, circle, minimum size=1cm}
+    ]
+    % Nodos base
+    \node (R) at (0,0) {$R$};
+    \node (S) [right of=R] {$S$};
+    
+    % Nodos para los distintos tipos de join (con etiqueta explícita)
+    \node (Theta) [above right of=R, xshift=3cm, label={[above] {Theta-join}}] {};
+    \node (Equi) [right of=Theta, label={[above] {Equi-Join}}] {};
+    \node (Natural) [below right of=S, xshift=-1cm, label={[below] {Natural Join}}] {};
+    \node (Left) [below left of=R, label={[left] {Left Outer Join}}] {};
+    \node (Right) [below right of=S, label={[right] {Right Outer Join}}] {};
+    \node (Full) [below of=Natural, label={[below] {Full Outer Join}}] {};
+    
+    % Conexiones entre nodos
+    \draw (R) -- (S);
+    \draw (R) -- (Theta);
+    \draw (R) -- (Left);
+    \draw (S) -- (Right);
+    \draw (R) -- (Natural);
+    \draw (S) -- (Natural);
+    \draw (R) -- (Full);
+    \draw (S) -- (Full);
+    % Flechas discontinuas que indican herencia o especialización
+    \draw[dashed] (Theta) -- (Equi);
+    \draw[dashed] (Equi) -- (Natural);
+    \end{tikzpicture}
+    \caption{Relación entre los diferentes tipos de Join. Las flechas discontinuas indican herencia o especialización.}
+\end{figure}
+
+\subsection{División (÷)}
+\subsubsection{Sintaxis}
+La operación de división se denota como:
+\begin{verbatim}
+R ÷ S
+\end{verbatim}
+donde:
+
+\begin{itemize}
+    \item $\div$ es el símbolo de la operación de división.
+    \item  $R$ y $S$ son relaciones.
+\end{itemize}
+
+\subsubsection{Semántica}
+La operación de división se utiliza para encontrar tuplas en $R$ que están relacionadas con \emph{todas} las tuplas de $S$.  Es decir, $R ÷ S$ devuelve aquellas tuplas $t$ de $R$ tales que para cada tupla $s$ en $S$, la tupla concatenada $t \cdot s$ está en $R$.
+
+Más formalmente, la división se define de la siguiente manera:
+\begin{itemize}
+    \item  Sean $R(X, Y)$ y $S(Y)$, donde $X$ y $Y$ son conjuntos de atributos.
+    \item  La operación $R ÷ S$ devuelve una relación $T(X)$, donde $T$ es la relación que contiene todas las tuplas $x$ en $X$ tal que, para cada tupla $y$ en $S$, la tupla $(x, y)$ existe en $R$.
+\end{itemize}
+La división solo es aplicable cuando el conjunto de atributos de $S$ es un subconjunto del conjunto de atributos de $R$.
+
+\subsubsection{Utilidad}
+La división es particularmente útil para consultas que involucran la "universalidad" o la "completitud".  Por ejemplo, encontrar empleados que han tomado todos los cursos ofrecidos.  Es un operador menos intuitivo, pero muy poderoso para ciertas consultas.
+
+\section{Expresiones del Álgebra Relacional}
+
+Una \emph{expresión del álgebra relacional} es una combinación de operaciones del álgebra relacional, que se aplican a una o más relaciones y producen una nueva relación como resultado.  Estas expresiones pueden ser simples o complejas, dependiendo de la consulta que se desee realizar.
+
+\subsection{Construcción de Consultas Complejas}
+
+Las consultas complejas se construyen combinando múltiples operaciones del álgebra relacional.  La propiedad de clausura del álgebra relacional garantiza que el resultado de cada operación es una relación, lo que permite encadenar operaciones para construir consultas más elaboradas.
+
+\begin{itemize}
+    \item \textbf{Anidamiento}:  Una expresión del álgebra relacional puede estar anidada dentro de otra expresión. El resultado de la expresión anidada se utiliza como entrada para la expresión externa.
+    \item \textbf{Orden de las Operaciones}: El orden en que se aplican las operaciones es crucial para obtener el resultado correcto. El uso de paréntesis permite controlar el orden de evaluación.
+    \item \textbf{Ejemplos}:
+        \begin{itemize}
+            \item \textbf{Ejemplo 1}:  Encontrar los nombres de los estudiantes que viven en Madrid y que tienen una edad superior a 20 años:  $\pi_{nombre}(\sigma_{ciudad = \text{'Madrid'} \text{ AND edad > 20}}(Estudiantes))$
+            \item \textbf{Ejemplo 2}:  Encontrar los nombres de los estudiantes y los nombres de los cursos en los que están matriculados (asumiendo una relación \texttt{Matriculas} (\texttt{estudiante\_id}, \texttt{curso\_id}) y relaciones \texttt{Estudiantes} (\texttt{id}, \texttt{nombre}) y \texttt{Cursos} (\texttt{curso\_id}, \texttt{nombre\_curso})):
+            $\pi_{nombre, nombre\_curso}((\pi_{id, nombre}(Estudiantes) \bowtie \pi_{estudiante\_id, curso\_id}(Matriculas)) \bowtie \pi_{curso\_id, nombre\_curso}(Cursos))$
+        \end{itemize}
+\end{itemize}
+
+\subsection{El Árbol de Expresión}
+
+Una forma útil de representar una expresión del álgebra relacional es mediante un \emph{árbol de expresión}.  En un árbol de expresión:
+
+\begin{itemize}
+    \item  Las hojas representan las relaciones.
+    \item  Los nodos internos representan las operaciones del álgebra relacional (Selección, Proyección, Join, etc.).
+    \item  Los hijos de un nodo representan las entradas para la operación del nodo.
+\end{itemize}
+El árbol de expresión visualiza el orden de las operaciones y facilita la comprensión y la optimización de la consulta.  El optimizador de consultas utiliza los árboles de expresión para manipular la consulta y buscar la forma más eficiente de ejecutarla.
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}[
+        level distance=1.5cm,
+        sibling distance=4cm
+    ]
+    \node {$\bowtie$}
+        child { node {$\sigma_{edad > 20}$}}
+            child { node {$Estudiantes$} } 
+        child { node {$\sigma_{ciudad = \text{'Madrid'}}$}
+            child { node {$Estudiantes$} } };
+    \end{tikzpicture}
+    \caption{Árbol de expresión para la consulta: Encontrar los estudiantes mayores de 20 años que viven en Madrid: $\sigma_{edad > 20}(Estudiantes) \bowtie \sigma_{ciudad = \text{'Madrid'}}(Estudiantes)$}
+\end{figure}
+
+\section{Equivalencia de Expresiones del Álgebra Relacional}
+
+Una misma consulta puede expresarse de diferentes maneras utilizando el álgebra relacional.  El álgebra relacional proporciona reglas de equivalencia que permiten transformar una expresión en otra equivalente, lo que es fundamental para la optimización de consultas.
+
+\subsection{Diferentes Formas de Expresar la Misma Consulta}
+
+Existen múltiples expresiones del álgebra relacional que pueden generar el mismo resultado.  Estas expresiones son \emph{equivalentes}.  La equivalencia se define semánticamente: dos expresiones son equivalentes si producen la misma relación (mismas tuplas) para cualquier instancia de las relaciones involucradas.
+
+\begin{itemize}
+    \item \textbf{Ejemplo}: La consulta para encontrar los nombres de los estudiantes que tienen una edad superior a 20 años puede expresarse como: $\pi_{nombre}(\sigma_{edad > 20}(Estudiantes))$ o  $\sigma_{\text{edad > 20}}(\pi_{nombre, edad}(Estudiantes))$.  Estas dos expresiones son equivalentes, aunque el orden de las operaciones es diferente.
+\end{itemize}
+
+\subsection{Reglas de Equivalencia Algebraica}
+
+Las reglas de equivalencia algebraica son propiedades que permiten transformar expresiones del álgebra relacional en expresiones equivalentes. Estas reglas se basan en las leyes de conjuntos, la lógica y las propiedades de las operaciones del álgebra relacional.  Algunas de las reglas de equivalencia más importantes son:
+
+\begin{itemize}
+    \item \textbf{Conmutatividad}: El orden de los operandos en las operaciones de unión, intersección y producto cartesiano no afecta el resultado:
+        \begin{itemize}
+            \item $R \cup S \equiv S \cup R$
+            \item $R \cap S \equiv S \cap R$
+            \item $R \times S \equiv S \times R$
+        \end{itemize}
+    \item \textbf{Asociatividad}: El agrupamiento de las operaciones de unión, intersección y producto cartesiano no afecta el resultado:
+        \begin{itemize}
+            \item $(R \cup S) \cup T \equiv R \cup (S \cup T)$
+            \item $(R \cap S) \cap T \equiv R \cap (S \cap T)$
+            \item $(R \times S) \times T \equiv R \times (S \times T)$
+        \end{itemize}
+    \item \textbf{Cascada de Selecciones}:  Una secuencia de operaciones de selección se puede combinar en una sola selección:
+        \begin{itemize}
+            \item  $\sigma_{\theta_1}(\sigma_{\theta_2}(R)) \equiv \sigma_{\theta_1 \text{ AND } \theta_2}(R)$
+        \end{itemize}
+    \item \textbf{Cascada de Proyecciones}:  Se pueden combinar varias proyecciones en una sola proyección:
+        \begin{itemize}
+            \item  $\pi_{a_1, a_2, ..., a_n}(\pi_{b_1, b_2, ..., b_m}(R)) \equiv \pi_{a_1, a_2, ..., a_n}(R)$  (si los atributos $a_1, a_2, ..., a_n$ están en el conjunto $\{b_1, b_2, ..., b_m\}$).
+        \end{itemize}
+    \item \textbf{Conmutatividad de la Selección y la Proyección}: La selección y la proyección se pueden conmutar bajo ciertas condiciones.  Si la condición de selección solo involucra atributos en la lista de proyección, se puede cambiar el orden.
+        \begin{itemize}
+            \item $\pi_{a_1, a_2, ..., a_n}(\sigma_{\theta}(R)) \equiv \sigma_{\theta}(\pi_{a_1, a_2, ..., a_n}(R))$ (si todos los atributos en $\theta$ están en la lista $a_1, a_2, ..., a_n$).
+        \end{itemize}
+    \item \textbf{Distributividad de la Selección sobre la Unión}:
+        \begin{itemize}
+            \item $\sigma_{\theta}(R \cup S) \equiv \sigma_{\theta}(R) \cup \sigma_{\theta}(S)$
+        \end{itemize}
+    \item \textbf{Join y Selección}: Un Theta-join puede transformarse.
+        \begin{itemize}
+          \item $\sigma_{\theta}(R \times S) \equiv R \bowtie_\theta S$
+        \end{itemize}
+\end{itemize}
+
+\subsection{Utilidad para la Optimización}
+
+Las reglas de equivalencia algebraica son fundamentales para la optimización de consultas.  El optimizador de consultas del SGBDR utiliza estas reglas para transformar la expresión original de la consulta en una expresión equivalente que sea más eficiente de ejecutar.  El objetivo es reducir el costo de la consulta, que puede medirse en términos de tiempo de ejecución, uso de CPU, uso de disco y otros factores.  Algunas técnicas de optimización comunes que se basan en las reglas de equivalencia son:
+
+\begin{itemize}
+    \item \textbf{Mover las Selecciones lo Antes Posible}: Las operaciones de selección suelen ser costosas. Aplicar las selecciones antes de otras operaciones, como el producto cartesiano o el join, reduce el tamaño de las relaciones intermedias y, por lo tanto, el costo de las operaciones subsiguientes.
+    \item \textbf{Transformar Producto Cartesiano y Selección a Join}:  Reemplazar un producto cartesiano seguido de una selección por un Join es una optimización importante, ya que los algoritmos de Join suelen ser más eficientes que el producto cartesiano.
+    \item \textbf{Seleccionar Atributos Necesarios Antes del Join}:  Proyectar solo los atributos necesarios antes de realizar un Join puede reducir la cantidad de datos que se manipulan y acelerar la ejecución.
+    \item \textbf{Aprovechar Índices}: El optimizador de consultas evalúa si existen índices sobre los atributos involucrados en la consulta.  Si es así, puede utilizar los índices para acelerar las operaciones de selección y Join.
+\end{itemize}
+
+En resumen, el álgebra relacional es un componente esencial en el modelo relacional.  Proporciona un lenguaje formal para la manipulación de datos, es la base para los lenguajes de consulta de alto nivel, y permite la optimización de consultas, haciendo posible la manipulación de datos de manera eficiente y efectiva en los sistemas de gestión de bases de datos relacionales.

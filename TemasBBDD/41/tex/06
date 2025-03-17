@@ -1,0 +1,178 @@
+\chapter{Utilidades para la Seguridad y la Integridad de los Datos}
+
+\section{Sistemas de Control de Acceso y Autorización}
+
+La seguridad y la integridad de los datos son pilares fundamentales en cualquier sistema de gestión de bases de datos (SGBD).  El control de acceso y la autorización son mecanismos cruciales para proteger la información sensible de accesos no autorizados y garantizar la confidencialidad, integridad y disponibilidad de los datos. Este apartado detalla las técnicas y herramientas empleadas en esta área, profundizando en aspectos clave relevantes para un ingeniero informático de postgrado.
+
+\subsection{Gestión de Usuarios y Roles}
+
+La gestión de usuarios y roles constituye la base del control de acceso. Se basa en la creación, administración y organización de identidades digitales que representan a los individuos o sistemas que interactúan con la base de datos.
+
+\begin{itemize}
+    \item \textbf{Usuarios}: Cada usuario se identifica mediante un nombre de usuario único y, típicamente, una contraseña.  Además, se almacenan otros atributos como información de contacto, datos personales y  políticas de autenticación. La robustez del sistema de autenticación (p.ej., uso de contraseñas complejas, autenticación multifactor) es esencial para prevenir accesos no autorizados.  La implementación de políticas de contraseñas, como la caducidad y la obligatoriedad de cambios periódicos, es una práctica recomendada.
+    \item \textbf{Roles}: Los roles representan conjuntos de permisos que se pueden asignar a uno o más usuarios.  La utilización de roles simplifica la gestión de permisos, ya que se pueden modificar los permisos de un rol y automáticamente afectar a todos los usuarios que lo tienen asignado, en lugar de tener que modificar los permisos de cada usuario individualmente.  La jerarquía de roles (p.ej., roles superiores heredan permisos de roles inferiores) es una característica avanzada que facilita la administración en entornos complejos. La asignación de roles a usuarios debe seguir el principio de mínimo privilegio, otorgando solo los permisos necesarios para realizar las tareas asignadas.
+
+\end{itemize}
+
+La creación, modificación y eliminación de usuarios y roles se gestionan a través de comandos específicos del SGBD (p.ej., `CREATE USER`, `CREATE ROLE`, `GRANT`, `REVOKE`). La auditoría de estos eventos (creación, modificación, asignación/revocación de roles y permisos) es esencial para rastrear cambios y detectar actividades sospechosas.
+
+\subsection{Definición y Aplicación de Permisos sobre los Objetos de la Base de Datos}
+
+Una vez definidos usuarios y roles, el siguiente paso es la definición y aplicación de permisos sobre los objetos de la base de datos (tablas, vistas, procedimientos almacenados, etc.). Los permisos controlan qué acciones puede realizar un usuario o rol sobre un objeto específico.
+
+\begin{itemize}
+    \item \textbf{Tipos de Permisos}: Los permisos típicos incluyen:
+        \begin{itemize}
+            \item `SELECT`: Permite la lectura de datos.
+            \item `INSERT`: Permite la inserción de nuevos registros.
+            \item `UPDATE`: Permite la modificación de registros existentes.
+            \item `DELETE`: Permite la eliminación de registros.
+            \item `EXECUTE`: Permite la ejecución de procedimientos almacenados.
+            \item `CREATE`: Permite la creación de objetos (tablas, vistas, etc.).
+            \item `ALTER`: Permite la modificación de la estructura de un objeto.
+            \item `DROP`: Permite la eliminación de un objeto.
+        \end{itemize}
+    \item \textbf{Granularidad de los Permisos}: Los permisos pueden aplicarse a nivel de objeto (p.ej., permiso `SELECT` sobre la tabla `Clientes`) o incluso a nivel de columna (p.ej., permiso `SELECT` sobre la columna `Nombre` de la tabla `Clientes`).
+    \item \textbf{Implementación}: La asignación de permisos se realiza mediante comandos específicos del SGBD (p.ej., `GRANT` para otorgar permisos, `REVOKE` para revocar permisos).  La sintaxis de estos comandos varía ligeramente entre los diferentes SGBD, pero el concepto subyacente es el mismo.
+\end{itemize}
+
+\textit{Ejemplo (PostgreSQL):}
+
+\begin{lstlisting}
+-- Crear un rol llamado 'analista_ventas'
+CREATE ROLE analista_ventas;
+
+-- Otorgar permiso SELECT sobre la tabla 'Ventas' al rol 'analista_ventas'
+GRANT SELECT ON Ventas TO analista_ventas;
+
+-- Otorgar permiso SELECT sobre la columna 'Producto' de la tabla 'Ventas'
+-- al rol 'analista_ventas' (si el SGBD lo permite)
+GRANT SELECT (Producto) ON Ventas TO analista_ventas;
+
+-- Asignar el rol 'analista_ventas' al usuario 'juan'
+GRANT analista_ventas TO juan;
+\end{lstlisting}
+
+La revisión periódica de los permisos es crucial para asegurar que la configuración de seguridad se mantiene adecuada y se ajusta a los cambios en los requerimientos de la organización.
+
+\subsection{Mecanismos para Proteger el Software de Ataques}
+
+Además de proteger los datos almacenados, es fundamental proteger el software que interactúa con la base de datos.  Los ataques al software pueden comprometer la seguridad de la base de datos y exponer la información sensible.
+
+\begin{itemize}
+    \item \textbf{Inyección SQL}:  Es uno de los ataques más comunes y peligrosos.  Se produce cuando datos ingresados por el usuario no son validados adecuadamente antes de ser utilizados en consultas SQL.  Esto permite a un atacante insertar código SQL malicioso que puede modificar, eliminar o robar datos.  La prevención de la inyección SQL requiere:
+        \begin{itemize}
+            \item \textbf{Uso de consultas parametrizadas/preparadas}:  Separar el código SQL de los datos ingresados por el usuario.  El SGBD se encarga de tratar los datos como valores literales, evitando que se interpreten como código.
+            \item \textbf{Validación y saneamiento de la entrada}:  Verificar que los datos ingresados por el usuario cumplan con las expectativas (tipos de datos, longitud, formato) y eliminar o escapar cualquier carácter especial que pueda ser interpretado como código SQL.
+            \item \textbf{Principio de mínimo privilegio para las aplicaciones}:  El código de la aplicación debe conectarse a la base de datos con el mínimo conjunto de permisos necesarios para realizar sus tareas.
+        \end{itemize}
+    \item \textbf{Ataques de Denegación de Servicio (DoS/DDoS)}: Estos ataques buscan sobrecargar el servidor de la base de datos, impidiendo que los usuarios legítimos puedan acceder a ella.  Las estrategias de mitigación incluyen:
+        \begin{itemize}
+            \item \textbf{Limitación de recursos}:  Configurar límites en el uso de recursos (conexiones, memoria, CPU) por parte de los usuarios y las aplicaciones.
+            \item \textbf{Detección y bloqueo de patrones de tráfico sospechosos}:  Utilizar herramientas de detección de intrusiones (IDS) y firewalls para identificar y bloquear patrones de tráfico que indiquen un ataque DoS/DDoS.
+            \item \textbf{Implementación de una arquitectura escalable y resiliente}:  Diseñar la infraestructura de la base de datos para que pueda manejar picos de tráfico y recuperarse de fallos.
+        \end{itemize}
+    \item \textbf{Ataques de Elevación de Privilegios}:  Un atacante explota una vulnerabilidad en el software para obtener permisos superiores a los que tiene asignados.  La prevención requiere:
+        \begin{itemize}
+            \item \textbf{Mantener el software actualizado}:  Aplicar los parches de seguridad que corrigen las vulnerabilidades conocidas.
+            \item \textbf{Realizar pruebas de seguridad (p.ej., pruebas de penetración)}:  Identificar y corregir las vulnerabilidades antes de que sean explotadas por atacantes.
+            \item \textbf{Seguir las mejores prácticas de desarrollo seguro}:  Codificar el software de manera segura, evitando errores comunes que puedan conducir a vulnerabilidades.
+        \end{itemize}
+\end{itemize}
+
+\section{Mecanismos de Integridad}
+
+La integridad de los datos se refiere a la precisión, consistencia y validez de la información almacenada en la base de datos.  Los mecanismos de integridad garantizan que los datos cumplan con las reglas de negocio y las restricciones definidas, protegiéndolos de inconsistencias y errores.
+
+\subsection{Implementación y Gestión de Restricciones de Integridad}
+
+Las restricciones de integridad son reglas que se aplican a los datos para asegurar su validez y consistencia.  Estas restricciones se definen en el esquema de la base de datos y el SGBD las aplica automáticamente cada vez que se realizan operaciones de inserción, actualización o eliminación.
+
+\begin{itemize}
+    \item \textbf{Restricciones de Dominio}:  Definen el tipo de datos y el rango de valores permitidos para una columna.  Ejemplos:
+        \begin{itemize}
+            \item \texttt{NOT NULL}:  Impone que una columna no puede contener valores nulos.
+            \item \texttt{CHECK}:  Especifica una condición que debe ser verdadera para que el valor de una columna sea válido.  Ejemplo:  `CHECK (Precio > 0)`.
+            \item  Tipos de datos:  Especifican el tipo de datos que puede almacenar una columna (p.ej., \texttt{INTEGER}, \texttt{VARCHAR}, \texttt{DATE}).
+        \end{itemize}
+    \item \textbf{Restricciones de Clave}:  Identifican las claves primarias y las claves foráneas.
+        \begin{itemize}
+            \item \textbf{Clave Primaria}:  Identifica de forma única cada fila en una tabla.  Debe ser única y no nula.
+            \item \textbf{Clave Foránea}:  Establece una relación entre dos tablas.  Asegura que los valores en una columna (la clave foránea) correspondan a los valores en la clave primaria de otra tabla.  Esto garantiza la integridad referencial.
+        \end{itemize}
+    \item \textbf{Restricciones de Integridad Referencial}:  Garantizan la consistencia entre las tablas relacionadas mediante claves foráneas.  Las opciones de integridad referencial (p.ej., `ON DELETE CASCADE`, `ON UPDATE CASCADE`, `ON DELETE SET NULL`, `ON UPDATE SET NULL`, `ON DELETE RESTRICT`, `ON UPDATE RESTRICT`) definen cómo debe actuar el SGBD cuando se modifica o elimina un registro en la tabla padre (la tabla con la clave primaria).
+\end{itemize}
+
+\textit{Ejemplo (SQL):}
+
+\begin{lstlisting}
+-- Crear la tabla 'Clientes'
+CREATE TABLE Clientes (
+    ID_Cliente INT PRIMARY KEY,
+    Nombre VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) UNIQUE,
+    Fecha_Nacimiento DATE
+);
+
+-- Crear la tabla 'Pedidos'
+CREATE TABLE Pedidos (
+    ID_Pedido INT PRIMARY KEY,
+    ID_Cliente INT NOT NULL,
+    Fecha_Pedido DATE,
+    Total DECIMAL(10, 2),
+    FOREIGN KEY (ID_Cliente) REFERENCES Clientes(ID_Cliente)
+    ON DELETE CASCADE -- Si se borra un cliente, borrar sus pedidos
+    ON UPDATE RESTRICT -- No permitir actualizar el ID del cliente si tiene pedidos
+);
+\end{lstlisting}
+
+La correcta definición y gestión de las restricciones de integridad es crucial para evitar errores, inconsistencias y la corrupción de los datos.
+
+\subsection{Utilización de Triggers para Mantener la Integridad de los Datos}
+
+Los triggers son procedimientos almacenados especiales que se ejecutan automáticamente en respuesta a eventos específicos en la base de datos (p.ej., inserciones, actualizaciones o eliminaciones de registros).  Los triggers permiten implementar reglas de integridad más complejas que las que se pueden lograr con las restricciones de integridad estándar.  Se utilizan para:
+
+\begin{itemize}
+    \item \textbf{Aplicar reglas de negocio complejas}:  Realizar validaciones que involucran múltiples tablas o condiciones complejas.
+    \item \textbf{Auditar cambios en los datos}:  Registrar información sobre las operaciones realizadas en la base de datos (p.ej., quién, cuándo, qué se modificó).
+    \item \textbf{Mantener datos derivados}:  Actualizar automáticamente valores en otras tablas cuando se modifica una tabla principal.
+    \item \textbf{Implementar lógica de validación compleja}:  Realizar comprobaciones y tomar decisiones basadas en los valores de los datos.
+\end{itemize}
+
+\textit{Ejemplo (PostgreSQL):}
+
+\begin{lstlisting}
+-- Trigger para mantener el stock de un producto
+CREATE OR REPLACE FUNCTION actualizar_stock()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Si se inserta un nuevo detalle de pedido, restar la cantidad al stock
+    IF (TG_OP = 'INSERT') THEN
+        UPDATE Productos
+        SET Stock = Stock - NEW.Cantidad
+        WHERE ID_Producto = NEW.ID_Producto;
+    -- Si se actualiza un detalle de pedido, ajustar el stock
+    ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE Productos
+        SET Stock = Stock - (NEW.Cantidad - OLD.Cantidad)
+        WHERE ID_Producto = NEW.ID_Producto;
+    -- Si se borra un detalle de pedido, sumar la cantidad al stock
+    ELSIF (TG_OP = 'DELETE') THEN
+        UPDATE Productos
+        SET Stock = Stock + OLD.Cantidad
+        WHERE ID_Producto = OLD.ID_Producto;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Crear el trigger para la tabla 'Detalles_Pedido'
+CREATE TRIGGER trigger_actualizar_stock
+AFTER INSERT OR UPDATE OR DELETE ON Detalles_Pedido
+FOR EACH ROW
+EXECUTE FUNCTION actualizar_stock();
+\end{lstlisting}
+
+Los triggers deben utilizarse con precaución, ya que pueden afectar el rendimiento de la base de datos.  Es importante diseñarlos de manera eficiente y evitar lógica compleja dentro de ellos. La correcta utilización de triggers permite ampliar las capacidades de la base de datos para garantizar la integridad de los datos.
+
+```

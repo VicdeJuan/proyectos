@@ -1,0 +1,172 @@
+\chapter{Gestión de Transacciones y Concurrencia}
+
+\section{Conceptos Fundamentales de Transacciones}
+
+\subsection*{Definición de una Transacción y sus Propiedades (ACID)}
+
+Una transacción es una unidad lógica de trabajo que se ejecuta en un sistema de gestión de bases de datos (SGBD).  Representa una secuencia de operaciones de lectura y escritura en la base de datos que se tratan como una única operación atómica.  Esto significa que o bien todas las operaciones se completan con éxito, o bien, si ocurre un fallo en cualquier momento, todas las operaciones se deshacen, restaurando la base de datos a su estado original.  Las transacciones son esenciales para mantener la integridad y consistencia de los datos, especialmente en entornos concurrentes donde múltiples usuarios y procesos pueden acceder y modificar la base de datos simultáneamente.  Las propiedades ACID garantizan la confiabilidad y la robustez de las transacciones.
+
+\begin{itemize}
+    \item \textbf{Atomicidad (Atomicity)}:  Una transacción es atómica. Esto implica que todas las operaciones dentro de la transacción se tratan como una única unidad indivisible. O bien todas las operaciones se ejecutan con éxito (se \textit{confirman} - commit), o bien, si alguna operación falla, todas las operaciones se deshacen (se \textit{revierte} - rollback), y la base de datos vuelve a su estado anterior a la transacción. La atomicidad impide que una transacción se ejecute parcialmente, lo que podría dejar la base de datos en un estado inconsistente.
+
+    \item \textbf{Consistencia (Consistency)}:  Una transacción debe mantener la consistencia de la base de datos. Esto significa que una transacción, al ejecutarse, debe llevar la base de datos de un estado consistente a otro estado consistente, respetando las reglas de integridad definidas (claves primarias, claves foráneas, restricciones, etc.).  Si una transacción viola alguna de estas reglas, el SGBD debe abortar la transacción y revertir los cambios para preservar la integridad de la base de datos. La consistencia garantiza que los datos almacenados en la base de datos siempre sean válidos y coherentes.
+
+    \item \textbf{Aislamiento (Isolation)}:  Las transacciones deben estar aisladas unas de otras.  Esto significa que la ejecución de una transacción debe ser independiente de la ejecución de otras transacciones concurrentes.  Una transacción no debe ser afectada por las operaciones de otras transacciones que se estén ejecutando simultáneamente.  El aislamiento se logra mediante mecanismos de control de concurrencia que garantizan que las transacciones se ejecuten de forma serializable, como si se hubieran ejecutado una tras otra, en serie, sin entrelazamiento.  Existen diferentes niveles de aislamiento que definen el grado en que una transacción está aislada de otras.
+
+    \item \textbf{Durabilidad (Durability)}:  Una vez que una transacción se ha confirmado, los cambios realizados en la base de datos deben ser permanentes y persistentes, incluso en caso de fallos del sistema (por ejemplo, caídas de energía, fallos de hardware).  El SGBD garantiza la durabilidad mediante mecanismos como el registro de transacciones (write-ahead logging, WAL), que registra todas las operaciones de la transacción en un archivo de registro antes de realizar los cambios en la base de datos propiamente dicha.  En caso de fallo, el registro permite recuperar la base de datos a un estado consistente.
+\end{itemize}
+
+\subsection*{Estados de una Transacción}
+
+Una transacción atraviesa diferentes estados durante su ciclo de vida. Los estados más comunes son:
+
+\begin{itemize}
+    \item \textbf{Activa (Active)}: La transacción está en curso y se están ejecutando sus operaciones de lectura y escritura.  Es el estado inicial de una transacción.
+
+    \item \textbf{Parcialmente confirmada (Partially Committed)}:  Se han ejecutado todas las operaciones de la transacción, pero aún no se han guardado los cambios permanentemente en la base de datos.  El SGBD ha verificado que la transacción cumple con todas las restricciones de integridad.
+
+    \item \textbf{Confirmada (Committed)}: La transacción ha finalizado con éxito.  Todos los cambios realizados por la transacción se han guardado permanentemente en la base de datos y son visibles para otras transacciones.  Se han escrito todos los datos modificados en los ficheros permanentes.
+
+    \item \textbf{Fallida (Failed)}: La ejecución de la transacción ha encontrado un error (por ejemplo, una violación de restricción, un error de hardware, un conflicto de concurrencia) y la transacción no puede continuar.
+
+    \item \textbf{Abortada/Revertida (Aborted/Rolled Back)}:  El estado de una transacción después de que ha fallado.  El SGBD ha deshecho todas las operaciones de la transacción y la base de datos ha vuelto a su estado anterior a la transacción.  Los cambios realizados por la transacción ya no son visibles.
+\end{itemize}
+
+\section{Control de Concurrencia para Transacciones}
+
+\subsection*{La Necesidad del Control de Concurrencia para Garantizar la Serializabilidad}
+
+El control de concurrencia es un mecanismo esencial en los SGBD que permite a múltiples transacciones acceder y modificar la base de datos simultáneamente sin comprometer la integridad y la consistencia de los datos.  Sin control de concurrencia, las transacciones concurrentes podrían entrelazar sus operaciones, lo que llevaría a resultados incorrectos e inconsistentes.
+
+La serializabilidad es la propiedad fundamental que se busca en el control de concurrencia.  Una planificación de transacciones (el orden en que se ejecutan las operaciones de las transacciones concurrentes) es serializable si es equivalente al resultado de ejecutar las transacciones de forma secuencial, en algún orden.  En otras palabras, el sistema garantiza que el resultado de la ejecución concurrente sea el mismo que si las transacciones se hubieran ejecutado una tras otra, sin entrelazamiento.  La serializabilidad asegura que las transacciones se ejecuten de forma aislada, incluso en un entorno concurrente.
+
+Los problemas que el control de concurrencia intenta evitar son:
+
+\begin{itemize}
+    \item \textbf{Pérdida de actualizaciones (Lost Updates)}: Dos o más transacciones leen el mismo dato, lo modifican y escriben los nuevos valores de vuelta a la base de datos. Si las escrituras se entrelazan de forma que la segunda transacción sobreescribe los cambios de la primera, se perderá una actualización.
+
+    \item \textbf{Lecturas sucias (Dirty Reads)}: Una transacción lee datos que han sido modificados por otra transacción que aún no se ha confirmado. Si la segunda transacción revierte sus cambios, la primera transacción habrá leído datos inválidos.
+
+    \item \textbf{Lecturas no repetibles (Non-repeatable Reads)}:  Una transacción lee el mismo dato dos veces, y en el intervalo entre las dos lecturas, otra transacción modifica el dato y lo confirma.  La primera transacción leerá diferentes valores en cada lectura.
+
+    \item \textbf{Lecturas fantasma (Phantom Reads)}: Una transacción realiza una consulta que devuelve un conjunto de filas que cumplen una condición.  Si, durante la ejecución de la transacción, otra transacción inserta una nueva fila que cumple la misma condición, la consulta de la primera transacción devolverá un conjunto de resultados diferente en una lectura posterior.
+\end{itemize}
+
+\subsection*{Protocolos de Bloqueo (Lock-Based Protocols)}
+
+Los protocolos de bloqueo son uno de los mecanismos más comunes para el control de concurrencia.  Estos protocolos utilizan bloqueos (locks) para controlar el acceso a los datos.  Antes de que una transacción pueda leer o escribir un dato, debe adquirir un bloqueo sobre ese dato.  Existen dos tipos básicos de bloqueos:
+
+\begin{itemize}
+    \item \textbf{Bloqueos Compartidos (Shared Locks, S-locks)}: Permiten que múltiples transacciones lean el mismo dato simultáneamente.
+
+    \item \textbf{Bloqueos Exclusivos (Exclusive Locks, X-locks)}: Permiten que una sola transacción lea y escriba un dato.  Ninguna otra transacción puede adquirir un bloqueo compartido o exclusivo sobre el mismo dato mientras exista un bloqueo exclusivo.
+\end{itemize}
+
+Los protocolos de bloqueo más comunes son:
+
+\begin{itemize}
+    \item \textbf{Protocolo de Bloqueo de Dos Fases (Two-Phase Locking, 2PL)}:  Es el protocolo de bloqueo más utilizado y garantiza la serializabilidad.  Una transacción debe seguir dos fases:
+    \begin{itemize}
+        \item \textbf{Fase de Crecimiento}:  La transacción adquiere bloqueos. No se pueden liberar bloqueos.
+        \item \textbf{Fase de Encogimiento}: La transacción libera bloqueos. No se pueden adquirir más bloqueos.
+    \end{itemize}
+    Una transacción que sigue el protocolo 2PL está garantizada que es serializable.  Existen variaciones del protocolo 2PL, como el 2PL estricto, que libera todos los bloqueos exclusivos al final de la transacción.
+
+    \item \textbf{Protocolo de Bloqueo de Árbol (Tree Locking Protocol)}: Es una variante del 2PL para estructuras de datos jerárquicas (como índices en árbol B).  El protocolo define reglas específicas para la adquisición y liberación de bloqueos en la estructura de árbol, reduciendo la posibilidad de interbloqueos y mejorando el rendimiento en ciertas operaciones.
+\end{itemize}
+
+Los protocolos de bloqueo pueden sufrir de interbloqueos (deadlocks), que ocurren cuando dos o más transacciones se bloquean mutuamente, esperando que la otra libere un recurso que necesitan.  Existen estrategias para la detección y resolución de interbloqueos, como la detección basada en grafos de espera (wait-for graph) y la prevención basada en el ordenamiento de bloqueos.
+
+\subsection*{Protocolos Basados en Marcas de Tiempo (Timestamp-Based Protocols)}
+
+Los protocolos basados en marcas de tiempo son otra alternativa a los protocolos de bloqueo para el control de concurrencia.  Cada transacción se asigna una marca de tiempo única (timestamp) al inicio de la transacción, la cual indica su orden de ejecución. Las marcas de tiempo generalmente se generan a partir de un contador del sistema o de una combinación de reloj del sistema y el ID de la transacción.  La serialización se logra ejecutando las transacciones en el orden de sus marcas de tiempo.
+
+Cuando una transacción intenta leer o escribir un dato, el protocolo compara la marca de tiempo de la transacción con la marca de tiempo de lectura y escritura del dato.  Si existe un conflicto (por ejemplo, una transacción intenta escribir un dato que ya ha sido leído por una transacción con una marca de tiempo posterior), una de las transacciones debe ser abortada y revertida.
+
+Las ventajas de los protocolos basados en marcas de tiempo son:
+
+\begin{itemize}
+    \item Eliminan la posibilidad de interbloqueos, ya que las transacciones no se bloquean mutuamente.
+    \item Pueden ofrecer un mejor rendimiento en algunos escenarios.
+\end{itemize}
+
+Sin embargo, también tienen algunas desventajas:
+
+\begin{itemize}
+    \item  Pueden causar abortos en cascada (cascading aborts), donde el aborto de una transacción puede provocar el aborto de otras transacciones.
+    \item  La gestión de las marcas de tiempo y la detección de conflictos puede añadir una sobrecarga.
+\end{itemize}
+
+Los protocolos basados en marcas de tiempo más comunes son:
+
+\begin{itemize}
+    \item \textbf{Protocolo de Ordenamiento de Marca de Tiempo (Timestamp Ordering Protocol)}:  Las operaciones de lectura y escritura se ejecutan en el orden de las marcas de tiempo de las transacciones.  Si una operación viola el orden de las marcas de tiempo, la transacción se aborta.
+
+    \item \textbf{Protocolo de Marca de Tiempo Estricto (Strict Timestamp Ordering Protocol)}: Una variante del protocolo de ordenamiento de marcas de tiempo, que asegura que las operaciones de lectura y escritura no se retrasen más allá de la marca de tiempo de la transacción.
+\end{itemize}
+
+\subsection*{Niveles de Aislamiento}
+
+Los niveles de aislamiento definen el grado en que una transacción está aislada de otras transacciones concurrentes.  Los niveles de aislamiento controlan la visibilidad de los cambios no confirmados de otras transacciones y la capacidad de una transacción de leer datos que pueden ser modificados por otras transacciones. Los niveles de aislamiento se definen en el estándar SQL y se implementan por el SGBD.  Los niveles de aislamiento más comunes, de menor a mayor aislamiento, son:
+
+\begin{itemize}
+    \item \textbf{READ UNCOMMITTED (Lectura no confirmada)}:  Es el nivel de aislamiento más bajo. Una transacción puede leer datos que han sido modificados por otras transacciones, incluso si esas transacciones aún no se han confirmado.  Esto puede provocar lecturas sucias. Este nivel de aislamiento no garantiza la consistencia de la base de datos.
+
+    \item \textbf{READ COMMITTED (Lectura confirmada)}:  Una transacción solo puede leer datos que han sido confirmados por otras transacciones.  Evita las lecturas sucias, pero aún puede sufrir de lecturas no repetibles.
+
+    \item \textbf{REPEATABLE READ (Lectura repetible)}:  Una transacción puede leer el mismo dato varias veces y siempre obtendrá el mismo valor, incluso si otras transacciones modifican los datos y los confirman.  Evita las lecturas sucias y las lecturas no repetibles, pero aún puede sufrir de lecturas fantasma.
+
+    \item \textbf{SERIALIZABLE (Serializable)}:  Es el nivel de aislamiento más alto. Las transacciones se ejecutan como si se hubieran ejecutado una tras otra, en serie.  Este nivel de aislamiento evita todos los problemas de concurrencia: lecturas sucias, lecturas no repetibles y lecturas fantasma.  Garantiza la serializabilidad, pero puede reducir el rendimiento debido a la necesidad de bloqueos más restrictivos.
+\end{itemize}
+
+La elección del nivel de aislamiento es un compromiso entre la consistencia y el rendimiento.  Los niveles de aislamiento más altos ofrecen una mayor consistencia, pero pueden reducir el rendimiento debido a la necesidad de bloqueos más restrictivos y una mayor serialización de las transacciones.  Los niveles de aislamiento más bajos ofrecen un mayor rendimiento, pero pueden comprometer la consistencia de los datos.  El nivel de aislamiento predeterminado varía según el SGBD.  Es importante entender las implicaciones de cada nivel de aislamiento y elegir el nivel adecuado para las necesidades de la aplicación.
+
+\section{Gestión de la Memoria Intermedia y su Impacto en las Transacciones}
+
+\subsection*{Políticas de Sustitución de Bloques en la Memoria Intermedia (e.g., MRU)}
+
+El gestor de memoria intermedia (buffer manager) es un componente crucial del SGBD que gestiona la transferencia de datos entre el almacenamiento en disco y la memoria principal (RAM).  Dado que el acceso a disco es mucho más lento que el acceso a la memoria, el gestor de memoria intermedia intenta mantener en la memoria los datos que se acceden con mayor frecuencia, reduciendo así el número de operaciones de entrada/salida (I/O) en disco y mejorando el rendimiento del SGBD.  La memoria intermedia se organiza en bloques (página de datos) que contienen datos de la base de datos.
+
+Cuando una transacción necesita leer un bloque de datos, el gestor de memoria intermedia primero comprueba si el bloque ya está en la memoria intermedia.  Si es así, se lee directamente de la memoria (cache hit). Si el bloque no está en la memoria intermedia (cache miss), el gestor de memoria intermedia debe leer el bloque del disco y cargarlo en la memoria intermedia.  Si la memoria intermedia está llena, el gestor de memoria intermedia debe sustituir uno o más bloques existentes por el nuevo bloque.
+
+Las políticas de sustitución de bloques determinan qué bloques se deben eliminar de la memoria intermedia cuando se necesita espacio para nuevos bloques.  El objetivo de las políticas de sustitución es minimizar el número de cache misses y maximizar el rendimiento.  Las políticas de sustitución comunes incluyen:
+
+\begin{itemize}
+    \item \textbf{LRU (Least Recently Used - Menos Recientemente Usado)}: El bloque que no se ha accedido durante más tiempo se sustituye. Es una política común y generalmente efectiva, ya que asume que los bloques que se han utilizado recientemente tienen una mayor probabilidad de ser utilizados de nuevo.
+
+    \item \textbf{MRU (Most Recently Used - Más Recientemente Usado)}: El bloque que se ha utilizado más recientemente se sustituye.  Esta política puede ser efectiva en ciertos escenarios, como el acceso secuencial a los datos, pero puede tener un peor rendimiento en otros.
+
+    \item \textbf{FIFO (First-In, First-Out - Primero en Entrar, Primero en Salir)}: El bloque que se cargó primero en la memoria intermedia se sustituye. Es una política simple, pero no considera la frecuencia de acceso a los bloques.
+
+    \item \textbf{LFU (Least Frequently Used - Menos Frecuentemente Usado)}: El bloque que se ha utilizado con menos frecuencia se sustituye. Requiere el seguimiento del número de accesos a cada bloque.
+
+    \item \textbf{Clocksweep}: Una aproximación a LRU. Usa un bit por bloque para indicar si ha sido usado. Recorre los bloques circularmente y, si un bloque no está usado, es seleccionado. Si un bloque está usado, se marca como no usado y se avanza.
+
+    \item \textbf{Random (Aleatoria)}: Un bloque se selecciona aleatoriamente para ser sustituido. Es simple de implementar, pero no es muy eficiente.
+\end{itemize}
+
+La elección de la política de sustitución depende de las características de la carga de trabajo de la base de datos, incluyendo patrones de acceso a los datos.  Los SGBD suelen proporcionar opciones para configurar la política de sustitución.
+
+\subsection*{Interacción entre el Gestor de la Memoria Intermedia y el Subsistema de Recuperación de Caídas}
+
+El gestor de memoria intermedia y el subsistema de recuperación de caídas (crash recovery subsystem) son dos componentes críticos que trabajan en conjunto para garantizar la durabilidad y la consistencia de las transacciones, especialmente en caso de fallos del sistema.  La interacción entre estos dos subsistemas es esencial para proteger la integridad de los datos.
+
+El subsistema de recuperación de caídas se encarga de restaurar la base de datos a un estado consistente después de un fallo. Utiliza información almacenada en el registro de transacciones (transaction log, write-ahead log o WAL) para deshacer las transacciones incompletas y rehacer las transacciones confirmadas que no se hayan volcado al disco. El WAL es un registro persistente que almacena información sobre todas las operaciones de escritura que se han realizado en la base de datos.
+
+La interacción entre el gestor de memoria intermedia y el subsistema de recuperación de caídas se basa en los siguientes principios:
+
+\begin{itemize}
+    \item \textbf{Write-Ahead Logging (WAL)}: Antes de que se realice cualquier cambio en la memoria intermedia (y, por lo tanto, potencialmente en disco), la información sobre ese cambio se debe escribir primero en el registro de transacciones (WAL). Esto garantiza que, en caso de fallo, el sistema tenga la información necesaria para rehacer o deshacer los cambios.
+
+    \item \textbf{Volcado de Datos al Disco (Force/Steal)}: El gestor de memoria intermedia determina cuándo se vuelcan los bloques modificados en la memoria intermedia al disco.
+    \begin{itemize}
+        \item \textbf{Política de Forzado (Force Policy)}:  Una política de forzado requiere que cada bloque modificado en la memoria intermedia se vuelque al disco (se fuerce al disco) inmediatamente antes de que la transacción se confirme. Esto garantiza la durabilidad, pero puede reducir el rendimiento.
+        \item \textbf{Política de Robar (Steal Policy)}:  Una política de robar permite que los bloques modificados en la memoria intermedia se vuelquen al disco en cualquier momento, incluso antes de que la transacción se confirme.  Esto mejora el rendimiento, ya que reduce el número de operaciones de I/O durante el commit.
+    \end{itemize}
+
+    \item \textbf{Atomicity y Durability asegurada:} La combinación de WAL y la política de volcado al disco asegura que las transacciones sean atómicas y duraderas.
+\end{itemize}
+
+El gestor de memoria intermedia debe trabajar en estrecha colaboración con el subsistema de recuperación de caídas para garantizar que los cambios realizados en la memoria intermedia se reflejen correctamente en el disco y que la información necesaria para la recuperación esté disponible en el registro de transacciones. La sincronización precisa entre estos dos subsistemas es fundamental para mantener la integridad y la consistencia de la base de datos. La elección de las políticas de volcado al disco (force/steal) y la frecuencia con la que se escribe en el WAL influyen en el rendimiento y en la complejidad de la recuperación de caídas.
+
+```

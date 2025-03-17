@@ -1,0 +1,225 @@
+\chapter{Estructuras del Modelo de Datos Relacional}
+\label{chap:estructuras-relacionales}
+
+Este capítulo se centra en la estructura fundamental del modelo de datos relacional, piedra angular en el diseño y gestión de bases de datos. Se exploran los componentes básicos, incluyendo dominios de atributos, esquemas de relación, claves y restricciones de integridad, proporcionando una base sólida para comprender y aplicar este modelo en entornos de ingeniería informática de alto nivel.
+
+\section{Dominios de Atributos}
+\label{sec:dominios-atributos}
+
+El dominio de un atributo define el conjunto de valores permitidos que ese atributo puede tomar. Es la especificación del tipo de datos para cada atributo dentro de una relación.  La correcta definición de los dominios es crucial para la integridad y la consistencia de los datos.  Un dominio se caracteriza por:
+
+\begin{itemize}
+    \item \textbf{Tipo de Datos:} Define la naturaleza del valor almacenado. Ejemplos comunes incluyen:
+        \begin{itemize}
+            \item \textbf{Cadena de Caracteres (VARCHAR, CHAR):} Almacena texto, con longitud variable o fija.
+            \item \textbf{Numérico (INTEGER, FLOAT, DECIMAL):} Representa valores numéricos enteros, de punto flotante y de precisión fija, respectivamente.
+            \item \textbf{Fecha y Hora (DATE, TIME, DATETIME):} Almacena información temporal.
+            \item \textbf{Booleano (BOOLEAN):} Representa valores lógicos (verdadero/falso).
+            \item \textbf{Tipos de Datos Definidos por el Usuario:} Permiten la creación de tipos específicos para modelar conceptos complejos (ej., tipo `Direccion` con atributos `Calle`, `Ciudad`, `CodigoPostal`).
+        \end{itemize}
+    \item \textbf{Restricciones de Dominio:} Definen las reglas que los valores del atributo deben cumplir.  Estas restricciones pueden incluir:
+        \begin{itemize}
+            \item \textbf{Rangos:}  Limitan los valores numéricos a un intervalo específico (ej., un atributo `Edad` entre 0 y 120).
+            \item \textbf{Formatos:} Especifican el patrón que deben seguir las cadenas de caracteres (ej., un atributo `CodigoPostal` con el formato `xxxxx`).
+            \item \textbf{Listas de Valores Permitidos:} Definen un conjunto discreto de valores que el atributo puede tomar (ej., un atributo `EstadoCivil` con valores `Soltero`, `Casado`, `Divorciado`, `Viudo`).
+        \end{itemize}
+    \item \textbf{Tamaño (para tipos de datos de longitud variable):}  Define la longitud máxima de un valor (ej., un atributo `Nombre` con un máximo de 100 caracteres).
+    \item \textbf{Valor por Defecto:}  Especifica el valor que el atributo tomará si no se proporciona explícitamente (ej., un atributo `FechaRegistro` con valor por defecto `CURRENT\_TIMESTAMP`).
+    \item \textbf{Permiso de Nulidad:} Indica si el atributo puede tener un valor nulo (representando la ausencia de información).  Un atributo puede ser `NOT NULL` (no permite nulos) o `NULL` (permite nulos).
+\end{itemize}
+
+La correcta definición de los dominios de atributos es crucial para la integridad de los datos. Por ejemplo:
+
+\begin{verbatim}
+CREATE TABLE Estudiantes (
+    ID\_Estudiante INTEGER PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    FechaNacimiento DATE,
+    Promedio FLOAT CHECK (Promedio >= 0 AND Promedio <= 10)
+);
+\end{verbatim}
+
+En este ejemplo, el atributo `Promedio` tiene un dominio que especifica un tipo de dato `FLOAT` y una restricción de dominio `CHECK` para asegurar que los valores estén entre 0 y 10.  El atributo `Nombre` es `NOT NULL`.
+
+\section{Esquemas de Relación}
+\label{sec:esquemas-relacion}
+
+Un esquema de relación es la estructura que define una tabla en una base de datos relacional. Formalmente, un esquema de relación, denotado como $R(A_1, A_2, ..., A_n)$, está compuesto por:
+
+\begin{itemize}
+    \item \textbf{Nombre de la Relación (R):} Un identificador único para la tabla.
+    \item \textbf{Conjunto de Atributos (A\textsubscript{1}, A\textsubscript{2}, ..., A\textsubscript{n}):} Cada atributo representa una propiedad o característica de las entidades almacenadas en la relación. Cada atributo pertenece a un dominio específico.
+\end{itemize}
+
+Un esquema de relación define la estructura lógica de una tabla, especificando sus atributos y sus tipos de datos asociados. Un ejemplo sería: `Estudiantes(ID\_Estudiante, Nombre, Apellido, FechaNacimiento, Carrera)`.
+
+\subsection*{El Proceso de Agrupar Atributos para Formar Esquemas de Relación}
+\label{sec:agrupacion-atributos}
+
+El diseño de esquemas de relación es un aspecto fundamental del modelado de bases de datos. El proceso de agrupar atributos implica la identificación de entidades y sus atributos, y la organización de estos atributos en relaciones coherentes.  Este proceso a menudo implica los siguientes pasos:
+
+\begin{enumerate}
+    \item \textbf{Identificación de Entidades:} Reconocer los objetos o conceptos clave que se van a representar en la base de datos (ej., `Estudiantes`, `Cursos`, `Profesores`).
+    \item \textbf{Identificación de Atributos:}  Determinar las propiedades o características de cada entidad (ej., para `Estudiantes`: `ID\_Estudiante`, `Nombre`, `Apellido`, `FechaNacimiento`, `Carrera`).
+    \item \textbf{Determinación de Relaciones:} Identificar las relaciones entre las entidades (ej., un `Estudiante` se inscribe en un `Curso`, un `Profesor` imparte un `Curso`).
+    \item \textbf{Normalización (Opcional, pero recomendado):} Aplicar las formas normales para reducir la redundancia de datos y mejorar la integridad. La normalización implica descomponer las relaciones en relaciones más pequeñas para eliminar dependencias anómalas.
+    \item \textbf{Definición de Esquemas de Relación:} Crear los esquemas de relación, definiendo el nombre de la relación y sus atributos.
+\end{enumerate}
+
+\textbf{Ejemplo:}
+
+Consideremos un escenario donde se requiere modelar información sobre estudiantes y cursos. Inicialmente, podríamos identificar las siguientes entidades y atributos:
+
+\begin{itemize}
+    \item \textbf{Entidad: Estudiante}
+    \begin{itemize}
+        \item Atributos: `ID\_Estudiante`, `Nombre`, `Apellido`, `FechaNacimiento`, `Direccion`, `Telefono`.
+    \end{itemize}
+    \item \textbf{Entidad: Curso}
+    \begin{itemize}
+        \item Atributos: `ID\_Curso`, `NombreCurso`, `Creditos`.
+    \end{itemize}
+    \item \textbf{Entidad: Inscripción} (representando la relación entre estudiantes y cursos)
+    \begin{itemize}
+        \item Atributos: `ID\_Estudiante`, `ID\_Curso`, `FechaInscripcion`, `Nota`.
+    \end{itemize}
+\end{itemize}
+
+Tras este análisis inicial, podríamos crear los siguientes esquemas de relación:
+
+\begin{verbatim}
+Estudiantes(ID\_Estudiante, Nombre, Apellido, FechaNacimiento, Direccion, Telefono)
+Cursos(ID\_Curso, NombreCurso, Creditos)
+Inscripciones(ID\_Estudiante, ID\_Curso, FechaInscripcion, Nota)
+\end{verbatim}
+
+En este ejemplo, `Inscripciones` es una relación que modela una relación muchos a muchos entre `Estudiantes` y `Cursos`. El `ID\_Estudiante` y el `ID\_Curso` actuarán como claves foráneas en la relación `Inscripciones`, referenciando las claves primarias de las relaciones `Estudiantes` y `Cursos`, respectivamente.
+
+\section{Claves}
+\label{sec:claves}
+
+Las claves son atributos o conjuntos de atributos que identifican de manera única cada tupla (fila) en una relación. Son fundamentales para la integridad de los datos y para establecer relaciones entre diferentes tablas.
+
+\subsection{Superclave}
+\label{sec:superclave}
+
+Una superclave es un conjunto de uno o más atributos que, tomados en conjunto, permiten identificar de forma única cada tupla en una relación.
+
+\textbf{Ejemplo:} En la relación `Estudiantes(ID\_Estudiante, Nombre, Apellido)`, el atributo `ID\_Estudiante` es una superclave.  El conjunto `{ID\_Estudiante, Nombre}` también es una superclave.
+
+\subsection{Clave Candidata}
+\label{sec:clave-candidata}
+
+Una clave candidata es una superclave mínima; es decir, una superclave de la cual ningún subconjunto propio es también una superclave.  Las claves candidatas representan las alternativas para la identificación única de las tuplas.
+
+\textbf{Ejemplo:} En la relación `Estudiantes(ID\_Estudiante, NumeroSeguroSocial, Nombre, Apellido)`, si `NumeroSeguroSocial` también identifica de forma única a cada estudiante, entonces tanto `{ID\_Estudiante}` como `{NumeroSeguroSocial}` son claves candidatas.
+
+\subsection{Clave Primaria}
+\label{sec:clave-primaria}
+
+La clave primaria es una clave candidata elegida para identificar de manera única las tuplas en una relación.  Solo una clave candidata puede ser designada como clave primaria por relación.  La elección de la clave primaria suele basarse en criterios como:
+
+\begin{itemize}
+    \item \textbf{Estabilidad:}  La clave primaria no debe cambiar con el tiempo.
+    \item \textbf{Simplicidad:} Debe ser fácil de usar y entender.
+    \item \textbf{Disponibilidad:} El atributo clave primaria debe estar siempre disponible y no puede ser nulo (NOT NULL).
+\end{itemize}
+
+\textbf{Ejemplo:} En la relación `Estudiantes(ID\_Estudiante, NumeroSeguroSocial, Nombre, Apellido)`, podríamos elegir `ID\_Estudiante` como la clave primaria.
+
+\subsection{Clave Foránea (Foreign Key)}
+\label{sec:clave-foranea}
+
+Una clave foránea es un conjunto de atributos en una relación que referencia la clave primaria de otra relación (o, en algunos casos, la misma relación, en el caso de relaciones recursivas).  Las claves foráneas establecen enlaces entre tablas, permitiendo la integridad referencial y la recuperación de datos relacionados.
+
+\begin{itemize}
+    \item \textbf{Referencia:} La clave foránea en una relación debe corresponder a la clave primaria en otra relación (o en la misma relación).
+    \item \textbf{Integridad Referencial:} La base de datos debe asegurar que los valores de la clave foránea existan en la clave primaria referenciada (o sean nulos, dependiendo de las reglas de integridad).
+\end{itemize}
+
+\textbf{Ejemplo:}
+
+Consideremos las relaciones `Estudiantes(ID\_Estudiante, Nombre)` y `Cursos(ID\_Curso, NombreCurso)`. Para representar que un estudiante se inscribe en un curso, crearíamos una relación `Inscripciones(ID\_Estudiante, ID\_Curso, FechaInscripcion)`. En esta última relación, `ID\_Estudiante` es una clave foránea que referencia la clave primaria `ID\_Estudiante` de la tabla `Estudiantes`, y `ID\_Curso` es una clave foránea que referencia la clave primaria `ID\_Curso` de la tabla `Cursos`.  Esto permite vincular un estudiante específico a un curso específico a través de la tabla `Inscripciones`.
+
+\section{Restricciones de Integridad}
+\label{sec:restricciones-integridad}
+
+Las restricciones de integridad son reglas que se aplican a los datos almacenados en una base de datos para garantizar su consistencia, validez y precisión.  Estas restricciones aseguran que los datos cumplan con las reglas del negocio y los requisitos del diseño de la base de datos.  Existen varios tipos de restricciones de integridad:
+
+\subsection{Restricciones de Dominio}
+\label{sec:restricciones-dominio}
+
+Estas restricciones definen las reglas sobre los valores que un atributo puede tomar.  Como se describió en la Sección \ref{sec:dominios-atributos}, las restricciones de dominio incluyen:
+
+\begin{itemize}
+    \item \textbf{Tipo de Datos:}  Especifica el tipo de datos permitido (ej., `INTEGER`, `VARCHAR`, `DATE`).
+    \item \textbf{Rangos:} Limita los valores a un rango específico (ej., `Edad` entre 0 y 120).
+    \item \textbf{Formatos:}  Define el formato de los valores (ej., un campo `CodigoPostal` debe seguir el formato `xxxxx`).
+    \item \textbf{Listas de Valores Permitidos:} Define un conjunto predefinido de valores (ej., un atributo `EstadoCivil` con valores `Soltero`, `Casado`, `Divorciado`).
+    \item \textbf{Valor por Defecto:} Especifica el valor predeterminado si no se proporciona un valor explícito.
+    \item \textbf{Permiso de Nulidad (NOT NULL/NULL):}  Indica si el atributo puede tener un valor nulo.
+    \item \textbf{Restricciones CHECK:} Expresiones lógicas que deben ser verdaderas para que un valor sea válido (ej., `CHECK (Promedio >= 0 AND Promedio <= 10)`).
+\end{itemize}
+
+\subsection{Restricciones de Clave (Integridad de Entidad)}
+\label{sec:restricciones-clave}
+
+Estas restricciones se enfocan en la clave primaria de una relación.  La restricción fundamental es:
+
+\begin{itemize}
+    \item \textbf{No Nulidad de la Clave Primaria:} La clave primaria no puede tener valores nulos.  Cada tupla debe tener un valor único y no nulo para la clave primaria. Esto garantiza que cada entidad se pueda identificar de forma inequívoca.
+\end{itemize}
+
+\subsection{Restricciones de Integridad Referencial}
+\label{sec:restricciones-integridad-referencial}
+
+Estas restricciones se aplican a las claves foráneas y garantizan la consistencia entre las relaciones. La regla básica es:
+
+\begin{itemize}
+    \item \textbf{Coherencia de la Clave Foránea:} Los valores de una clave foránea deben existir en la clave primaria de la relación referenciada (o ser nulos, dependiendo de las reglas de integridad referencial).  Esto asegura que no haya referencias a entidades inexistentes.
+\end{itemize}
+
+Las restricciones de integridad referencial se pueden implementar de varias maneras:
+
+\begin{itemize}
+    \item \textbf{ON DELETE:} Define lo que sucede cuando se elimina una tupla de la tabla referenciada.
+        \begin{itemize}
+            \item \textbf{CASCADE:} Elimina las tuplas correspondientes en la tabla que contiene la clave foránea.
+            \item \textbf{SET NULL:} Establece la clave foránea a `NULL` en las tuplas correspondientes.
+            \item \textbf{SET DEFAULT:} Establece la clave foránea al valor por defecto definido.
+            \item \textbf{RESTRICT (o NO ACTION):}  Impide la eliminación de la tupla referenciada si existen tuplas relacionadas en la tabla que contiene la clave foránea.
+        \end{itemize}
+    \item \textbf{ON UPDATE:} Define lo que sucede cuando se actualiza la clave primaria en la tabla referenciada. Las opciones son similares a `ON DELETE`.
+\end{itemize}
+
+\textbf{Ejemplo de restricciones de integridad referencial:}
+
+```sql
+-- Definición de las tablas Estudiantes y Cursos
+CREATE TABLE Estudiantes (
+    ID\_Estudiante INTEGER PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Cursos (
+    ID\_Curso INTEGER PRIMARY KEY,
+    NombreCurso VARCHAR(100) NOT NULL
+);
+
+-- Definición de la tabla Inscripciones con clave foránea
+CREATE TABLE Inscripciones (
+    ID\_Estudiante INTEGER,
+    ID\_Curso INTEGER,
+    FechaInscripcion DATE,
+    PRIMARY KEY (ID\_Estudiante, ID\_Curso),
+    FOREIGN KEY (ID\_Estudiante) REFERENCES Estudiantes(ID\_Estudiante) ON DELETE CASCADE,
+    FOREIGN KEY (ID\_Curso) REFERENCES Cursos(ID\_Curso) ON DELETE RESTRICT
+);
+```
+
+En este ejemplo:
+*   La tabla `Inscripciones` tiene dos claves foráneas: `ID\_Estudiante` que referencia a la tabla `Estudiantes` y `ID\_Curso` que referencia a la tabla `Cursos`.
+*   `ON DELETE CASCADE` en la clave foránea `ID\_Estudiante` significa que si se elimina un estudiante de la tabla `Estudiantes`, también se eliminarán todas las inscripciones de ese estudiante en la tabla `Inscripciones`.
+*   `ON DELETE RESTRICT` en la clave foránea `ID\_Curso` significa que no se puede eliminar un curso de la tabla `Cursos` si existen inscripciones a ese curso en la tabla `Inscripciones`.
+
+Las restricciones de integridad son esenciales para mantener la calidad y la fiabilidad de los datos en una base de datos relacional. Implementar estas restricciones cuidadosamente es crucial para prevenir errores y asegurar la consistencia de la información.

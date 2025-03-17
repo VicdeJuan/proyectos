@@ -1,0 +1,62 @@
+\documentclass[12pt]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\geometry{a4paper, margin=1in}
+
+
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning} % Librerías necesarias
+
+\onehalfspacing
+
+\title{\textbf{Tema 38 – Modelo de datos relacional. Estructuras. Operaciones. Álgebra relacional }}    
+\author{}
+\date{\today}
+
+\begin{document}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+        ->,
+        >=stealth,
+        shorten >=1pt,
+        auto,
+        node distance=2.8cm,
+        semithick
+        ]
+
+        \node[state] (rel1) {Relación R1};
+        \node[state] (rel2) [right of=rel1] {Relación R2};
+        \node[state] (union) [below of=rel1] {Unión ($\cup$)};
+        \node[state] (select) [below of=rel2] {Selección ($\sigma$)};
+        \node[state] (join) [right of=union] {Natural Join ($\bowtie$)};
+        \node[state] (project) [below of=join] {Proyección ($\Pi$)};
+    
+        \path (rel1) edge (union)
+              (rel2) edge (union)
+              (rel1) edge (select)
+              (select) edge (project)
+              (rel1) edge (join)
+              (rel2) edge (join)
+              (union) edge (join);
+    
+        \draw[dashed] (rel1) -- (0,-4.2);
+        \draw[dashed] (rel2) -- (6,-4.2);
+        \draw[dashed] (join) -- (4,-5.3);
+    
+    \end{tikzpicture}
+    \caption{Ejemplo de composición de operaciones del álgebra relacional.}
+    \label{fig:algebra}
+\end{figure}
+
+
+\end{document}

@@ -1,0 +1,107 @@
+\chapter{Procesamiento de Consultas Distribuidas}
+
+\section{Optimización de Consultas Distribuidas}
+
+El procesamiento de consultas distribuidas representa un desafío fundamental en los sistemas de gestión de bases de datos distribuidas (SGBDD). La optimización de estas consultas se centra en la búsqueda de la estrategia de ejecución más eficiente para minimizar el coste total, que en este contexto, es una función de diversos factores, siendo el más crítico el coste de comunicación entre los sitios.
+
+\subsection{Objetivo de la Optimización}
+
+El objetivo primordial es encontrar un plan de ejecución que minimice el coste global de la consulta. Este coste se compone, fundamentalmente, del coste de entrada/salida (I/O) en los sitios involucrados y, sobre todo, del coste de comunicación entre ellos.  Minimizar el volumen de datos transferidos entre sitios es, por lo tanto, crucial.  El optimizador debe considerar cuidadosamente factores como:
+
+\begin{itemize}
+    \item El tiempo de procesamiento de cada operación en cada sitio.
+    \item El ancho de banda disponible en la red.
+    \item La latencia entre los sitios.
+    \item La carga de trabajo en cada sitio.
+\end{itemize}
+
+\subsection{Consideración de la Ubicación de los Datos}
+
+Un aspecto esencial de la optimización es la toma en cuenta de la ubicación física de los datos.  El optimizador debe conocer la fragmentación de las relaciones y la ubicación de cada fragmento para construir un plan de ejecución eficiente. Este conocimiento permite tomar decisiones inteligentes sobre dónde ejecutar cada operación y qué datos transferir.  Por ejemplo, si dos relaciones que se van a unir (join) residen en el mismo sitio, la operación se ejecutará localmente, evitando la costosa transferencia de datos.
+
+\subsection{Técnicas de Optimización}
+
+Diversas técnicas se emplean para optimizar las consultas distribuidas.  Entre ellas, el semijoin se destaca como una herramienta poderosa para reducir el volumen de datos transferidos.
+
+\textbf{Semijoin:} El semijoin es una operación que reduce el tamaño de una relación antes de enviarla a otro sitio para realizar una unión.  En esencia, si queremos realizar una unión natural entre las relaciones R y S, donde R está en el sitio A y S en el sitio B, el semijoin se ejecuta de la siguiente manera:
+
+\begin{enumerate}
+    \item Se proyecta la relación S sobre los atributos de unión, generando una relación más pequeña, digamos S'.
+    \item S' se envía al sitio A.
+    \item En el sitio A, se aplica un filtro a la relación R utilizando los valores de S', resultando en una relación R'.
+    \item R' se envía al sitio B, donde se realiza la unión entre R' y S.
+\end{enumerate}
+
+En resumen, se evita transferir la relación completa R al sitio B. El semijoin es particularmente beneficioso cuando la selección de datos basada en la relación S reduce significativamente el tamaño de la relación R.  Otras técnicas incluyen:
+
+\begin{itemize}
+    \item \textbf{Replicación:} Replicar fragmentos de datos en múltiples sitios puede reducir el coste de comunicación, ya que las consultas se pueden ejecutar localmente. Sin embargo, implica un coste de almacenamiento y sincronización.
+    \item \textbf{Fragmentación:} La fragmentación horizontal (dividir una relación en subconjuntos basados en valores) y vertical (dividir una relación en subconjuntos basados en atributos) puede facilitar la ejecución distribuida y la paralelización de operaciones.
+    \item \textbf{Optimización de consultas basadas en reglas (Rule-based optimization):} Aplicar reglas predefinidas para transformar la consulta y generar planes de ejecución más eficientes.
+    \item \textbf{Optimización de consultas basadas en costes (Cost-based optimization):}  Evaluar el coste de diferentes planes de ejecución y seleccionar el de menor coste. Implica el uso de estadísticas sobre los datos y modelos de coste.
+\end{itemize}
+
+\section{Evaluación de Consultas Distribuidas}
+
+La evaluación de una consulta distribuida implica una secuencia bien definida de pasos que involucran a múltiples sitios. La complejidad de este proceso surge de la necesidad de coordinar la ejecución de operaciones en diferentes ubicaciones y gestionar la transferencia de datos entre ellas.
+
+\subsection{Pasos en la Ejecución de una Consulta Distribuida}
+
+El proceso general de evaluación de una consulta distribuida puede resumirse en los siguientes pasos:
+
+\begin{enumerate}
+    \item \textbf{Análisis y Validación:} El analizador sintáctico (parser) recibe la consulta SQL, la analiza y verifica su validez sintáctica y semántica.  
+    \item \textbf{Optimización:}  El optimizador de consultas genera un plan de ejecución óptimo (o al menos eficiente). Este plan especifica la secuencia de operaciones a realizar, el orden de ejecución, la ubicación de cada operación y las transferencias de datos.
+    \item \textbf{Generación del Plan de Ejecución:} El optimizador crea un plan de ejecución que es una representación detallada de cómo se ejecutará la consulta. Este plan puede estar representado en una forma de árbol de operaciones.
+    \item \textbf{Descomposición y Distribución:} El plan de ejecución se descompone en sub-consultas que se ejecutarán en sitios específicos. El plan se distribuye a los sitios relevantes.
+    \item \textbf{Ejecución Local:}  Cada sitio ejecuta las sub-consultas que se le han asignado. Esto puede incluir selecciones, proyecciones, uniones locales, etc.
+    \item \textbf{Transferencia de Datos (si es necesario):} Los resultados parciales se transfieren entre los sitios según el plan de ejecución.
+    \item \textbf{Combinación de Resultados:} En uno o más sitios, los resultados parciales se combinan para producir el resultado final de la consulta.
+\end{enumerate}
+
+\subsection{Algoritmos de Unión Distribuida y Otras Operaciones}
+
+La unión (join) es una operación fundamental en el procesamiento de consultas distribuidas, y varios algoritmos se han desarrollado para su ejecución eficiente.  La elección del algoritmo de unión depende de factores como el tamaño de las relaciones, la disponibilidad de memoria y la topología de la red.  Algunos algoritmos comunes incluyen:
+
+\begin{itemize}
+    \item \textbf{Unión por Nested-Loop Distribuida:}  Similar al algoritmo de nested-loop en un entorno local, pero con la complejidad adicional de la transferencia de datos.  Es menos eficiente que otras opciones para conjuntos de datos grandes.
+    \item \textbf{Unión por Hash Distribuida:}  Las relaciones se particionan mediante una función hash y los fragmentos con valores de hash similares se envían al mismo sitio para la unión.  Permite el paralelismo y puede ser más eficiente que el nested-loop, especialmente para uniones equijoins.
+    \item \textbf{Unión por Sort-Merge Distribuida:}  Las relaciones se ordenan y luego se combinan. La fase de ordenamiento puede ser costosa en un entorno distribuido.
+    \item \textbf{Semi-join:} Ya descrito previamente, es una técnica de optimización para uniones, no un algoritmo de unión per se, pero se implementa en conjunción con otros algoritmos de unión.
+    \item \textbf{Unión por Broadcast:} Si una relación es pequeña y otra es muy grande, se puede enviar la relación pequeña (broadcast) a todos los sitios donde reside la relación grande para realizar un join local.
+\end{itemize}
+
+Otras operaciones, como selección, proyección, agregación y clasificación, también deben ser ejecutadas de forma distribuida. La optimización de estas operaciones, también tiene sus propias estrategias de ejecución. Por ejemplo, la selección puede realizarse en el sitio donde reside el fragmento de datos. La agregación puede realizarse de forma parcial en múltiples sitios y luego combinarse.
+
+\section{Coste de Comunicación}
+
+El coste de comunicación es, a menudo, el factor dominante en el rendimiento de las consultas distribuidas.  Minimizar el volumen de datos transferidos y el número de mensajes intercambiados entre sitios es crucial para lograr un buen rendimiento.
+
+\subsection{Factores que Afectan el Coste de Comunicación}
+
+Varios factores influyen en el coste de comunicación:
+
+\begin{itemize}
+    \item \textbf{Ancho de Banda de la Red:}  El ancho de banda disponible limita la velocidad a la que se pueden transferir los datos.
+    \item \textbf{Latencia de la Red:} La latencia (retardo) entre los sitios afecta al tiempo total de ejecución de la consulta.
+    \item \textbf{Tamaño de los Datos:} Cuanto mayor sea el volumen de datos transferidos, mayor será el coste de comunicación.
+    \item \textbf{Topología de la Red:} La distancia física y la configuración de la red entre los sitios afectan al coste de comunicación.
+    \item \textbf{Protocolos de Comunicación:} El protocolo utilizado para la transferencia de datos (e.g., TCP/IP, UDP) y su configuración pueden afectar al rendimiento.
+    \item \textbf{Sobrecarga de la Red:} La carga de trabajo actual en la red puede afectar al tiempo de transferencia de datos.
+\end{itemize}
+
+\subsection{Estrategias para Minimizar el Coste de Comunicación}
+
+Para mitigar el impacto del coste de comunicación, se emplean diversas estrategias:
+
+\begin{itemize}
+    \item \textbf{Optimización de la Consulta:}  El optimizador de consultas juega un papel crucial en la reducción del coste de comunicación, seleccionando el plan de ejecución que minimice la transferencia de datos.
+    \item \textbf{Transferencia de Datos Inteligente:}  Transferir solo los datos necesarios, utilizando técnicas como proyección, selección y semijoin.
+    \item \textbf{Paralelización:} Dividir la consulta en sub-tareas que se ejecutan en paralelo en diferentes sitios.
+    \item \textbf{Compresión de Datos:} Comprimir los datos antes de la transferencia para reducir su tamaño.
+    \item \textbf{Agrupación (Batching) de Mensajes:}  Enviar múltiples mensajes en un solo paquete para reducir la sobrecarga de la red.
+    \item \textbf{Uso de Redes de Alta Velocidad:}  La inversión en infraestructura de red con mayor ancho de banda y menor latencia puede mejorar significativamente el rendimiento.
+\end{itemize}
+
+En resumen, el procesamiento de consultas distribuidas es un área compleja que requiere una optimización cuidadosa para lograr un rendimiento aceptable. El coste de comunicación es el factor clave y, por lo tanto, la minimización de la transferencia de datos y la elección de algoritmos eficientes son cruciales.
+```

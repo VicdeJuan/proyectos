@@ -1,0 +1,85 @@
+\chapter{Sistemas de Bases de Datos Distribuidas Heterogéneas}
+
+\section{Desafíos de la Interoperabilidad}
+
+Los sistemas de bases de datos distribuidas heterogéneas (SBDDH) representan un paradigma complejo y desafiante en el ámbito de la gestión de datos.  La heterogeneidad,  es decir, la diversidad en cuanto a modelos de datos, sistemas de gestión de bases de datos (SGBD), lenguajes de consulta,  plataformas de hardware y software,  y semántica de los datos, introduce una serie de problemas significativos para lograr la interoperabilidad y el acceso unificado a la información.
+
+Los principales desafíos se pueden clasificar en las siguientes áreas:
+
+\begin{itemize}
+    \item \textbf{Heterogeneidad de Esquemas}: Diferentes bases de datos pueden utilizar modelos de datos distintos (relacional,  orientado a objetos,  XML,  NoSQL,  etc.) y,  dentro del mismo modelo,  tener esquemas con estructuras y tipos de datos incompatibles.  Esto dificulta la integración y el acceso a la información de forma transparente.  Por ejemplo,  un atributo "edad" puede representarse como un entero en una base de datos y como una cadena de caracteres en otra.  La resolución de estos conflictos requiere la definición de mapeos de esquemas,  la transformación de datos y la resolución de ambigüedades semánticas.
+
+    \item \textbf{Heterogeneidad de Consultas}: Cada SGBD puede utilizar un lenguaje de consulta diferente o una versión distinta del mismo lenguaje (por ejemplo,  diferentes dialectos de SQL).  Esto obliga a la traducción de consultas entre los diferentes lenguajes para que puedan ser ejecutadas en todas las bases de datos involucradas.  La optimización de las consultas distribuidas,  teniendo en cuenta las capacidades de cada SGBD y la ubicación de los datos,  es un reto adicional.
+
+    \item \textbf{Heterogeneidad de Transacciones}: La gestión de transacciones distribuidas en entornos heterogéneos es particularmente compleja.  La necesidad de garantizar la atomicidad, consistencia, aislamiento y durabilidad (ACID) de las transacciones se complica por la diversidad de los SGBD.  Se requiere la implementación de protocolos de gestión de transacciones distribuidas,  como el protocolo de dos fases (2PC) o protocolos más sofisticados que permitan la compensación de transacciones en caso de fallos.
+
+    \item \textbf{Heterogeneidad de Hardware y Software}:  Las diferencias en las plataformas de hardware y software (sistemas operativos,  arquitecturas de red,  etc.)  pueden afectar al rendimiento y la disponibilidad del sistema.  Es necesario considerar factores como la latencia de la red, el ancho de banda,  la capacidad de procesamiento de cada nodo y la compatibilidad entre los componentes del sistema.
+
+    \item \textbf{Heterogeneidad Semántica}:  Incluso si los esquemas y los lenguajes de consulta son compatibles,  puede existir una heterogeneidad semántica en la interpretación de los datos.  Diferentes bases de datos pueden utilizar nombres de atributos distintos para representar el mismo concepto,  o tener diferentes reglas de validación y restricciones de integridad.  La resolución de esta heterogeneidad requiere la definición de vocabularios compartidos,  la utilización de ontologías y la aplicación de técnicas de integración semántica.
+\end{itemize}
+
+\section{Procesamiento de Consultas en Sistemas Heterogéneos}
+
+El procesamiento de consultas en SBDDH es un proceso complejo que involucra varias etapas,  desde la recepción de la consulta hasta la presentación de los resultados al usuario. Estas etapas deben tener en cuenta la heterogeneidad de las bases de datos involucradas.
+
+El proceso típico incluye las siguientes fases:
+
+\begin{enumerate}
+    \item \textbf{Descomposición de la Consulta}:  La consulta global,  expresada en un lenguaje unificado (por ejemplo,  un lenguaje de consulta federado),  se descompone en subconsultas que pueden ser ejecutadas en cada base de datos individual.  Esta descomposición debe tener en cuenta la ubicación de los datos,  las capacidades de cada SGBD y las dependencias entre las diferentes partes de la consulta.
+
+    \item \textbf{Optimización de la Consulta}:  El optimizador de consultas global genera diferentes planes de ejecución para la consulta descompuesta,  teniendo en cuenta el coste de acceso a los datos en cada base de datos, el coste de la transferencia de datos entre nodos y las capacidades de procesamiento de cada SGBD. El optimizador selecciona el plan de ejecución con el menor coste estimado.  Es crucial que el optimizador sea capaz de estimar correctamente el coste de las operaciones en cada base de datos heterogénea.
+
+    \item \textbf{Generación de Planes de Ejecución Local}:  Para cada subconsulta, se genera un plan de ejecución local que es específico para el SGBD donde se ejecutará.  Este plan utiliza el lenguaje de consulta nativo del SGBD y aprovecha sus capacidades de optimización.
+
+    \item \textbf{Ejecución de Consultas Remotas}:  Las subconsultas se envían a las bases de datos remotas para su ejecución.  En algunos casos,  es necesario traducir la consulta al lenguaje de consulta nativo del SGBD.
+
+    \item \textbf{Recuperación y Combinación de Resultados}:  Los resultados de las subconsultas se recuperan de las bases de datos remotas y se combinan en el nodo coordinador para producir el resultado final.  Esta combinación puede implicar operaciones de unión,  agregación,  ordenamiento y transformación de datos.
+
+    \item \textbf{Presentación de Resultados}:  El resultado final se presenta al usuario en un formato adecuado.
+\end{enumerate}
+
+Para facilitar el procesamiento de consultas en entornos heterogéneos, se utilizan diferentes arquitecturas y técnicas, como:
+
+\begin{itemize}
+    \item \textbf{Arquitectura de Mediadores}:  La arquitectura de mediadores proporciona una capa de abstracción que oculta la heterogeneidad de las bases de datos subyacentes.  El mediador recibe las consultas del usuario, las transforma en subconsultas que se envían a las bases de datos subyacentes,  recopila los resultados y los combina para generar la respuesta final.  Los mediadores pueden tener diferentes niveles de complejidad, desde mediadores simples que realizan una traducción directa de consultas hasta mediadores más sofisticados que integran semánticamente los datos.
+
+    \item \textbf{Federación de Bases de Datos}:  En un sistema federado, cada base de datos mantiene su autonomía y solo comparte la información que desea.  Se define una interfaz común para el acceso a los datos,  y el sistema federado se encarga de la traducción de consultas y la combinación de resultados.
+
+    \item \textbf{Almacenes de Datos (Data Warehouses) y Data Lakes}:  Estos sistemas centralizan los datos de diferentes fuentes en un único repositorio,  lo que facilita el análisis y la consulta de la información.  Sin embargo, la carga inicial de integración de datos puede ser intensiva.
+\end{itemize}
+
+\section{Procesamiento de Transacciones en Sistemas Heterogéneos}
+
+(Referenciado en)
+
+El procesamiento de transacciones en SBDDH presenta desafíos aún mayores que el procesamiento de consultas. La necesidad de garantizar la consistencia y la integridad de los datos distribuidos es fundamental, pero se ve dificultada por la heterogeneidad de los SGBD.  Se necesita que las transacciones se gestionen de manera atomica, consistente, aislada y durable (ACID) en entornos distribuidos. Esto exige la coordinación de múltiples bases de datos, el manejo de fallos y la sincronización de datos.  Los protocolos de consenso y gestión de transacciones distribuidas son esenciales para asegurar la fiabilidad del sistema. El protocolo de dos fases (2PC) es un ejemplo de protocolo que busca lograr la atomicidad en transacciones distribuidas, aunque puede ser propenso a bloqueos.
+
+\subsection*{La necesidad de mediadores para combinar información de diferentes fuentes con esquemas distintos}
+
+Como se ha mencionado anteriormente, la heterogeneidad de esquemas es uno de los principales desafíos en los SBDDH. Los mediadores desempeñan un papel crucial en la resolución de este problema, actuando como intermediarios entre las aplicaciones y las bases de datos subyacentes.
+
+La función del mediador es:
+\begin{itemize}
+    \item \textbf{Mapeo de Esquemas}: El mediador define un esquema global o vista unificada que representa los datos de todas las bases de datos subyacentes. Este esquema puede ser diferente de los esquemas locales de cada base de datos. El mediador se encarga de mapear los datos entre el esquema global y los esquemas locales,  traducir las consultas en función de este mapeo.
+    \item \textbf{Transformación de Datos}: El mediador puede realizar transformaciones de datos para resolver diferencias en los tipos de datos, formatos, unidades de medida, etc.
+    \item \textbf{Integración Semántica}: El mediador puede utilizar ontologías y vocabularios compartidos para resolver ambigüedades semánticas y asegurar que los datos se interpreten de la misma manera en todas las bases de datos.
+\end{itemize}
+Los mediadores pueden ser estáticos o dinámicos. Los mediadores estáticos tienen un esquema global predefinido y una lógica de mapeo fija. Los mediadores dinámicos pueden adaptarse a los cambios en los esquemas de las bases de datos subyacentes y pueden aprender a mapear los datos de forma automática.
+
+\subsection*{Transformación de datos XML entre diferentes representaciones}
+
+XML (eXtensible Markup Language) se ha convertido en un estándar para el intercambio de datos en entornos distribuidos.  Sin embargo,  la transformación de datos XML es crítica para la interoperabilidad en los SBDDH. Diferentes aplicaciones y bases de datos pueden utilizar diferentes esquemas XML (DTD o XSD) o diferentes estilos de codificación. La transformación de datos XML implica la conversión de datos de una representación XML a otra,  manteniendo la semántica de los datos.
+
+Algunas de las técnicas y herramientas utilizadas para la transformación de datos XML son:
+
+\begin{itemize}
+    \item \textbf{XSLT (eXtensible Stylesheet Language Transformations)}:  XSLT es un lenguaje de transformación diseñado específicamente para transformar documentos XML en otros documentos XML,  HTML,  texto plano,  etc.  XSLT utiliza hojas de estilo para especificar las reglas de transformación.
+
+    \item \textbf{XML Schema (XSD)}:  XML Schema es un lenguaje para definir la estructura y el contenido de los documentos XML.  Los esquemas XML se pueden utilizar para validar los documentos XML y para transformar datos entre diferentes esquemas XML.
+
+    \item \textbf{Herramientas de Mapping}:  Existen herramientas que permiten definir mapeos entre diferentes esquemas XML de forma gráfica o mediante lenguajes de mapeo específicos.  Estas herramientas pueden generar código XSLT u otro código para realizar la transformación de datos.
+
+    \item \textbf{APIs de Procesamiento XML}: Las APIs como SAX (Simple API for XML) y DOM (Document Object Model) se pueden utilizar para acceder y manipular los datos XML.
+\end{itemize}
+
+La elección de la técnica de transformación dependerá de la complejidad de la transformación,  la cantidad de datos a transformar y los requisitos de rendimiento.

@@ -1,0 +1,36 @@
+\chapter{Introducción a los Sistemas de Base de Datos Distribuidos}
+
+\section{Definición de un Sistema de Base de Datos Distribuido}
+
+Un Sistema de Base de Datos Distribuido (SGBDD) se define como un sistema que integra las siguientes características fundamentales:
+
+\begin{itemize}
+    \item \textbf{Una colección de múltiples bases de datos lógicamente relacionadas:}  Los datos, aunque físicamente dispersos en múltiples ubicaciones (nodos) a través de una red de computadoras, mantienen una coherencia lógica y representan un único conjunto de información. La relación lógica entre las bases de datos puede ser a través de la duplicación, la partición o una combinación de ambas estrategias.
+    \item \textbf{Distribuidas a través de una red de computadoras:}  Los datos y los componentes del sistema, como los servidores de bases de datos, se ubican en diferentes computadoras (nodos) interconectadas por una red. Esta red puede variar en tamaño y complejidad, desde una red de área local (LAN) hasta una red de área amplia (WAN) o incluso Internet. La comunicación entre los nodos es crucial para la operación del sistema.
+    \item \textbf{El software del sistema gestiona la base de datos distribuida de tal manera que para el usuario aparece como un único sistema:}  El usuario final interactúa con el SGBDD como si fuera una única base de datos centralizada. El sistema se encarga de gestionar de forma transparente la ubicación, el acceso y la manipulación de los datos distribuidos, ocultando la complejidad subyacente de la distribución física.  Esta transparencia es fundamental para la usabilidad y el éxito del sistema.
+\end{itemize}
+
+\section{Motivación y Ventajas Potenciales de los Sistemas Distribuidos}
+
+La adopción de sistemas de bases de datos distribuidos se motiva por una serie de ventajas significativas sobre las alternativas centralizadas, particularmente en entornos con requerimientos de rendimiento, disponibilidad, escalabilidad y autonomía.
+
+\begin{itemize}
+    \item \textbf{Mejora del rendimiento a través del paralelismo:}  La capacidad de ejecutar consultas y transacciones en paralelo en múltiples nodos puede reducir significativamente el tiempo de respuesta. Las consultas pueden fragmentarse y procesarse concurrentemente en diferentes nodos, y los resultados se agregan para proporcionar una respuesta completa.  Este paralelismo es especialmente ventajoso para operaciones intensivas en datos.
+    \item \textbf{Mayor disponibilidad y fiabilidad a través de la replicación de datos:}  La replicación de datos en múltiples nodos proporciona tolerancia a fallos. Si un nodo falla, las copias de los datos en otros nodos pueden utilizarse para continuar las operaciones, garantizando la disponibilidad del sistema.  La replicación puede implicar diferentes estrategias, como la replicación síncrona (todos los nodos deben actualizarse simultáneamente) o la replicación asíncrona (las actualizaciones se propagan en un momento posterior).
+    \item \textbf{Escalabilidad para manejar grandes volúmenes de datos y usuarios:}  Los SGBDD pueden escalar horizontalmente añadiendo nuevos nodos al sistema a medida que aumentan los requisitos de almacenamiento y procesamiento. Esto permite manejar grandes volúmenes de datos y un gran número de usuarios concurrentes, lo que es esencial para aplicaciones que experimentan un crecimiento continuo.
+    \item \textbf{Reflejo de la estructura organizativa distribuida:}  En organizaciones con estructuras descentralizadas o geográficamente dispersas, un SGBDD puede reflejar mejor la estructura organizativa, permitiendo que cada unidad de negocio mantenga la propiedad y el control sobre sus propios datos, al tiempo que proporciona acceso a los datos compartidos.
+    \item \textbf{Autonomía local:}  Cada sitio o nodo en el sistema puede tener cierto grado de autonomía en la gestión de sus propios datos y recursos. Esto incluye la capacidad de definir el esquema de la base de datos, establecer políticas de seguridad y optimizar el rendimiento localmente. La autonomía local es crítica para la flexibilidad y la adaptabilidad.
+\end{itemize}
+
+\section{Transparencia de Distribución}
+
+Una característica clave de los SGBDD es la transparencia de la distribución, que oculta al usuario los aspectos complejos de la distribución física y permite una interacción más sencilla con el sistema.
+
+\begin{itemize}
+    \item \textbf{Transparencia de acceso:} Los usuarios no necesitan conocer la forma en que se accede a los datos. El sistema determina automáticamente la ruta de acceso más eficiente para recuperar o modificar la información, independientemente de su ubicación física.
+    \item \textbf{Transparencia de ubicación:} Los usuarios no necesitan saber dónde están almacenados físicamente los datos. El sistema maneja la resolución de las ubicaciones de los datos de forma transparente.  Las consultas pueden especificar la información deseada sin especificar la ubicación.
+    \item \textbf{Transparencia de fragmentación:} Los usuarios no necesitan saber cómo se han dividido los datos en fragmentos. El sistema gestiona la fragmentación y la recomposición de los datos de forma transparente.  Los usuarios pueden consultar la base de datos como si fuera una sola entidad, sin preocuparse por las divisiones internas.
+    \item \textbf{Transparencia de replicación:} Los usuarios no necesitan saber si los datos están replicados. El sistema gestiona la consistencia de las copias de los datos de forma transparente y selecciona la copia más adecuada para satisfacer las solicitudes.  Las operaciones de lectura pueden dirigirse a copias locales para mejorar el rendimiento y la disponibilidad.
+    \item \textbf{Transparencia de concurrencia:} El acceso simultáneo a los datos distribuidos se gestiona de forma coherente. El sistema asegura que las transacciones concurrentes no interfieran entre sí y que los datos permanezcan consistentes.  Se utilizan mecanismos de control de concurrencia como el bloqueo y la gestión de transacciones distribuidas.
+    \item \textbf{Transparencia de fallos:} El sistema sigue funcionando a pesar de los fallos de algunos componentes (nodos, enlaces de red).  El sistema utiliza mecanismos de tolerancia a fallos, como la replicación de datos y la conmutación por error, para garantizar la continuidad del servicio.  Los fallos deben ser detectados y recuperados de forma automática y transparente.
+\end{itemize}

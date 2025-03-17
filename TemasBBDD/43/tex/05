@@ -1,0 +1,113 @@
+\chapter{Recuperación de Sistemas y Manejo de Fallos}
+
+\section{La Necesidad de Recuperación}
+
+En el ámbito de la ingeniería informática, la fiabilidad y la disponibilidad son aspectos cruciales de cualquier sistema. Un sistema robusto debe ser capaz de operar de manera continua y consistente, incluso ante la ocurrencia de fallos. La recuperación de sistemas se refiere al conjunto de técnicas y mecanismos diseñados para asegurar la resiliencia de un sistema frente a fallos, permitiendo que este pueda reanudar su operación en un estado consistente y correcto.
+
+\subsection{Tipos de Fallos del Sistema}
+
+Los fallos del sistema pueden manifestarse de diversas maneras, y su origen puede ser diverso. Es fundamental comprender los distintos tipos de fallos para diseñar estrategias de recuperación efectivas:
+
+\begin{itemize}
+    \item \textbf{Fallos de Hardware:} Estos fallos se originan en componentes físicos del sistema, como discos duros, memorias RAM, procesadores o tarjetas de red. Pueden ser de naturaleza transitoria (por ejemplo, un fallo de lectura en un disco) o persistente (como la avería completa de un dispositivo).
+    \item \textbf{Fallos de Software:} Los fallos de software pueden ser causados por errores en el código, problemas de diseño, errores de programación, corrupción de datos o interacciones inesperadas entre componentes. Estos fallos pueden llevar a comportamientos inesperados, bloqueos del sistema, pérdida de datos o incluso fallos catastróficos.
+    \item \textbf{Errores Humanos:} Los errores humanos se refieren a acciones incorrectas o accidentales realizadas por operadores o administradores del sistema. Estos errores pueden incluir la introducción de comandos incorrectos, la configuración errónea del sistema, la eliminación accidental de datos o la falta de seguimiento de los procedimientos operativos estándar.
+\end{itemize}
+
+\subsection{Garantizar la Atomicidad y la Durabilidad a pesar de los Fallos}
+
+Dos propiedades fundamentales en el contexto de la recuperación de sistemas son la atomicidad y la durabilidad, especialmente en el manejo de transacciones:
+
+\begin{itemize}
+    \item \textbf{Atomicidad:} Una transacción atómica se define como una secuencia de operaciones que se consideran como una unidad indivisible. O bien todas las operaciones de la transacción se completan con éxito (commit), o bien ninguna de ellas tiene efecto (rollback o abort). La atomicidad asegura que el sistema permanece en un estado consistente, incluso en caso de fallo parcial durante la ejecución de una transacción.
+    \item \textbf{Durabilidad:} La durabilidad asegura que, una vez que una transacción se ha confirmado (commit), los cambios realizados por ella se persisten de forma permanente y sobreviven a cualquier fallo posterior del sistema. Esto implica que los datos deben almacenarse en medios no volátiles (como discos duros) y que se debe garantizar su integridad frente a fallos en la lectura o escritura.
+\end{itemize}
+
+Para garantizar la atomicidad y la durabilidad, se utilizan técnicas como el registro histórico (logging) y los puntos de control (checkpoints), que se abordarán en las secciones siguientes.
+
+\section{Técnicas de Registro (Logging)}
+
+El registro histórico (logging) es una técnica fundamental para la recuperación de sistemas. Consiste en el registro sistemático de información relevante sobre las operaciones realizadas por el sistema, de forma que se pueda reconstruir el estado del sistema en caso de fallo.
+
+\subsection{El Propósito del Registro Histórico (Log)}
+
+El propósito principal del registro histórico es proporcionar una traza completa y ordenada de todas las modificaciones realizadas en el sistema. Esta traza permite:
+
+\begin{itemize}
+    \item \textbf{Reconstrucción del Estado:} Reconstruir el estado del sistema en un punto en el tiempo anterior al fallo, aplicando las operaciones registradas.
+    \item \textbf{Deshacer Operaciones Incompletas:} Deshacer las operaciones que estaban en curso en el momento del fallo y que no se completaron correctamente.
+    \item \textbf{Asegurar la Atomicidad y la Durabilidad:} Garantizar que las transacciones atómicas se completen de forma consistente y que los cambios confirmados sean duraderos.
+    \item \textbf{Análisis y Depuración:} Analizar el comportamiento del sistema para identificar y corregir errores, optimizar el rendimiento y mejorar la fiabilidad.
+\end{itemize}
+
+\subsection{Registros de Actualización, Confirmación, Aborto}
+
+El registro histórico suele almacenar diferentes tipos de registros para capturar la información necesaria sobre las operaciones del sistema:
+
+\begin{itemize}
+    \item \textbf{Registros de Actualización:} Contienen información sobre los cambios realizados en los datos.  Por ejemplo, para una base de datos, un registro de actualización podría contener el identificador del registro modificado, el valor anterior y el nuevo valor del campo modificado.
+    \item \textbf{Registros de Confirmación (Commit):} Indican que una transacción ha sido completada con éxito y que sus cambios deben ser permanentes. Estos registros garantizan la durabilidad de las transacciones confirmadas.
+    \item \textbf{Registros de Aborto (Rollback):} Indican que una transacción ha fallado y que sus cambios deben ser revertidos. Estos registros se utilizan para deshacer las operaciones realizadas por transacciones incompletas y garantizar la atomicidad.
+\end{itemize}
+
+\subsection{Escritura Forzosa del Registro}
+
+Para garantizar la durabilidad de los cambios, es crucial que los registros se escriban en medios no volátiles (como discos duros) de forma segura y oportuna. La escritura forzosa (force write) implica que cada registro se escribe en el disco inmediatamente después de su creación, antes de que la operación correspondiente se considere completada. Esto asegura que, en caso de fallo, la información sobre las operaciones realizadas se mantenga y se pueda utilizar para la recuperación. Esta técnica, sin embargo, puede afectar al rendimiento del sistema debido a la latencia de la escritura en disco.
+
+\subsection{Uso de Memoria Intermedia para el Registro Histórico}
+
+Para mitigar el impacto del rendimiento de la escritura forzosa, se puede emplear una memoria intermedia (buffer) para el registro histórico. Los registros se escriben inicialmente en la memoria intermedia en lugar de directamente en el disco.  La memoria intermedia se vacía periódicamente o bajo ciertas condiciones (por ejemplo, al confirmar una transacción) en el disco. Esto reduce el número de operaciones de escritura en disco, mejorando el rendimiento general del sistema.  Sin embargo, es importante considerar que si el sistema falla antes de que los registros en la memoria intermedia se hayan escrito en el disco, se perderá información, lo que podría comprometer la recuperación. Por lo tanto, se suelen implementar mecanismos para asegurar que, al menos, los registros de confirmación (commit) se escriban en el disco de forma forzosa.
+
+\section{Puntos de Control (Checkpoints)}
+
+Los puntos de control (checkpoints) son instantáneas del estado del sistema tomadas a intervalos regulares.  Estos puntos de control se utilizan para reducir el tiempo y la complejidad de la recuperación en caso de fallo.
+
+\subsection{Su Papel en la Reducción del Tiempo de Recuperación}
+
+El principal beneficio de los puntos de control es la reducción significativa del tiempo de recuperación. En lugar de tener que procesar todo el registro histórico desde el inicio de las operaciones, el sistema puede reanudar la operación desde el punto de control más reciente. Esto acorta el tiempo de análisis del registro y reduce la cantidad de operaciones que deben rehacerse o deshacerse.
+
+\subsection{Tipos de Puntos de Control}
+
+Existen diferentes tipos de puntos de control, cada uno con sus propias características y compromisos en términos de rendimiento y consistencia:
+
+\begin{itemize}
+    \item \textbf{Puntos de Control Estáticos (Consistentes):} Requieren que el sistema se detenga y que se registre el estado completo en un momento consistente.  Esto implica suspender todas las operaciones y asegurarse de que no haya transacciones en curso antes de tomar la instantánea. Aunque garantizan la consistencia, pueden ser costosos en términos de tiempo de inactividad del sistema.
+    \item \textbf{Puntos de Control Dinámicos (Difusos):} Permiten que el sistema continúe operando mientras se toma la instantánea.  Esto se logra registrando la información necesaria para garantizar la consistencia. Por ejemplo, se pueden registrar las transacciones que están activas durante el punto de control, y los cambios realizados en los datos pueden almacenarse temporalmente en una memoria intermedia.  Estos puntos de control son menos intrusivos que los estáticos, pero requieren mecanismos adicionales para garantizar la consistencia durante la recuperación.  Un ejemplo es el punto de control \textbf{fuzzy} o difuso.
+\end{itemize}
+
+\section{Algoritmos de Recuperación}
+
+Los algoritmos de recuperación se encargan de analizar el registro histórico y reconstruir el estado del sistema en caso de fallo. Generalmente, estos algoritmos se dividen en tres fases principales:
+
+\subsection{Fases de la Recuperación}
+
+\begin{itemize}
+    \item \textbf{Análisis:}  En esta fase, el algoritmo analiza el registro histórico para determinar el estado del sistema en el momento del fallo.  Identifica las transacciones que estaban activas (incompletas) y las que ya estaban confirmadas (completas) en el momento del fallo. También identifica el último punto de control válido.
+    \item \textbf{Rehacer (Redo):}  En esta fase, el algoritmo rehace las operaciones de las transacciones confirmadas desde el último punto de control. Esto asegura que los cambios realizados por estas transacciones se apliquen al estado del sistema.
+    \item \textbf{Deshacer (Undo):}  En esta fase, el algoritmo deshace las operaciones de las transacciones que estaban activas en el momento del fallo y que no se habían confirmado. Esto evita que se incorporen al estado final del sistema cambios incompletos o inconsistentes.
+\end{itemize}
+
+\subsection{Ejemplo del Algoritmo ARIES}
+
+ARIES (Algorithm for Recovery and Isolation Exploiting Semantics) es un algoritmo de recuperación ampliamente utilizado en sistemas de gestión de bases de datos. ARIES se basa en el registro físico de operaciones (es decir, registra los cambios reales en los datos) y utiliza puntos de control difusos.
+
+El algoritmo ARIES proporciona las siguientes características principales:
+
+\begin{itemize}
+    \item \textbf{Registro físico con rehacer/deshacer basados en registros:} ARIES registra los cambios reales en los datos, en lugar de registrar operaciones lógicas. Esto permite rehacer y deshacer operaciones de manera eficiente.
+    \item \textbf{Puntos de control difusos:} ARIES utiliza puntos de control difusos para minimizar el tiempo de inactividad del sistema.
+    \item \textbf{Reducción de la necesidad de rehacer:}  ARIES minimiza la cantidad de rehacer al llevar un seguimiento de la información sobre las transacciones en curso en el momento del punto de control.
+    \item \textbf{Escritura forzosa del registro:} ARIES utiliza escritura forzosa para garantizar la durabilidad de las transacciones.
+    \item \textbf{Identificación de la página sucia (dirty page):} ARIES mantiene un registro de las páginas modificadas en la memoria que no se han escrito en disco (dirty pages).
+\end{itemize}
+
+El algoritmo ARIES opera de la siguiente manera:
+
+\begin{enumerate}
+    \item \textbf{Análisis:} El algoritmo lee el registro histórico desde el último punto de control. Identifica las transacciones activas y las confirmadas. Determina el LSN (Log Sequence Number) de la última entrada del registro para cada transacción.
+    \item \textbf{Rehacer:} ARIES rehace las operaciones de las transacciones confirmadas desde el último punto de control.  Utiliza la información de las páginas sucias para minimizar el número de operaciones de rehacer. El redo se realiza en un orden determinado por el LSN de cada operación.
+    \item \textbf{Deshacer:} ARIES deshace las operaciones de las transacciones activas. Utiliza el registro histórico para revertir los cambios realizados por estas transacciones. El undo se realiza en el orden inverso al de las operaciones registradas para garantizar la consistencia.
+\end{enumerate}
+
+El algoritmo ARIES es un ejemplo robusto y eficiente de un algoritmo de recuperación que proporciona atomicidad, durabilidad y la capacidad de manejar fallos de manera efectiva.
+```

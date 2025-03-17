@@ -1,0 +1,121 @@
+\chapter{Almacenamiento Distribuido de Datos}
+
+\section{Fragmentación de Relaciones}
+
+En el contexto de sistemas de gestión de bases de datos distribuidas (SGBD distribuida), la fragmentación es una técnica fundamental para dividir una relación (tabla) en porciones más manejables, llamadas fragmentos, que pueden ser almacenadas en diferentes sitios o nodos de la red.  Esta partición permite una mejor distribución de la carga de trabajo,  mejora la concurrencia,  aumenta la disponibilidad y facilita la ejecución de consultas en paralelo.  Existen varios tipos de fragmentación, cada uno con sus ventajas y desventajas, y la elección de la estrategia adecuada depende de los requisitos específicos de la aplicación y las características de los datos.
+
+\subsection{Fragmentación Horizontal}
+
+La fragmentación horizontal implica dividir una relación en subconjuntos de tuplas (filas), donde cada subconjunto representa un fragmento.  La partición se basa en una condición o predicado aplicado a los atributos de la relación.  Cada fragmento horizontal contiene un subconjunto de las tuplas originales que satisfacen la condición.  Los predicados pueden basarse en valores de atributos específicos, rangos de valores, o incluso en funciones más complejas que combinen múltiples atributos.
+
+\begin{itemize}
+    \item \textbf{Ventajas:}
+    \begin{itemize}
+        \item Permite almacenar datos relacionados lógicamente en diferentes ubicaciones físicas, lo que facilita la ejecución de consultas que acceden a subconjuntos específicos de datos.
+        \item  Permite el procesamiento paralelo de consultas, ya que cada fragmento puede ser consultado y procesado independientemente.
+        \item  Incrementa la disponibilidad, ya que si un fragmento no está disponible, otros fragmentos pueden seguir siendo accesibles.
+        \item  Facilita la distribución de la carga de trabajo.
+    \end{itemize}
+    \item \textbf{Desventajas:}
+    \begin{itemize}
+        \item  Puede requerir la combinación de fragmentos para responder a ciertas consultas, lo que introduce overhead de comunicación y procesamiento.
+        \item  Si la condición de fragmentación no está bien definida, los fragmentos pueden no ser equilibrados, lo que lleva a un rendimiento desigual.
+        \item  Puede ser complejo diseñar y mantener la fragmentación si la lógica de la aplicación es dinámica y los patrones de acceso a los datos cambian frecuentemente.
+    \end{itemize}
+    \item \textbf{Ejemplo:} Consideremos la relación \textit{Pedidos(pedido\_\,id, cliente\_\,id, fecha, estado)}.  Podemos fragmentarla horizontalmente por estado:
+    \begin{itemize}
+        \item Fragmento 1:  \textit{Pedidos\_Pendientes} - Contiene las tuplas donde \textit{estado = 'pendiente'}.
+        \item Fragmento 2:  \textit{Pedidos\_Enviados} - Contiene las tuplas donde \textit{estado = 'enviado'}.
+        \item Fragmento 3:  \textit{Pedidos\_Completados} - Contiene las tuplas donde \textit{estado = 'completado'}.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Fragmentación Vertical}
+
+La fragmentación vertical implica dividir una relación en subconjuntos de atributos (columnas).  Cada fragmento vertical contiene un subconjunto de los atributos originales y la clave primaria (o una clave que la reemplace) para garantizar la capacidad de reconstruir la relación original.  La fragmentación vertical se utiliza generalmente para separar atributos que se acceden con frecuencia de atributos que se acceden raramente, o para separar atributos sensibles de otros atributos menos sensibles, mejorando así la seguridad.
+
+\begin{itemize}
+    \item \textbf{Ventajas:}
+    \begin{itemize}
+        \item  Reduce el tamaño de los fragmentos, lo que puede mejorar el rendimiento de las consultas que acceden a un subconjunto específico de atributos.
+        \item  Permite optimizar el almacenamiento y el acceso a datos en función de la frecuencia de uso de los atributos.
+        \item  Puede mejorar la seguridad al separar datos sensibles de datos menos sensibles.
+        \item  Facilita la aplicación de diferentes estrategias de indexación en cada fragmento.
+    \end{itemize}
+    \item \textbf{Desventajas:}
+    \begin{itemize}
+        \item  Requiere la unión de fragmentos para reconstruir la relación original, lo que puede afectar el rendimiento.
+        \item  El diseño inadecuado de la fragmentación puede generar fragmentos con una alta dependencia, impidiendo la optimización.
+        \item  Requiere un análisis cuidadoso de los patrones de acceso a los datos para determinar la división óptima de los atributos.
+    \end{itemize}
+    \item \textbf{Ejemplo:}  Consideremos la relación \textit{Clientes(cliente\_\,id, nombre, dirección, teléfono, correo\_\, electrónico, salario)}.  Podemos fragmentarla verticalmente:
+    \begin{itemize}
+        \item Fragmento 1: \textit{Clientes\_DatosPersonales} - Contiene (\textit{cliente\_\,id, nombre, dirección, teléfono}).
+        \item Fragmento 2: \textit{Clientes\_Contacto} - Contiene (\textit{cliente\_\,id, correo\_\, electrónico}).
+        \item Fragmento 3: \textit{Clientes\_Finanzas} - Contiene (\textit{cliente\_\,id, salario}).  (Consideraciones de seguridad).
+    \end{itemize}
+\end{itemize}
+
+\subsection{Fragmentación Derivada}
+
+La fragmentación derivada combina la fragmentación horizontal y vertical.  Se utiliza cuando una relación se fragmenta en función de otra relación, es decir, la fragmentación de una relación se basa en la fragmentación de otra relación que está relacionada.
+
+\begin{itemize}
+    \item \textbf{Ventajas:}
+    \begin{itemize}
+        \item Permite la optimización de consultas que involucran múltiples relaciones.
+        \item Mejora el rendimiento al reducir la cantidad de datos que necesitan ser transmitidos y procesados.
+        \item  Facilita la integración de datos de diferentes fuentes.
+    \end{itemize}
+    \item \textbf{Desventajas:}
+    \begin{itemize}
+        \item  Requiere una planificación cuidadosa de la fragmentación.
+        \item  La modificación de una relación puede afectar a otras relaciones.
+        \item  La complejidad de la fragmentación puede aumentar la complejidad del sistema.
+    \end{itemize}
+    \item \textbf{Ejemplo:}  Consideremos las relaciones \textit{Clientes(cliente\_\,id, ...) } y \textit{Pedidos(pedido\_\,id, cliente\_\,id, ...)}.  Si la relación \textit{Clientes} se fragmenta horizontalmente por región (\textit{Clientes\_Norte, Clientes\_Sur}), la relación \textit{Pedidos} puede ser fragmentada de forma derivada, en función de los \textit{cliente\_\,id} que se encuentran en cada fragmento de la relación \textit{Clientes}.  Así, tendríamos \textit{Pedidos\_Norte} y \textit{Pedidos\_Sur}.
+\end{itemize}
+
+\section{Replicación de Datos}
+
+La replicación de datos implica almacenar múltiples copias de los datos (réplicas) en diferentes sitios o nodos de un sistema distribuido. El objetivo principal de la replicación es mejorar la disponibilidad y el rendimiento de las operaciones de lectura.  Al tener múltiples copias de los datos, si un sitio falla, las aplicaciones pueden seguir accediendo a los datos desde otras réplicas disponibles. Además, la replicación permite distribuir la carga de lectura entre varios sitios, lo que reduce los tiempos de respuesta y aumenta el rendimiento general del sistema.
+
+\begin{itemize}
+    \item \textbf{Ventajas:}
+    \begin{itemize}
+        \item \textbf{Disponibilidad mejorada:}  En caso de fallo de un nodo, los datos están disponibles en las otras réplicas.
+        \item \textbf{Rendimiento de lectura mejorado:}  Las lecturas pueden ser atendidas por la réplica más cercana o menos congestionada, reduciendo la latencia.
+        \item \textbf{Tolerancia a fallos:}  El sistema puede continuar operando incluso si algunos sitios están inactivos.
+        \item \textbf{Escalabilidad:}  La replicación permite escalar horizontalmente el sistema, agregando más réplicas para manejar un mayor volumen de datos y solicitudes.
+    \end{itemize}
+    \item \textbf{Desafíos:}
+    \begin{itemize}
+        \item \textbf{Consistencia:}  Mantener la consistencia de los datos en todas las réplicas es un desafío importante.  Se deben implementar mecanismos para asegurar que las actualizaciones se propaguen a todas las réplicas de manera oportuna y en el orden correcto.  Hay diferentes modelos de consistencia, desde el modelo de consistencia fuerte (todas las réplicas tienen el mismo valor) hasta el modelo de consistencia eventual (las réplicas eventualmente convergen en el mismo valor).
+        \item \textbf{Complejidad:} La gestión de múltiples copias de datos introduce una mayor complejidad en el diseño y la implementación del sistema.  Esto incluye la sincronización de las réplicas, la detección y resolución de conflictos, y la gestión de las actualizaciones.
+        \item \textbf{Costo de almacenamiento:} Almacenar múltiples copias de los datos aumenta el costo de almacenamiento.
+        \item \textbf{Costos de actualización:} Las operaciones de escritura deben propagarse a todas las réplicas, lo que puede aumentar la latencia y el consumo de ancho de banda.
+    \end{itemize}
+\end{itemize}
+
+\section{Asignación de Fragmentos y Réplicas}
+
+La asignación de fragmentos y réplicas es el proceso de decidir dónde almacenar cada fragmento de datos y cuántas réplicas crear para cada fragmento. Esta decisión es crítica para el rendimiento y la disponibilidad del sistema.  Existen diferentes estrategias para la asignación, y la elección de la mejor estrategia depende de varios factores, incluyendo la frecuencia de acceso a los datos, la ubicación geográfica de los usuarios, los costos de almacenamiento y comunicación, y los requisitos de disponibilidad.
+
+\begin{itemize}
+    \item \textbf{Estrategias de asignación:}
+    \begin{itemize}
+        \item \textbf{Fragmentación sin replicación:} Cada fragmento se almacena en un solo sitio.  Es la estrategia más simple y económica en términos de almacenamiento, pero ofrece la menor disponibilidad y tolera menos fallos.  Es apropiada cuando la disponibilidad no es una prioridad y los datos son relativamente estáticos.
+        \item \textbf{Fragmentación con replicación completa:}  Cada fragmento y su réplica se almacenan en todos los sitios del sistema.  Proporciona la máxima disponibilidad y el mejor rendimiento de lectura, ya que las lecturas pueden ser servidas desde cualquier sitio.  Sin embargo, es la estrategia más costosa en términos de almacenamiento y requiere la sincronización de todas las réplicas para las operaciones de escritura.  Es apropiada para sistemas donde las lecturas son mucho más frecuentes que las escrituras y la disponibilidad es crítica.
+        \item \textbf{Fragmentación con replicación parcial:}  Cada fragmento se replica en un subconjunto de los sitios.  Es un compromiso entre la replicación completa y la fragmentación sin replicación.  Permite equilibrar la disponibilidad, el rendimiento y el costo de almacenamiento.  Se pueden utilizar diferentes criterios para seleccionar los sitios donde se replicarán los fragmentos, como la cercanía geográfica a los usuarios, la frecuencia de acceso a los datos, y la capacidad de los sitios.
+        \item \textbf{Asignación basada en la demanda:} La decisión de dónde y cuántas réplicas crear se basa en el análisis de la demanda.  Se utilizan métricas como la frecuencia de acceso, la ubicación geográfica de los usuarios y los patrones de acceso.  La asignación se adapta dinámicamente a los cambios en la demanda, moviendo o creando réplicas según sea necesario.  Este enfoque es más complejo pero puede optimizar el rendimiento y la disponibilidad en entornos dinámicos.
+    \end{itemize}
+    \item \textbf{Factores a considerar en la asignación:}
+    \begin{itemize}
+        \item \textbf{Frecuencia de acceso:} Los fragmentos a los que se accede con más frecuencia deben ser replicados en más sitios para mejorar el rendimiento de lectura.
+        \item \textbf{Ubicación geográfica de los usuarios:} Los fragmentos deben ser replicados en sitios cercanos a los usuarios para reducir la latencia.
+        \item \textbf{Costos de almacenamiento y comunicación:}  Los costos de almacenamiento y comunicación deben ser considerados al decidir cuántas réplicas crear y dónde almacenarlas.
+        \item \textbf{Requisitos de disponibilidad:}  Los fragmentos que requieren una alta disponibilidad deben ser replicados en múltiples sitios.
+        \item \textbf{Capacidad de los sitios:}  La capacidad de almacenamiento y procesamiento de cada sitio debe ser considerada al asignar fragmentos y réplicas.
+        \item \textbf{Modelo de consistencia:}  La elección del modelo de consistencia (consistencia fuerte, consistencia eventual, etc.) influye en la estrategia de replicación y en la complejidad de la implementación.
+    \end{itemize}
+\end{itemize}

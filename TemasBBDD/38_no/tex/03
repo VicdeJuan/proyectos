@@ -1,0 +1,170 @@
+\chapter{Operaciones de Manipulación de Datos en el Modelo Relacional}
+
+El modelo relacional proporciona un marco formal para la organización y manipulación de datos, centrado en el concepto de relaciones (tablas) y operaciones algebraicas. Este capítulo explora en profundidad las operaciones fundamentales para consultar y modificar datos en bases de datos relacionales, destacando la importancia de los lenguajes de consulta.
+
+\section{Operaciones Básicas de Consulta}
+
+Las operaciones de consulta son esenciales para extraer información de las relaciones almacenadas.  Estas operaciones permiten filtrar, combinar y transformar los datos para responder a las preguntas de los usuarios.
+
+\subsection{Selección (Filtrado de Filas)}
+
+La operación de selección ($\sigma$) permite extraer un subconjunto de tuplas (filas) de una relación que satisfacen una condición especificada.  La condición es una expresión booleana que se evalúa para cada tupla, y solo las tuplas que evalúan a verdadero son incluidas en el resultado.  Formalmente, si $R$ es una relación y $C$ es la condición, la selección se representa como: $\sigma_C(R)$.
+
+\paragraph{Ejemplo:}
+
+Consideremos una relación \texttt{Empleados} con atributos \texttt{ID\_Empleado}, \texttt{Nombre}, \texttt{Departamento} y \texttt{Salario}.  Para seleccionar todos los empleados que trabajan en el departamento de "Ventas", la operación se expresaría como:
+
+\[
+\sigma_{\text{Departamento = Ventas}}(\text{Empleados})
+\]
+
+El resultado sería una nueva relación que contiene solo las tuplas de \texttt{Empleados} cuyo atributo \texttt{Departamento} tiene el valor "Ventas".
+
+\subsection{Proyección (Selección de Columnas)}
+
+La operación de proyección ($\Pi$) permite seleccionar un subconjunto de atributos (columnas) de una relación, eliminando las columnas restantes.  Formalmente, si $R$ es una relación y $A_1, A_2, ..., A_n$ son los atributos que se desean proyectar, la proyección se representa como: $\Pi_{A_1, A_2, ..., A_n}(R)$.  El resultado es una nueva relación que contiene solo las columnas especificadas.  Es importante notar que la proyección puede eliminar tuplas duplicadas si, después de proyectar, dos o más tuplas se vuelven idénticas.
+
+\paragraph{Ejemplo:}
+
+Continuando con la relación \texttt{Empleados}, para obtener solo los nombres y salarios de todos los empleados, la operación de proyección sería:
+
+\[
+\Pi_{\text{Nombre, Salario}}(\text{Empleados})
+\]
+
+El resultado sería una nueva relación con dos atributos: \texttt{Nombre} y \texttt{Salario}.
+
+\subsection{Unión (Combinación de Filas)}
+
+La operación de unión ($\cup$) combina las tuplas de dos relaciones que tienen la misma estructura de atributos (mismo número y tipo de atributos).  Si una tupla existe en ambas relaciones, solo se incluirá una vez en el resultado.  Formalmente, si $R$ y $S$ son dos relaciones con la misma estructura, la unión se representa como: $R \cup S$.
+
+\paragraph{Ejemplo:}
+
+Consideremos dos relaciones: \texttt{ClientesVIP} y \texttt{ClientesRegulares}, ambas con los mismos atributos (por ejemplo, \texttt{ID\_Cliente}, \texttt{Nombre}, \texttt{Direccion}). La operación de unión para combinar todos los clientes en una sola lista sería:
+
+\[
+\text{ClientesVIP} \cup \text{ClientesRegulares}
+\]
+
+El resultado sería una nueva relación que contiene todos los clientes de ambas relaciones, sin duplicados.
+
+\subsection{Intersección (Filas Comunes)}
+
+La operación de intersección ($\cap$) devuelve las tuplas que están presentes en ambas relaciones.  Formalmente, si $R$ y $S$ son dos relaciones con la misma estructura, la intersección se representa como: $R \cap S$.
+
+\paragraph{Ejemplo:}
+
+Usando las relaciones \texttt{ClientesVIP} y \texttt{ClientesRegulares}, la operación de intersección encontraría los clientes que son tanto VIP como regulares (aunque esto podría no tener mucho sentido práctico en este ejemplo).
+
+\[
+\text{ClientesVIP} \cap \text{ClientesRegulares}
+\]
+
+El resultado sería una nueva relación que contiene solo las tuplas que existen tanto en \texttt{ClientesVIP} como en \texttt{ClientesRegulares}.
+
+\subsection{Diferencia (Filas en una Relación pero no en Otra)}
+
+La operación de diferencia (-) devuelve las tuplas que están presentes en la primera relación pero no en la segunda.  Formalmente, si $R$ y $S$ son dos relaciones con la misma estructura, la diferencia se representa como: $R - S$.
+
+\paragraph{Ejemplo:}
+
+Considerando las relaciones \texttt{ClientesVIP} y \texttt{ClientesRegulares}, la operación de diferencia:
+
+\[
+\text{ClientesVIP} - \text{ClientesRegulares}
+\]
+
+Resultaría en una nueva relación que contiene solo los clientes VIP que no son clientes regulares.
+
+\subsection{Producto Cartesiano (Combinación de Filas)}
+
+El producto cartesiano (×) combina cada tupla de una relación con cada tupla de otra relación.  El resultado es una nueva relación con todos los atributos de ambas relaciones.  Si $R$ tiene $n$ tuplas y $S$ tiene $m$ tuplas, el producto cartesiano $R \times S$ resultará en una relación con $n \times m$ tuplas.  Formalmente, si $R$ y $S$ son dos relaciones, el producto cartesiano se representa como: $R \times S$.  Esta operación es fundamental, aunque puede generar resultados muy grandes y, a menudo, se utiliza en combinación con otras operaciones como la selección para obtener resultados significativos.
+
+\paragraph{Ejemplo:}
+
+Consideremos una relación \texttt{Productos} con atributos \texttt{ID\_Producto} y \texttt{NombreProducto}, y una relación \texttt{Proveedores} con atributos \texttt{ID\_Proveedor} y \texttt{NombreProveedor}. El producto cartesiano:
+
+\[
+\text{Productos} \times \text{Proveedores}
+\]
+
+Generaría una nueva relación donde cada fila combina la información de un producto con la información de un proveedor.  Si, por ejemplo, \texttt{Productos} tiene 3 tuplas y \texttt{Proveedores} tiene 2, el resultado tendría 6 tuplas.  A menudo, el producto cartesiano es el primer paso para realizar una \textit{join} (una operación de combinación más específica), que luego se filtra mediante una selección para combinar información relevante.
+
+\section{Operaciones de Actualización}
+
+Las operaciones de actualización permiten modificar los datos almacenados en las relaciones.  Estas operaciones son cruciales para mantener la integridad y la actualidad de la base de datos.
+
+\subsection{Inserción de Nuevas Tuplas}
+
+La operación de inserción permite agregar nuevas tuplas a una relación.  La nueva tupla debe ser compatible con la estructura de la relación, es decir, debe tener el mismo número y tipos de atributos que los definidos para la relación.  Esta operación se suele representar con la inserción de los valores directamente en la relación.
+
+\paragraph{Ejemplo:}
+
+Para insertar un nuevo empleado en la relación \texttt{Empleados}, se utilizaría una sintaxis similar a:
+
+\begin{verbatim}
+INSERT INTO Empleados (ID_Empleado, Nombre, Departamento, Salario)
+VALUES (100, 'Ana Perez', 'Marketing', 60000);
+\end{verbatim}
+
+\subsection{Eliminación de Tuplas Existentes}
+
+La operación de eliminación permite remover tuplas de una relación.  La eliminación se realiza típicamente utilizando una condición que especifica qué tuplas deben ser eliminadas.  Formalmente, la eliminación se puede considerar como una selección con la condición negada seguida de la operación de diferencia.
+
+\paragraph{Ejemplo:}
+
+Para eliminar al empleado con \texttt{ID\_Empleado} 123 de la relación \texttt{Empleados}, la operación se expresaría como:
+
+\begin{verbatim}
+DELETE FROM Empleados
+WHERE ID_Empleado = 123;
+\end{verbatim}
+
+\subsection{Modificación de Atributos de Tuplas}
+
+La operación de modificación permite actualizar los valores de los atributos de las tuplas existentes en una relación.  La modificación implica especificar qué atributos deben ser actualizados y qué nuevos valores deben tomar.  Similar a la eliminación, la modificación se realiza típicamente usando una condición para identificar las tuplas a modificar.
+
+\paragraph{Ejemplo:}
+
+Para aumentar el salario de todos los empleados del departamento de "Ventas" en un 10%, la operación se expresaría como:
+
+\begin{verbatim}
+UPDATE Empleados
+SET Salario = Salario * 1.10
+WHERE Departamento = 'Ventas';
+\end{verbatim}
+
+\section{La Importancia de los Lenguajes de Consulta}
+
+Las operaciones de manipulación de datos descritas anteriormente son la base de la interacción con las bases de datos relacionales.  Sin embargo, la especificación precisa de estas operaciones requiere de lenguajes formales de consulta.
+
+\subsection{Necesidad de Lenguajes Precisos}
+
+La manipulación de datos en bases de datos relacionales requiere de lenguajes precisos y sin ambigüedades para evitar errores y asegurar la correcta interpretación de las instrucciones.  Estos lenguajes deben permitir a los usuarios especificar de forma clara y concisa qué datos se deben recuperar, modificar o eliminar. La falta de un lenguaje formal haría la interacción con las bases de datos ineficiente y propensa a errores.
+
+\subsection{Lenguajes Declarativos vs. Lenguajes Procedimentales}
+
+Los lenguajes de consulta se pueden clasificar en dos categorías principales: declarativos y procedimentales.
+
+\begin{itemize}
+    \item \textbf{Lenguajes Declarativos}:  En los lenguajes declarativos, el usuario especifica \textit{qué} información se necesita, sin especificar \textit{cómo} obtenerla.  El sistema de gestión de bases de datos (SGBD) se encarga de determinar la mejor forma de ejecutar la consulta.  SQL (Structured Query Language) es el ejemplo más prominente de un lenguaje declarativo.  El usuario describe el resultado deseado y el SGBD optimiza la ejecución.
+
+    \item \textbf{Lenguajes Procedimentales}: En los lenguajes procedimentales, el usuario especifica \textit{cómo} obtener la información, es decir, el conjunto de pasos que se deben seguir para obtener el resultado deseado.  Estos lenguajes proporcionan un mayor control sobre el proceso de consulta, pero también requieren que el usuario tenga un mayor conocimiento de la estructura de la base de datos y de los algoritmos de acceso a los datos. El álgebra relacional es un ejemplo de un lenguaje procedimental. Los lenguajes procedimentales pueden ser más complejos de escribir y optimizar que los declarativos.
+\end{itemize}
+
+\paragraph{Ventajas y Desventajas:}
+
+\begin{itemize}
+    \item \textbf{Declarativos}:
+        \begin{itemize}
+            \item \textbf{Ventajas}: Más fáciles de usar, el SGBD optimiza la consulta, menos código.
+            \item \textbf{Desventajas}:  Menos control sobre la ejecución, menos flexibles en algunos casos.
+        \end{itemize}
+    \item \textbf{Procedimentales}:
+        \begin{itemize}
+            \item \textbf{Ventajas}:  Mayor control sobre la ejecución, más flexibilidad.
+            \item \textbf{Desventajas}:  Más difíciles de usar, requiere mayor conocimiento, más código.
+        \end{itemize}
+\end{itemize}
+
+La elección entre un lenguaje declarativo y uno procedimental depende de los requisitos específicos de la aplicación y del nivel de control deseado sobre el proceso de consulta.  En la práctica, SQL, un lenguaje declarativo, es el lenguaje de consulta más utilizado en las bases de datos relacionales.  El álgebra relacional, un lenguaje procedimental, proporciona una base teórica para entender el funcionamiento de SQL y la optimización de consultas.

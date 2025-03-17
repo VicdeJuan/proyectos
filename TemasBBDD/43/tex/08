@@ -1,0 +1,100 @@
+\chapter{Administración de Bases de Datos Distribuidas (Breve Mención)}
+
+En el ámbito de la ingeniería informática, las bases de datos distribuidas representan una solución vital para manejar grandes volúmenes de datos, garantizar la disponibilidad y mejorar el rendimiento al distribuir la carga de trabajo. Sin embargo, la administración de estos sistemas presenta desafíos significativos que requieren un enfoque especializado y una comprensión profunda de los principios subyacentes. Este capítulo ofrece una visión general de los aspectos clave en la administración de bases de datos distribuidas, enfocándose en los problemas que surgen al extender la administración de bases de datos centralizadas a un entorno descentralizado.
+
+\section{Desafíos Adicionales en la Administración de Bases de Datos Distribuidas}
+
+La transición de una base de datos centralizada a una distribuida introduce una capa adicional de complejidad. Los administradores deben enfrentar nuevos desafíos relacionados con la arquitectura distribuida, la comunicación entre sitios, y la gestión de la información a través de múltiples ubicaciones geográficas.
+
+\subsection{Distribución Geográfica y Latencia}
+La dispersión geográfica de los nodos de la base de datos introduce latencia en las comunicaciones. Las consultas y transacciones que involucran múltiples sitios sufren retrasos debido a la distancia física y la infraestructura de red. Los administradores deben optimizar el diseño de la base de datos y la ubicación de los datos para minimizar este impacto. Técnicas como la colocación de réplicas de datos cerca de los usuarios finales son comunes para mejorar los tiempos de respuesta.
+
+\subsection{Heterogeneidad}
+Las bases de datos distribuidas pueden estar compuestas por sistemas heterogéneos, utilizando diferentes plataformas de hardware, sistemas operativos, sistemas de gestión de bases de datos (SGBD) e incluso modelos de datos. La administración de la heterogeneidad implica la adaptación de las herramientas y procedimientos a los distintos entornos, asegurando la compatibilidad y la interoperabilidad. Esto podría requerir el uso de capas de abstracción, como middleware, para unificar la gestión y el acceso a los datos.
+
+\subsection{Complejidad de la Topología}
+La topología de la red en la que reside la base de datos distribuida puede ser compleja y dinámica. Los administradores deben estar preparados para lidiar con cambios en la red, fallas de nodos y problemas de conectividad. Las técnicas de monitoreo y gestión de la red son esenciales para identificar y resolver problemas rápidamente.
+
+\subsection{Seguridad}
+Asegurar una base de datos distribuida es un desafío mayor que en un sistema centralizado. La superficie de ataque se incrementa debido a la multiplicidad de nodos y canales de comunicación. Los administradores deben implementar mecanismos robustos de autenticación, autorización, cifrado y control de acceso en todos los sitios. La seguridad de la comunicación entre sitios, especialmente si se transmite información sensible, es crítica.
+
+\section{Coordinación de Copias de Seguridad y Recuperación en Múltiples Sitios}
+
+La creación y restauración de copias de seguridad en una base de datos distribuida es más compleja que en un sistema centralizado. Los administradores deben garantizar la integridad de los datos a través de múltiples sitios, lo que implica coordinar las copias de seguridad y la recuperación.
+
+\subsection{Copias de Seguridad Consistentes a Nivel Global}
+Es esencial que las copias de seguridad sean consistentes a nivel global, es decir, que reflejen un estado coherente de la base de datos en todos los sitios. Esto requiere la sincronización de los procesos de copia de seguridad para evitar inconsistencias en los datos. Las técnicas comunes incluyen el uso de transacciones distribuidas o el bloqueo coordinado de sitios durante el proceso de copia de seguridad.
+
+\subsection{Planificación de Recuperación ante Desastres}
+
+La recuperación ante desastres es aún más crítica en un entorno distribuido, ya que una falla en un sitio puede afectar la disponibilidad de la base de datos en su totalidad. Los administradores deben establecer planes de recuperación que especifiquen los procedimientos a seguir en caso de fallas en los sitios, incluyendo la restauración de copias de seguridad, la conmutación por error (failover) a sitios de respaldo y la sincronización de datos después de la recuperación.
+
+\subsection{Estrategias de Copia de Seguridad}
+
+Existen diversas estrategias de copia de seguridad que se pueden aplicar en bases de datos distribuidas:
+
+\begin{itemize}
+    \item \textbf{Copia de seguridad completa:} Copia de seguridad de todos los datos en todos los sitios. Es la forma más sencilla, pero puede ser costosa en tiempo y recursos.
+    \item \textbf{Copia de seguridad incremental:} Copia de seguridad solo de los datos modificados desde la última copia de seguridad (completa o incremental). Reduce el tiempo y el espacio de almacenamiento, pero la recuperación es más compleja.
+    \item \textbf{Copia de seguridad diferencial:} Copia de seguridad solo de los datos modificados desde la última copia de seguridad completa. Es un compromiso entre la copia de seguridad completa e incremental.
+    \item \textbf{Replicación de datos:}  Algunos sistemas replican automáticamente los datos en múltiples sitios, lo que permite una recuperación más rápida en caso de fallo.  Este enfoque requiere una cuidadosa gestión de la consistencia.
+\end{itemize}
+
+\section{Gestión de la Consistencia de Datos Replicados}
+
+La replicación de datos es una técnica común en bases de datos distribuidas para mejorar la disponibilidad y el rendimiento. Sin embargo, la replicación introduce el desafío de mantener la consistencia de los datos en múltiples sitios.
+
+\subsection{Modelos de Consistencia}
+
+Existen diferentes modelos de consistencia que se pueden utilizar:
+
+\begin{itemize}
+    \item \textbf{Consistencia fuerte:} Todas las réplicas reflejan el mismo valor en todo momento. Se garantiza la integridad de los datos, pero puede afectar el rendimiento.
+    \item \textbf{Consistencia eventual:} Las réplicas eventualmente convergen en el mismo valor, pero pueden existir inconsistencias temporales. Mejora el rendimiento y la disponibilidad, pero requiere que las aplicaciones toleren inconsistencias.
+    \item \textbf{Consistencia causal:} Las actualizaciones relacionadas causalmente se propagan a todas las réplicas en el mismo orden.
+\end{itemize}
+
+\subsection{Protocolos de Consistencia}
+
+Se utilizan varios protocolos para mantener la consistencia:
+
+\begin{itemize}
+    \item \textbf{Protocolo de dos fases (2PC):} Un protocolo distribuido que garantiza la atomicidad de las transacciones distribuidas.  Implica una fase de preparación y una fase de confirmación.  Puede sufrir problemas de bloqueo.
+    \item \textbf{Protocolo de tres fases (3PC):} Una mejora del 2PC que intenta mitigar los problemas de bloqueo.
+    \item \textbf{Consenso Paxos:} Un algoritmo robusto para lograr el consenso en un sistema distribuido.
+    \item \textbf{Vector Clocks:} Un mecanismo para rastrear las dependencias causales entre operaciones.
+\end{itemize}
+
+\subsection{Compensación entre Consistencia y Rendimiento}
+
+La elección del modelo de consistencia y del protocolo de sincronización involucra una compensación entre la consistencia de los datos y el rendimiento. Una consistencia más fuerte generalmente implica un rendimiento más bajo, mientras que la consistencia eventual puede ofrecer un mejor rendimiento a expensas de la consistencia. Los administradores deben seleccionar el modelo y el protocolo que mejor se adapten a los requisitos específicos de la aplicación.
+
+\section{Procesamiento de Consultas y Transacciones Distribuidas}
+
+El procesamiento de consultas y transacciones distribuidas es un aspecto fundamental de la administración de bases de datos distribuidas.  Implica la ejecución de operaciones que involucran datos en múltiples sitios.
+
+\subsection{Optimización de Consultas Distribuidas}
+
+La optimización de consultas distribuidas implica seleccionar la estrategia de ejecución más eficiente para una consulta que involucra datos en múltiples sitios.  Los optimizadores de consultas distribuidas deben considerar factores como:
+
+\begin{itemize}
+    \item \textbf{Costo de transferencia de datos:} La cantidad de datos que se deben transferir entre sitios para procesar la consulta.
+    \item \textbf{Costo de procesamiento local:} El costo de ejecutar la consulta en cada sitio.
+    \item \textbf{Disponibilidad de datos:} La ubicación de los datos y la disponibilidad de los sitios.
+    \item \textbf{Coste de Join (unión):} Donde se ejecuta la operación de unión de datos provenientes de distintas ubicaciones
+\end{itemize}
+
+\subsection{Planificación de Transacciones Distribuidas}
+
+La planificación de transacciones distribuidas implica asegurar que las transacciones que involucran múltiples sitios se ejecuten de forma atómica, consistente, aislada y durable (ACID). Esto requiere la coordinación de múltiples sitios para garantizar que todas las operaciones de la transacción se completen con éxito, o que se reviertan si ocurre un error.
+
+\subsection{Control de Concurrencia Distribuido}
+El control de concurrencia es esencial para evitar conflictos cuando múltiples transacciones acceden a los mismos datos. En un entorno distribuido, esto se vuelve más complejo debido a la naturaleza distribuida de los datos y la posibilidad de interbloqueos entre sitios. Las técnicas de control de concurrencia distribuidas incluyen:
+
+\begin{itemize}
+    \item \textbf{Bloqueo distribuido:} Un mecanismo para bloquear recursos en múltiples sitios. Puede reducir la concurrencia y causar interbloqueos.
+    \item \textbf{Control de concurrencia optimista:} Permite que las transacciones se ejecuten sin bloqueo, y verifica al final si ha habido conflictos.
+    \item \textbf{Control de concurrencia basado en versión:}  Cada dato tiene una versión.  Las transacciones leen la versión actual y, al actualizar, verifican si la versión ha cambiado.
+\end{itemize}
+
+En resumen, la administración de bases de datos distribuidas es un campo complejo que requiere una comprensión profunda de los conceptos y tecnologías involucradas. Este capítulo ha proporcionado una breve mención de los desafíos clave, pero es fundamental una profundización en la literatura especializada y la experiencia práctica para una administración efectiva en entornos distribuidos.

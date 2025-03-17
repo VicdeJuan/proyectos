@@ -1,0 +1,126 @@
+\chapter{Diseño de Bases de Datos Distribuidas}
+
+\section{Consideraciones de Diseño para la Fragmentación y Replicación}
+
+El diseño de una base de datos distribuida (BDD) es un proceso complejo que involucra múltiples decisiones interrelacionadas. La fragmentación y la replicación son dos pilares fundamentales que impactan directamente en el rendimiento, la disponibilidad y la consistencia de los datos.  Esta sección profundiza en las consideraciones críticas para un diseño efectivo, orientado a un entorno de postgrado en ingeniería informática.
+
+\subsection{Fragmentación}
+
+La fragmentación consiste en dividir una tabla global en fragmentos más pequeños, que pueden ser almacenados en diferentes sitios de la red. Esta técnica permite mejorar el rendimiento, la concurrencia y la disponibilidad, al reducir el volumen de datos que se deben acceder para una consulta.
+
+\begin{itemize}
+    \item \textbf{Tipos de Fragmentación:}
+    \begin{itemize}
+        \item \textbf{Fragmentación Horizontal:}  Divide la tabla en subconjuntos de filas (tuplas).  Se define mediante predicados sobre los atributos de la tabla.
+        \begin{itemize}
+            \item \textbf{Ventajas:} Permite distribuir datos basados en criterios lógicos (ej: clientes por región). Facilita el procesamiento de consultas que acceden a un subconjunto de datos.
+            \item \textbf{Desventajas:}  Puede requerir la combinación de fragmentos para responder ciertas consultas. El diseño inadecuado puede llevar a la fragmentación de datos relevantes para una misma consulta, afectando el rendimiento.
+            \item \textbf{Ejemplo:}  Tabla ``Clientes'' fragmentada por región:
+            \begin{lstlisting}
+                Clientes_España = SELECT * FROM Clientes WHERE Region = 'España';
+                Clientes_Francia = SELECT * FROM Clientes WHERE Region = 'Francia';
+            \end{lstlisting}
+        \end{itemize}
+        \item \textbf{Fragmentación Vertical:} Divide la tabla en subconjuntos de columnas (atributos).
+        \begin{itemize}
+            \item \textbf{Ventajas:}  Reduce el ancho de las filas, mejorando el rendimiento en consultas que solo acceden a algunos atributos. Permite proteger la confidencialidad de ciertos datos al almacenarlos en sitios separados (ej: datos personales sensibles).
+            \item \textbf{Desventajas:} Puede requerir la unión de fragmentos para obtener la información completa de un registro. La fragmentación excesiva puede generar sobrecarga de procesamiento.
+            \item \textbf{Ejemplo:} Tabla ``Empleados'' fragmentada:
+            \begin{lstlisting}
+                Empleados_InformacionPersonal = SELECT ID, Nombre, Apellido FROM Empleados;
+                Empleados_InformacionSalario = SELECT ID, Salario FROM Empleados;
+            \end{lstlisting}
+        \end{itemize}
+        \item \textbf{Fragmentación Mixta:} Combina la fragmentación horizontal y vertical. Ofrece la mayor flexibilidad, pero también la mayor complejidad en el diseño.
+        \begin{itemize}
+            \item \textbf{Ventajas:}  Optimización avanzada para consultas específicas. Adaptación a diferentes requerimientos de almacenamiento y acceso.
+            \item \textbf{Desventajas:}  El diseño es más complejo y requiere un análisis cuidadoso de las consultas y los patrones de acceso.
+            \item \textbf{Ejemplo:}  Tabla ``Pedidos'' fragmentada:
+            \begin{lstlisting}
+                Pedidos_España_Detalles = SELECT ID, Producto, Cantidad FROM Pedidos WHERE Region = 'España';
+                Pedidos_España_Cliente = SELECT ID, ClienteID FROM Pedidos WHERE Region = 'España';
+                Pedidos_Francia_Detalles = SELECT ID, Producto, Cantidad FROM Pedidos WHERE Region = 'Francia';
+                Pedidos_Francia_Cliente = SELECT ID, ClienteID FROM Pedidos WHERE Region = 'Francia';
+            \end{lstlisting}
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Consideraciones de Diseño para la Fragmentación:}
+    \begin{itemize}
+        \item \textbf{Análisis de Consultas:}  Identificar las consultas más frecuentes y sus patrones de acceso a los datos es crucial.  La fragmentación debe optimizarse para minimizar el costo de acceso a los datos y la necesidad de combinar fragmentos.
+        \item \textbf{Consideraciones de Rendimiento:}  Evaluar el tamaño de los fragmentos, la ubicación de los mismos, y la frecuencia de acceso.  La fragmentación debe evitar la creación de fragmentos demasiado pequeños o demasiado grandes, que puedan degradar el rendimiento.
+        \item \textbf{Consistencia:}  La fragmentación debe asegurar la consistencia de los datos. Las actualizaciones que afectan a múltiples fragmentos deben ser gestionadas de manera transaccional, utilizando protocolos de consenso.
+        \item \textbf{Disponibilidad:}  La fragmentación puede aumentar la disponibilidad al permitir que los datos estén disponibles incluso si algunos sitios fallan.
+        \item \textbf{Costos de Almacenamiento y Transferencia:}  Evaluar los costos de almacenamiento y transferencia de datos para cada fragmentación propuesta.
+        \item \textbf{Grado de Fragmentación:}  La elección del grado de fragmentación depende del patrón de acceso a los datos, el nivel de concurrencia, y la capacidad de procesamiento y almacenamiento de los sitios.  Un grado de fragmentación excesivo puede generar sobrecarga de procesamiento debido a la necesidad de unir múltiples fragmentos.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Replicación}
+
+La replicación implica la creación de copias redundantes de los datos, que se almacenan en diferentes sitios.  Esta técnica mejora la disponibilidad y el rendimiento de las consultas, al permitir el acceso a los datos desde múltiples ubicaciones.
+
+\begin{itemize}
+    \item \textbf{Tipos de Replicación:}
+    \begin{itemize}
+        \item \textbf{Replicación Total:} Se replica toda la base de datos en cada sitio.  Ofrece la mayor disponibilidad y el mejor rendimiento para las consultas de lectura, pero es costosa en términos de almacenamiento y mantenimiento de la consistencia.  Es ideal para entornos con alta demanda de lectura y poca frecuencia de actualizaciones.
+        \item \textbf{Replicación Parcial:} Se replica solo un subconjunto de los datos en cada sitio.  Ofrece un equilibrio entre rendimiento, disponibilidad y costos.  Se utiliza comúnmente para replicar fragmentos horizontales o verticales, o para almacenar datos localmente que son críticos para el rendimiento de un sitio específico.
+        \item \textbf{Replicación por Mayoría (Quorum):}  Las operaciones de lectura y escritura deben ser confirmadas por un número mínimo (quorum) de réplicas.  Ofrece una alta tolerancia a fallos, pero puede degradar el rendimiento en algunos casos.
+    \end{itemize}
+
+    \item \textbf{Consideraciones de Diseño para la Replicación:}
+    \begin{itemize}
+        \item \textbf{Disponibilidad:}  La replicación aumenta la disponibilidad al permitir que los datos estén disponibles incluso si algunos sitios fallan. El grado de replicación debe estar basado en el objetivo de tiempo de inactividad tolerado.
+        \item \textbf{Rendimiento:}  La replicación puede mejorar el rendimiento de las consultas de lectura, al permitir que se sirvan desde el sitio más cercano o menos congestionado.  Sin embargo, la replicación puede degradar el rendimiento de las escrituras, ya que las actualizaciones deben propagarse a todas las réplicas.
+        \item \textbf{Consistencia:}  Mantener la consistencia de las réplicas es un desafío fundamental.  Se utilizan diferentes estrategias, como la replicación síncrona (las actualizaciones se aplican a todas las réplicas antes de confirmar la transacción), la replicación asíncrona (las actualizaciones se propagan en segundo plano), y la replicación con consenso (como Paxos o Raft).
+        \item \textbf{Costos de Almacenamiento y Transferencia:}  La replicación aumenta los costos de almacenamiento y la transferencia de datos.  El costo de almacenamiento debe considerarse en función de la cantidad de datos y el número de réplicas. El costo de transferencia debe considerarse en función de la frecuencia de las actualizaciones y la latencia de la red.
+        \item \textbf{Tipos de Consistencia:} La elección del tipo de consistencia (fuerte, eventual, etc.) afecta al rendimiento y a la complejidad del sistema. La consistencia fuerte garantiza que todas las réplicas tengan los mismos datos, pero puede degradar el rendimiento. La consistencia eventual permite que las réplicas converjan en un estado consistente con el tiempo, lo que puede mejorar el rendimiento.
+        \item \textbf{Estrategias de Sincronización:}
+        \begin{itemize}
+            \item \textbf{Síncrona:}  Las actualizaciones se aplican a todas las réplicas antes de confirmar la transacción. Garantiza la consistencia inmediata, pero reduce la disponibilidad si una réplica falla.
+            \item \textbf{Asíncrona:} Las actualizaciones se propagan en segundo plano, lo que puede generar latencia en la consistencia. Mejora la disponibilidad y el rendimiento, pero requiere mecanismos para gestionar los conflictos.
+        \end{itemize}
+    \end{itemize}
+
+\end{itemize}
+
+\section{Diseño del Esquema Global y Esquemas Locales}
+
+El diseño de una BDD distribuida implica la definición de dos tipos de esquemas: el esquema global y los esquemas locales.  El esquema global define la estructura lógica de la base de datos, como la ven los usuarios y las aplicaciones. Los esquemas locales definen la estructura de los datos almacenados en cada sitio.  El diseño correcto de ambos esquemas es fundamental para garantizar la consistencia, la integridad, el rendimiento y la transparencia de la base de datos.
+
+\subsection{Esquema Global}
+
+El esquema global es una vista lógica y unificada de la base de datos distribuida.  Proporciona una abstracción a los usuarios y las aplicaciones, ocultando la fragmentación y la replicación de los datos.  El diseño del esquema global debe considerar:
+
+\begin{itemize}
+    \item \textbf{Modelo de Datos:}  Seleccionar un modelo de datos adecuado (relacional, NoSQL, etc.) que se adapte a los requisitos de la aplicación y a la naturaleza de los datos.  El modelo relacional es el más común, pero en algunos casos, los modelos NoSQL pueden ser más apropiados.
+    \item \textbf{Normalización:}  Aplicar las técnicas de normalización para eliminar redundancias y anomalías en los datos, asegurando la integridad y la consistencia.
+    \item \textbf{Definición de Tablas y Atributos:}  Definir las tablas, sus atributos y sus tipos de datos.  Los atributos clave deben ser cuidadosamente seleccionados.
+    \item \textbf{Definición de Restricciones de Integridad:}  Definir restricciones de integridad referencial, restricciones de dominio y otras restricciones para garantizar la validez de los datos.  Estas restricciones se aplican a nivel global, asegurando que los datos sean consistentes en todos los sitios.
+    \item \textbf{Vistas:}  Definir vistas para simplificar las consultas y para proporcionar diferentes perspectivas de los datos a los usuarios. Las vistas pueden ser útiles para abstraer la complejidad de la fragmentación y la replicación.
+    \item \textbf{Lenguaje de Consultas:} Seleccionar un lenguaje de consultas (ej. SQL) apropiado para consultar el esquema global. El sistema de gestión de la base de datos distribuida (SGBDD) debe encargarse de la traducción de las consultas globales a consultas locales.
+\end{itemize}
+
+\subsection{Esquemas Locales}
+
+Los esquemas locales definen la estructura de los datos almacenados en cada sitio. Reflejan la fragmentación y la replicación de los datos.  El diseño de los esquemas locales debe considerar:
+
+\begin{itemize}
+    \item \textbf{Fragmentación y Replicación:}  Definir cómo se fragmentan y replican las tablas del esquema global.  Esto implica definir los fragmentos, su ubicación y las estrategias de replicación.
+    \item \textbf{Asignación de Datos:}  Determinar la asignación de los fragmentos a los diferentes sitios.  La asignación debe optimizarse para minimizar el costo de acceso a los datos y maximizar la disponibilidad.
+    \item \textbf{Esquemas Físicos:}  Definir los esquemas físicos de cada sitio, incluyendo el almacenamiento, los índices y las estructuras de datos.  La optimización del esquema físico es crucial para el rendimiento de las consultas locales.
+    \item \textbf{Catalogación:}  Mantener un catálogo (o diccionario de datos) que contenga información sobre los fragmentos, la ubicación de los datos, las estrategias de replicación, y la correspondencia entre el esquema global y los esquemas locales.  Este catálogo es esencial para el procesamiento de consultas distribuidas.
+    \item \textbf{Optimización Local:}  Optimizar el diseño del esquema local para cada sitio en función de las consultas locales y los patrones de acceso. Esto puede incluir la creación de índices, la optimización del almacenamiento y la selección de algoritmos de acceso eficientes.
+    \item \textbf{Mapeo del Esquema:}  Definir el mapeo entre el esquema global y los esquemas locales. Este mapeo permite al sistema traducir las consultas globales en consultas locales que se pueden ejecutar en cada sitio. El mapeo debe ser preciso y eficiente para evitar errores y optimizar el rendimiento.
+    \item \textbf{Consideraciones de Transparencia:}  El diseño de los esquemas locales debe ser transparente para los usuarios y las aplicaciones, es decir, los usuarios deben poder acceder a los datos sin conocer la fragmentación y la replicación. El SGBDD debe encargarse de la traducción de las consultas y la gestión de la distribución de los datos.
+\end{itemize}
+
+\subsection{Relación entre Esquema Global y Esquemas Locales}
+
+El esquema global y los esquemas locales están estrechamente relacionados y deben diseñarse de forma coherente.  El esquema global proporciona una vista unificada de los datos, mientras que los esquemas locales definen la implementación física de esa vista. La relación entre ambos esquemas se define a través del catálogo y el mapeo de esquemas.
+
+\begin{itemize}
+    \item \textbf{Traducción de Consultas:} El sistema de gestión de bases de datos distribuidas utiliza el catálogo y el mapeo de esquemas para traducir las consultas globales en consultas locales.  Esta traducción es un proceso complejo que involucra la descomposición de la consulta, la identificación de los fragmentos relevantes, la optimización de las consultas locales y la agregación de los resultados.
+    \item \textbf{Consistencia de Datos:}  La consistencia de los datos es fundamental en un entorno distribuido.  El esquema global, junto con las restricciones de integridad definidas en él, garantiza que los datos sean consistentes en todos los sitios. Los protocolos de consenso y las técnicas de control de concurrencia se utilizan para mantener la consistencia de los datos.
+    \item \textbf{Ejemplo:}  Supongamos que tenemos una tabla ``Productos'' en el esquema global.  Podemos fragmentar la tabla horizontalmente por categoría y replicar cada fragmento en diferentes sitios.  El esquema global define la estructura de la tabla ``Productos'', mientras que los esquemas locales definen los fragmentos y su ubicación física.  Una consulta que acceda a todos los productos de una categoría específica se traducirá en una consulta local que acceda al fragmento correspondiente en el sitio donde se encuentra replicado.
+\end{itemize}

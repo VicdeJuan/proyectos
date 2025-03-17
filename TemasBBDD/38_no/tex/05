@@ -1,0 +1,115 @@
+\chapter{Relación del Álgebra Relacional con Otros Lenguajes de Consulta}
+
+El álgebra relacional (AR) constituye el fundamento teórico para la implementación y optimización de la mayoría de los lenguajes de consulta de bases de datos, siendo SQL el ejemplo más prominente. Este capítulo explora la relación fundamental entre el AR y otros lenguajes de consulta, destacando cómo las operaciones algebraicas relacionales subyacen a la ejecución de consultas más complejas y cómo el álgebra relacional garantiza la completitud de los lenguajes de consulta. Además, se introduce brevemente el concepto de Cálculo Relacional como una alternativa, resaltando las diferencias clave en su enfoque.
+
+\section{El Álgebra Relacional como Base para SQL}
+
+SQL (Structured Query Language) es el lenguaje estándar para la gestión de bases de datos relacionales. Aunque SQL se presenta a los usuarios con una sintaxis declarativa de alto nivel, las consultas SQL se traducen internamente a expresiones del álgebra relacional para su procesamiento y optimización. Entender esta traducción es crucial para comprender cómo se ejecutan eficientemente las consultas y para la optimización de su rendimiento.
+
+\subsection{Cómo las construcciones de SQL se traducen internamente a expresiones del álgebra relacional}
+
+La traducción de SQL a álgebra relacional no es directa, pero existe una correspondencia clara entre las cláusulas de SQL y las operaciones del AR. A continuación, se muestra cómo algunas construcciones clave de SQL se mapean a operaciones algebraicas relacionales:
+
+\begin{itemize}
+    \item \textbf{SELECT (proyección ($\Pi$)):}  La cláusula \texttt{SELECT} en SQL, que especifica las columnas a recuperar, se traduce en la operación de proyección ($\Pi$) en el AR.  La proyección selecciona un subconjunto de los atributos de una relación.
+
+    \begin{verbatim}
+    -- SQL
+    SELECT columna1, columna2
+    FROM tabla;
+
+    -- Álgebra Relacional
+    Π_{columna1, columna2}(tabla)
+    \end{verbatim}
+
+    \item \textbf{WHERE (selección ($\sigma$)):} La cláusula \texttt{WHERE} en SQL, que especifica las condiciones de filtrado, se corresponde con la operación de selección ($\sigma$) en el AR.  La selección filtra las tuplas que cumplen una condición dada.
+
+    \begin{verbatim}
+    -- SQL
+    SELECT *
+    FROM tabla
+    WHERE condicion;
+
+    -- Álgebra Relacional
+    σ_{condicion}(tabla)
+    \end{verbatim}
+
+    \item \textbf{FROM (producto cartesiano ($\times$), renombramiento ($\rho$), etc.):} La cláusula \texttt{FROM} especifica las tablas involucradas en la consulta.  Si se involucran múltiples tablas, se utiliza el producto cartesiano ($\times$) o las operaciones de join (que derivan de una combinación de producto cartesiano y selección) para combinar las relaciones. El renombramiento ($\rho$) se utiliza para evitar ambigüedades en los nombres de los atributos.
+
+    \begin{verbatim}
+    -- SQL
+    SELECT *
+    FROM tabla1, tabla2
+    WHERE tabla1.columna = tabla2.columna;
+
+    -- Álgebra Relacional
+    σ_{tabla1.columna = tabla2.columna}(tabla1 × tabla2)
+    \end{verbatim}
+
+    \item \textbf{JOIN (join ($\bowtie$)):}  Las operaciones JOIN en SQL (INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL OUTER JOIN) se basan en combinaciones de producto cartesiano, selección y posiblemente operaciones adicionales como el renombramiento y la unión. La operación JOIN en AR se expresa típicamente como una forma abreviada de un producto cartesiano seguido de una selección.
+
+    \begin{verbatim}
+    -- SQL
+    SELECT *
+    FROM tabla1
+    INNER JOIN tabla2 ON tabla1.columna = tabla2.columna;
+
+    -- Álgebra Relacional
+    tabla1 ⋈_{tabla1.columna = tabla2.columna} tabla2
+    \end{verbatim}
+
+    \item \textbf{GROUP BY y HAVING (agregación y condiciones de agregación):}  Las cláusulas \texttt{GROUP BY} y \texttt{HAVING} en SQL se implementan utilizando operaciones de agregación, que no son operaciones fundamentales del AR, pero que se pueden expresar utilizando combinaciones de otras operaciones, incluyendo proyección, selección y funciones agregadas (SUM, AVG, COUNT, etc.). El álgebra relacional extendida proporciona directamente operaciones de agregación.
+
+    \item \textbf{UNION, INTERSECT, EXCEPT (Unión ($\cup$), Intersección ($\cap$), Diferencia (-)):}  Estas operaciones SQL corresponden directamente a las operaciones de unión ($\cup$), intersección ($\cap$) y diferencia (-) en el álgebra relacional.
+
+    \begin{verbatim}
+    -- SQL
+    SELECT * FROM tabla1
+    UNION
+    SELECT * FROM tabla2;
+
+    -- Álgebra Relacional
+    tabla1 ∪ tabla2
+    \end{verbatim}
+\end{itemize}
+
+La traducción de SQL a AR permite a los sistemas de gestión de bases de datos (SGBD) optimizar las consultas. El optimizador de consultas del SGBD puede manipular la expresión del álgebra relacional para encontrar la forma más eficiente de ejecutar la consulta, por ejemplo, cambiando el orden de las operaciones de selección y proyección, o aplicando equivalencias algebraicas (e.g., realizar una selección antes de un join).
+
+\subsection{La potencia expresiva del álgebra relacional y su completitud relacional}
+
+El álgebra relacional es *completamente relacional* (o *relacionalmente completo*). Esto significa que cualquier consulta que se pueda expresar mediante el cálculo relacional (ver sección 5.2), también se puede expresar mediante una expresión equivalente en el álgebra relacional, y viceversa. El álgebra relacional es teóricamente poderosa porque:
+
+\begin{itemize}
+    \item \textbf{Es un lenguaje de consulta formal:} Proporciona una base matemática para definir consultas sobre datos relacionales de forma precisa y no ambigua.
+    \item \textbf{Facilita la optimización de consultas:} Las reglas algebraicas se pueden usar para transformar las expresiones de consulta, generando consultas equivalentes pero más eficientes.
+    \item \textbf{Permite definir la semántica de otros lenguajes:} La correspondencia entre SQL y AR asegura que los sistemas de bases de datos pueden procesar consultas de SQL correctamente.
+\end{itemize}
+
+La completitud relacional es un requisito fundamental para cualquier lenguaje de consulta. Un lenguaje que no sea relacionalmente completo no podría expresar todas las consultas posibles que se pueden realizar sobre los datos, lo que lo haría inherentemente limitado.  La completitud relacional asegura que SQL, al estar basado en AR, puede expresar todas las consultas posibles sobre una base de datos relacional.
+
+\section{Cálculo Relacional (mención)}
+
+Además del álgebra relacional, existen otros formalismos para expresar consultas sobre bases de datos relacionales. Uno de ellos es el cálculo relacional.
+
+\subsection{Breve comparación con el álgebra relacional (declarativo vs. procedimental)}
+
+La diferencia fundamental entre el álgebra relacional y el cálculo relacional radica en su enfoque:
+
+\begin{itemize}
+    \item \textbf{Álgebra Relacional (Procedimental):}  El AR es *procedimental*. Especifica cómo obtener el resultado de una consulta paso a paso, describiendo la secuencia de operaciones a realizar. Define la secuencia de operaciones que deben llevarse a cabo para obtener el resultado. El usuario detalla el plan de ejecución.
+    \item \textbf{Cálculo Relacional (Declarativo):} El cálculo relacional es *declarativo*. Especifica qué resultados se desean, pero no cómo obtenerlos.  El usuario especifica qué datos deben incluirse en el resultado, pero no el orden o método para recuperarlos. El sistema es responsable de encontrar el plan de ejecución.
+\end{itemize}
+
+El cálculo relacional, ya sea en la forma de cálculo de tuplas o de cálculo de dominio, define las consultas mediante el uso de variables y predicados lógicos. El SGBD, entonces, es responsable de determinar la secuencia de operaciones necesarias para evaluar estos predicados y generar el resultado de la consulta.
+
+\subsection{Cálculo relacional de tuplas y de dominio (mención)}
+
+Existen dos variantes principales del cálculo relacional:
+
+\begin{itemize}
+    \item \textbf{Cálculo relacional de tuplas:}  Se definen variables que representan tuplas completas. Las consultas se expresan especificando las tuplas que satisfacen una condición.  Las variables representan tuplas y los predicados lógicos se aplican a los valores de los atributos de esas tuplas.
+
+    \item \textbf{Cálculo relacional de dominio:} Se definen variables que representan valores individuales de los atributos (dominios). Las consultas se expresan especificando los valores de los dominios que satisfacen una condición.  Las variables representan valores individuales y los predicados lógicos se aplican a estos valores.
+\end{itemize}
+
+Ambos enfoques, el de tuplas y el de dominio, son relacionalmente completos, lo que significa que cualquier consulta que se pueda expresar en uno de ellos se puede expresar también en el otro y en el álgebra relacional.  Aunque menos utilizado directamente en la práctica, el cálculo relacional es importante teóricamente, ya que proporciona una forma alternativa de definir la semántica de las consultas y sirve como base para otros lenguajes de consulta como QBE (Query By Example).

@@ -1,0 +1,87 @@
+\chapter{Conclusiones}
+
+En este capítulo, recapitularemos los conceptos clave abordados a lo largo del estudio de los sistemas de bases de datos distribuidas (SBDD). Además, analizaremos los desafíos y las oportunidades inherentes al empleo de estos sistemas en la gestión de datos, con una perspectiva orientada a las necesidades y complejidades del mundo real para un ingeniero informático.
+
+\section{Recapitulación de los Conceptos Clave de los Sistemas de Bases de Datos Distribuidas}
+
+Los sistemas de bases de datos distribuidas, en esencia, representan una evolución significativa en la gestión de datos, superando las limitaciones intrínsecas de los sistemas centralizados.  Se han definido varios conceptos clave que han sido importantes a lo largo del temario, y que son importantes recordar:
+
+\begin{itemize}
+    \item \textbf{Distribución}: La piedra angular de los SBDD es la distribución de los datos a través de múltiples nodos o sitios interconectados. Esta distribución, a menudo geográficamente dispersa, ofrece ventajas cruciales en términos de escalabilidad, disponibilidad y rendimiento. La capacidad de procesar consultas localmente en el nodo donde residen los datos reduce significativamente la latencia y la congestión de la red.
+
+    \item \textbf{Transparencia}: Los SBDD deben ofrecer diversos niveles de transparencia para abstraer la complejidad de la distribución a los usuarios y a las aplicaciones. Algunos tipos de transparencia son:
+    \begin{itemize}
+        \item \textit{Transparencia de distribución}: Permite a los usuarios interactuar con la base de datos sin conocer la ubicación física de los datos.
+        \item \textit{Transparencia de fragmentación}: Oculta la forma en que los datos se dividen y se almacenan en diferentes fragmentos.
+        \item \textit{Transparencia de replicación}: Disimula la existencia de copias múltiples de los datos, lo que facilita la disponibilidad.
+        \item \textit{Transparencia de concurrencia}: Garantiza que múltiples usuarios o aplicaciones puedan acceder y modificar los datos simultáneamente sin comprometer la consistencia.
+        \item \textit{Transparencia de fallos}: Permite que el sistema continúe operando incluso si uno o varios nodos fallan.
+    \end{itemize}
+
+    \item \textbf{Fragmentación}: La fragmentación implica dividir una base de datos en fragmentos lógicos que se pueden distribuir entre diferentes nodos. Existen dos tipos principales de fragmentación:
+    \begin{itemize}
+        \item \textit{Fragmentación horizontal}: Divide una tabla en subconjuntos de filas.
+        \item \textit{Fragmentación vertical}: Divide una tabla en subconjuntos de columnas.
+    \end{itemize}
+
+    La fragmentación debe diseñarse cuidadosamente para optimizar el rendimiento de las consultas y minimizar la comunicación entre nodos.
+
+    \item \textbf{Replicación}: La replicación consiste en crear copias de los datos en múltiples nodos. Esto aumenta significativamente la disponibilidad y la tolerancia a fallos, ya que si un nodo falla, se puede acceder a los datos desde otros nodos.  Existen diferentes estrategias de replicación, como:
+    \begin{itemize}
+        \item \textit{Replicación síncrona}:  Las actualizaciones se propagan a todas las réplicas antes de confirmar la transacción.  Garantiza la consistencia, pero puede afectar al rendimiento.
+        \item \textit{Replicación asíncrona}: Las actualizaciones se propagan a las réplicas en un período posterior. Ofrece mejor rendimiento, pero puede dar lugar a inconsistencias temporales.
+    \end{itemize}
+
+    \item \textbf{Control de Concurrencia}: El control de concurrencia es esencial en los SBDD para garantizar la consistencia de los datos cuando múltiples usuarios o aplicaciones acceden a ellos simultáneamente.  Las técnicas comunes incluyen el bloqueo (optimista y pesimista) y el control de concurrencia multiversión (MVCC). Los algoritmos de control de concurrencia deben ser distribuidos y adaptarse a la naturaleza de los datos distribuidos.
+
+    \item \textbf{Gestión de Transacciones Distribuidas}: Las transacciones distribuidas implican operaciones que abarcan múltiples nodos.  El protocolo de dos fases (2PC) es un protocolo ampliamente utilizado para garantizar la atomicidad de las transacciones distribuidas. Sin embargo, 2PC puede ser propenso al bloqueo y tener problemas de rendimiento en entornos distribuidos.  Protocolos más avanzados, como el protocolo de tres fases (3PC) y protocolos basados en consenso (Paxos, Raft), se utilizan para abordar las limitaciones de 2PC.
+
+    \item \textbf{Protocolos de Consenso}: Los protocolos de consenso, como Paxos y Raft, son fundamentales para construir sistemas tolerantes a fallos y altamente disponibles. Permiten que los nodos de un sistema distribuido lleguen a un acuerdo sobre un único valor, incluso si algunos nodos fallan.  Se utilizan ampliamente en la replicación distribuida, el control de la concurrencia y la gestión de metadatos.
+
+    \item \textbf{Optimización de Consultas Distribuidas}: La optimización de consultas en SBDD es más compleja que en sistemas centralizados, ya que implica considerar la ubicación de los datos, el coste de la comunicación entre nodos y la carga de trabajo en cada nodo.  Los optimizadores de consultas distribuidas deben generar planes de ejecución que minimicen el tiempo de respuesta y el consumo de recursos.
+
+\end{itemize}
+
+\section{Desafíos y Oportunidades en el Uso de Sistemas Distribuidos para la Gestión de Datos}
+
+El despliegue de SBDD presenta tanto desafíos significativos como oportunidades emocionantes para los ingenieros informáticos.  Un entendimiento profundo de estos aspectos es crucial para el diseño, implementación y gestión exitosa de sistemas de datos distribuidos.
+
+\subsection{Desafíos}
+
+\begin{itemize}
+    \item \textbf{Complejidad}: La gestión de un SBDD es intrínsecamente más compleja que la de un sistema centralizado. Se requiere un conocimiento profundo de los conceptos de distribución, fragmentación, replicación, control de concurrencia, protocolos de consenso y optimización de consultas.  El diseño, la implementación y el mantenimiento de un SBDD implican una mayor inversión de tiempo y recursos.
+
+    \item \textbf{Consistencia y Coherencia}: Garantizar la consistencia y la coherencia de los datos en un entorno distribuido es un desafío fundamental.  La latencia de la red, los fallos de los nodos y la concurrencia de accesos pueden comprometer la integridad de los datos. Se deben seleccionar cuidadosamente los modelos de consistencia (fuerte, eventual, etc.) y los mecanismos de control de concurrencia para satisfacer los requisitos de la aplicación.
+
+    \item \textbf{Tolerancia a Fallos}: Los SBDD deben ser tolerantes a fallos para garantizar la disponibilidad de los datos incluso cuando algunos nodos fallan.  Implementar la replicación, el control de redundancia y los mecanismos de recuperación requiere un diseño cuidadoso y una supervisión continua del sistema. La gestión de fallos debe ser automatizada y eficiente.
+
+    \item \textbf{Latencia y Rendimiento}: La latencia de la red entre los nodos puede afectar significativamente el rendimiento de las consultas y las transacciones.  La optimización de consultas distribuidas y la colocación de los datos son cruciales para minimizar la latencia.  La elección de la infraestructura de red (ancho de banda, topología) también juega un papel importante.
+
+    \item \textbf{Seguridad}: La seguridad es una preocupación primordial en los SBDD.  La distribución de los datos aumenta la superficie de ataque y expone el sistema a una mayor variedad de amenazas.  Se deben implementar mecanismos de autenticación, autorización y cifrado robustos para proteger los datos contra accesos no autorizados y ataques maliciosos. La gestión de claves criptográficas en un entorno distribuido presenta desafíos adicionales.
+
+    \item \textbf{Gestión y Monitorización}: La gestión y monitorización de un SBDD son más complejas que en un sistema centralizado.  Se requieren herramientas de monitorización avanzadas para supervisar el rendimiento, la disponibilidad, la seguridad y el estado de cada nodo del sistema.  La automatización de las tareas de gestión (copias de seguridad, actualizaciones, etc.) es esencial para mantener la eficiencia operativa.
+
+    \item \textbf{Coste}: El despliegue y el mantenimiento de un SBDD pueden ser más costosos que los de un sistema centralizado.  El coste de la infraestructura (servidores, red), el software y el personal especializado debe tenerse en cuenta.  Sin embargo, los SBDD pueden ofrecer un mejor retorno de la inversión a largo plazo al permitir la escalabilidad horizontal y la optimización del uso de recursos.
+\end{itemize}
+
+\subsection{Oportunidades}
+
+\begin{itemize}
+    \item \textbf{Escalabilidad}: Los SBDD ofrecen una escalabilidad horizontal sin precedentes. Se pueden agregar nuevos nodos al sistema para aumentar la capacidad de almacenamiento y la potencia de procesamiento sin interrumpir el servicio.  Esta escalabilidad es esencial para manejar grandes volúmenes de datos y picos de demanda.
+
+    \item \textbf{Disponibilidad}: La replicación de datos y la tolerancia a fallos de los SBDD garantizan una alta disponibilidad.  Si un nodo falla, los datos se pueden acceder desde otros nodos, minimizando el tiempo de inactividad y asegurando la continuidad del servicio.  Esto es crítico para aplicaciones que requieren una disponibilidad constante.
+
+    \item \textbf{Rendimiento}: Al distribuir los datos y el procesamiento entre múltiples nodos, los SBDD pueden mejorar el rendimiento de las consultas y las transacciones.  La capacidad de procesar consultas localmente en los nodos donde residen los datos reduce la latencia y el cuello de botella de la red.
+
+    \item \textbf{Flexibilidad}: Los SBDD permiten una mayor flexibilidad en el diseño e implementación de sistemas de gestión de datos.  Se pueden adaptar a diferentes arquitecturas (por ejemplo, almacenamiento distribuido, bases de datos NoSQL, etc.) y satisfacer una amplia gama de requisitos de aplicaciones.
+
+    \item \textbf{Procesamiento de Datos a Gran Escala (Big Data)}: Los SBDD son fundamentales para el procesamiento de datos a gran escala.  Permiten almacenar, procesar y analizar grandes volúmenes de datos de manera eficiente y escalable.  Son la base de tecnologías como Hadoop, Spark y otros frameworks de procesamiento distribuido.
+
+    \item \textbf{Computación en la Nube}: Los SBDD son una pieza clave en la computación en la nube.  Permiten la creación de bases de datos altamente escalables y disponibles en la nube, aprovechando la infraestructura de virtualización y la capacidad de aprovisionamiento dinámico.
+
+    \item \textbf{Internet de las Cosas (IoT)}:  Los SBDD son esenciales para la gestión de datos generados por los dispositivos IoT.  Permiten recopilar, almacenar y procesar grandes cantidades de datos de dispositivos distribuidos geográficamente.  Además, facilitan el análisis en tiempo real y la toma de decisiones basada en datos.
+
+    \item \textbf{Aprendizaje Automático (Machine Learning)}: Los SBDD sirven como la infraestructura de datos subyacente para los algoritmos de aprendizaje automático.  Permiten almacenar y procesar grandes conjuntos de datos de entrenamiento, así como ejecutar modelos de aprendizaje automático en entornos distribuidos, acelerando el entrenamiento y la inferencia.
+\end{itemize}
+
+En resumen, los sistemas de bases de datos distribuidas ofrecen un conjunto de capacidades únicas que son cruciales para abordar los desafíos y aprovechar las oportunidades presentadas por el panorama actual de la gestión de datos. Los ingenieros informáticos, en particular, deben dominar estos conceptos para diseñar, implementar y mantener sistemas de datos robustos, escalables y eficientes, que impulsen la innovación en una amplia gama de aplicaciones. El diseño cuidadoso, la implementación y el mantenimiento continuos son cruciales para cosechar los beneficios de los SBDD, al tiempo que se mitigan sus desafíos inherentes.

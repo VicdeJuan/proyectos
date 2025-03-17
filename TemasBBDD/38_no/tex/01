@@ -1,0 +1,69 @@
+\chapter{Introducción al Modelo de Datos Relacional}
+
+\section{El Concepto del Modelo Relacional}
+
+\subsection*{Definición del modelo relacional y su base en la teoría de conjuntos y la lógica de predicados de primer orden}
+
+El modelo relacional es un enfoque para la organización y gestión de datos, basado en la teoría de conjuntos y la lógica de predicados de primer orden. Este modelo representa la información en forma de tablas, donde cada tabla corresponde a una relación matemática.  La integridad y consistencia de los datos se asegura a través de restricciones y reglas derivadas de la lógica formal.  Las operaciones sobre los datos se definen mediante operadores de álgebra relacional y cálculo relacional.
+
+\subsection*{La analogía con las tablas y las relaciones matemáticas}
+
+La esencia del modelo relacional reside en su analogía con las relaciones matemáticas. Una "relación" en el modelo relacional se asemeja a una relación en matemáticas: un conjunto de tuplas (filas) que satisfacen una propiedad común. Estas tuplas representan las entidades y sus atributos, mientras que las columnas representan los atributos individuales de cada entidad.  Esta similitud permite una formalización precisa y una manipulación de datos basada en principios matemáticos sólidos. Por ejemplo, la relación "Estudiante" podría representar a todos los estudiantes de una universidad, con atributos como "ID", "Nombre", "Apellido" y "Carrera".  Cada estudiante sería una tupla en esta relación.
+
+\subsection*{Su popularidad como metodología para diseñar e implementar bases de datos}
+
+La popularidad del modelo relacional radica en su simplicidad conceptual, su formalismo matemático y su capacidad para garantizar la integridad y consistencia de los datos.  Su estructura tabular facilita la comprensión y el manejo de la información, mientras que su base en la teoría de conjuntos permite la definición precisa de operaciones de manipulación de datos.  Además, la normalización, un proceso clave en el diseño relacional, ayuda a minimizar la redundancia y la inconsistencia de los datos.  Esto ha llevado a su adopción generalizada en una amplia gama de aplicaciones, desde sistemas de gestión de empresas hasta aplicaciones web y sistemas de análisis de datos.
+
+\subsection*{Breve reseña histórica y los primeros sistemas comerciales}
+
+El modelo relacional fue propuesto por Edgar F. Codd en 1970 en su artículo seminal "A Relational Model of Data for Large Shared Data Banks". Codd desafió los modelos de bases de datos jerárquicos y de red predominantes en la época, proponiendo un enfoque más flexible y poderoso.  Inicialmente, la implementación del modelo relacional enfrentó desafíos tecnológicos.  Sin embargo, a mediados de la década de 1970, se comenzaron a desarrollar los primeros prototipos de sistemas relacionales.  System R, desarrollado por IBM, fue uno de los primeros sistemas que demostró la viabilidad del modelo.  A principios de la década de 1980, surgieron los primeros sistemas relacionales comerciales, como Oracle y INGRES, marcando el comienzo de una nueva era en la gestión de bases de datos.  Estos sistemas rápidamente ganaron popularidad debido a su facilidad de uso, su flexibilidad y su capacidad para manejar grandes cantidades de datos.
+
+\section{Componentes Fundamentales: Tablas, Filas y Columnas}
+
+\subsection*{Tablas (Relaciones): Definición como un conjunto de filas con un nombre único}
+
+En el modelo relacional, una tabla, también llamada "relación", es el componente fundamental.  Una tabla se define como un conjunto de filas o tuplas, donde cada fila representa una instancia de una entidad. Cada tabla tiene un nombre único que la identifica dentro de la base de datos.  No puede haber dos tablas con el mismo nombre.  Además, el orden de las filas en una tabla no es significativo;  la tabla es un conjunto, y los conjuntos no tienen orden inherente.
+
+\subsection*{Filas (Tuplas): Representación de una relación entre un conjunto de valores o una entidad}
+
+Cada fila, también conocida como "tupla", representa una única instancia de la entidad que la tabla describe.  Una tupla es una secuencia ordenada de valores, donde cada valor corresponde a un atributo de la entidad.  La tupla es la unidad básica de información almacenada en la tabla.  Todas las tuplas dentro de una misma tabla deben tener la misma estructura, es decir, el mismo número y tipo de atributos.
+
+\subsection*{Columnas (Atributos): Conjunto de valores para cada entidad}
+
+Las columnas, también llamadas "atributos", definen las propiedades de las entidades representadas en la tabla. Cada columna tiene un nombre único dentro de la tabla y un tipo de datos asociado (por ejemplo, entero, cadena de texto, fecha).  Una columna contiene el conjunto de valores que corresponden a un atributo específico para cada fila de la tabla.  Por ejemplo, en la tabla "Estudiante", la columna "Nombre" contendría los nombres de todos los estudiantes, mientras que la columna "ID" contendría los identificadores únicos de cada estudiante.  El orden de las columnas es importante en la definición del esquema.
+
+\section{Esquemas e Instancias de Bases de Datos Relacionales}
+
+\subsection*{Esquema de la base de datos: La descripción de la estructura de la base de datos, que no se espera que cambie con frecuencia}
+
+El esquema de una base de datos relacional define la estructura de la base de datos. Incluye la definición de todas las tablas, sus nombres, los nombres de sus columnas, los tipos de datos de cada columna y las restricciones de integridad (claves primarias, claves foráneas, etc.).  El esquema es una descripción estática de la base de datos, que raramente se modifica después de que la base de datos se ha diseñado e implementado.  En resumen, el esquema es la "plantilla" o el "plano" de la base de datos.  Se define al momento de la creación de la base de datos y proporciona una estructura clara y consistente para el almacenamiento de datos.
+
+\subsection*{Instancia (o estado) de la base de datos: Los datos reales almacenados en un momento dado, que pueden cambiar frecuentemente}
+
+La instancia o estado de una base de datos es la colección de datos almacenados en la base de datos en un momento dado.  La instancia de la base de datos representa la información real almacenada en las tablas de la base de datos, y puede cambiar con frecuencia debido a operaciones de inserción, actualización y eliminación de datos.  Una instancia de la base de datos debe adherirse al esquema, es decir, los datos almacenados deben cumplir con las definiciones y restricciones establecidas en el esquema.  Por ejemplo, el esquema define las tablas y sus columnas; la instancia contiene los datos específicos (filas) de esas tablas.
+
+\subsection*{Diagramas de esquema: Representación visual de la estructura de la base de datos}
+
+Los diagramas de esquema son representaciones visuales de la estructura de una base de datos relacional.  Proporcionan una manera clara e intuitiva de entender las tablas, sus columnas, los tipos de datos y las relaciones entre las tablas.  Los diagramas de esquema son herramientas valiosas para la documentación, el diseño y la comunicación del diseño de una base de datos.  Existen diferentes notaciones para los diagramas de esquema, la más común es el diagrama entidad-relación (ERD).  En un ERD, cada tabla se representa como un rectángulo, las columnas se listan dentro del rectángulo, y las relaciones entre las tablas se representan mediante líneas que conectan los rectángulos.  Las relaciones pueden incluir claves primarias y foráneas, que se utilizan para garantizar la integridad referencial.
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}[
+        node distance = 2cm,
+        tabla/.style={rectangle, rounded corners, draw, thick, text width=3cm, text centered},
+        relacion/.style={->, thick}
+    ]
+
+    \node (estudiante) [tabla] {Estudiante\\ID (PK) \\ Nombre \\ Apellido \\ Carrera};
+    \node (curso) [tabla, right of=estudiante, xshift=4cm] {Curso\\ID (PK) \\ Nombre \\ Créditos};
+    \node (matricula) [tabla, below of=estudiante, yshift=-2cm] {Matrícula\\EstudianteID (FK) \\ CursoID (FK) \\ Fecha};
+
+    \draw[relacion] (estudiante) -- node[midway, left] {1..N} (matricula);
+    \draw[relacion] (curso) -- node[midway, right] {1..N} (matricula);
+
+    \end{tikzpicture}
+    \caption{Ejemplo de diagrama de esquema (ERD) para una base de datos de estudiantes.}
+    \label{fig:erd}
+\end{figure}
+
+En el diagrama de la Figura \ref{fig:erd}, se muestra un ejemplo de diagrama de esquema para una base de datos de estudiantes.  Hay tres tablas: "Estudiante", "Curso" y "Matrícula".  La tabla "Matrícula" representa la relación entre los estudiantes y los cursos, utilizando las claves foráneas "EstudianteID" y "CursoID".  La relación entre "Estudiante" y "Matrícula" es de uno a muchos (un estudiante puede estar matriculado en muchos cursos), y la relación entre "Curso" y "Matrícula" es similar. El diagrama muestra las relaciones entre las tablas y la estructura de la base de datos.

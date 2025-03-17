@@ -1,0 +1,110 @@
+\chapter{Gestión de Transacciones Distribuidas}
+
+La gestión de transacciones en entornos distribuidos presenta desafíos significativos que no están presentes en sistemas centralizados.  La concurrencia, la atomicidad y la recuperación ante fallos se vuelven problemáticas debido a la naturaleza distribuida de los recursos y la posibilidad de fallos parciales. Este capítulo profundiza en las técnicas y protocolos utilizados para abordar estas complejidades, asegurando la consistencia, el aislamiento, la durabilidad y la atomicidad (ACID) de las transacciones distribuidas.
+
+\section{Control de Concurrencia Distribuida}
+
+El control de concurrencia distribuida tiene como objetivo principal garantizar la \textbf{serializabilidad} de las transacciones.  Esto significa que el resultado de la ejecución concurrente de múltiples transacciones debe ser equivalente al resultado de una ejecución serial de las mismas transacciones en algún orden.  La serializabilidad es crucial para evitar inconsistencias y garantizar la integridad de los datos en un entorno distribuido.
+
+\subsection{Garantizar la Serializabilidad de las Transacciones}
+
+Lograr la serializabilidad en un entorno distribuido requiere mecanismos sofisticados para coordinar el acceso concurrente a los datos almacenados en múltiples sitios.  Las técnicas varían en complejidad y rendimiento, y la elección del protocolo adecuado depende de los requisitos específicos de la aplicación y del entorno de implementación.  Los protocolos deben minimizar el impacto en el rendimiento al tiempo que garantizan la consistencia.  Los principales enfoques incluyen protocolos de bloqueo, protocolos basados en marcas de tiempo, y protocolos basados en optimismo.
+
+\subsection{Protocolos de Bloqueo Distribuidos}
+
+Los protocolos de bloqueo distribuidos son una extensión de los protocolos de bloqueo utilizados en sistemas centralizados.  Estos protocolos se basan en el uso de bloqueos (locks) para controlar el acceso concurrente a los datos.  Existen dos tipos principales de bloqueos: bloqueos compartidos (shared locks, S-locks) que permiten el acceso de lectura a múltiples transacciones y bloqueos exclusivos (exclusive locks, X-locks) que permiten el acceso de escritura a una única transacción.  En un sistema distribuido, los bloqueos deben gestionarse de manera coordinada entre múltiples sitios.
+
+\begin{itemize}
+    \item \textbf{Gestión Centralizada de Bloqueos:}  Un sitio actúa como gestor central de bloqueos.  Cuando una transacción necesita acceder a un dato, solicita un bloqueo al gestor.  El gestor decide si concede o rechaza el bloqueo.  Este enfoque es simple de implementar, pero el gestor central se convierte en un cuello de botella y un punto único de fallo.
+
+    \item \textbf{Gestión Distribuida de Bloqueos:} Los bloqueos se distribuyen entre los sitios que almacenan los datos.  Existen varias variantes:
+    \begin{itemize}
+        \item \textbf{Bloqueo Primario:} Un sitio designado (el primario) para un dato específico gestiona los bloqueos para ese dato.  La transacción debe comunicarse con el primario para solicitar los bloqueos.  Este enfoque reduce la sobrecarga en comparación con la gestión centralizada, pero aún tiene un punto de fallo potencial.
+
+        \item \textbf{Bloqueo Distribuido Total:}  Cada sitio puede gestionar bloqueos para cualquier dato.  Esto requiere un mecanismo para coordinar las solicitudes de bloqueo entre los sitios.  Un enfoque común es utilizar un protocolo de elección de líder para elegir un sitio que actúe como coordinador temporal.
+
+        \item \textbf{Protocolos de Bloqueo con Replicación:} Si los datos están replicados en múltiples sitios, se deben gestionar bloqueos en todas las réplicas.  Esto puede lograrse mediante el uso de un protocolo de dos fases (2PL) para asegurar que los bloqueos se obtengan en todas las réplicas antes de permitir el acceso a los datos.  La consistencia eventual puede ser un factor a considerar en este contexto.
+    \end{itemize}
+
+    \item \textbf{Protocolo de Bloqueo en Dos Fases (2PL):} Es un protocolo ampliamente utilizado para el control de concurrencia. En la fase de crecimiento, una transacción adquiere bloqueos. En la fase de reducción, la transacción libera los bloqueos, y una vez que libera un bloqueo, no puede adquirir más. El 2PL asegura la serializabilidad, pero puede conducir a situaciones de interbloqueo (deadlock). Los sistemas deben tener mecanismos de detección y resolución de interbloqueos, por ejemplo, timeouts.
+\end{itemize}
+
+\subsection{Protocolos Basados en Marcas de Tiempo}
+
+Los protocolos basados en marcas de tiempo asignan una marca de tiempo única a cada transacción. Las marcas de tiempo se utilizan para ordenar las transacciones y asegurar la serializabilidad.  La idea fundamental es que las transacciones se ejecutan en el orden de sus marcas de tiempo.
+
+\begin{itemize}
+    \item \textbf{Asignación de Marcas de Tiempo:}  Las marcas de tiempo pueden asignarse utilizando un reloj centralizado (requiere sincronización del reloj) o distribuido (utilizando algoritmos como el de Lamport o el de vector de marcas de tiempo).
+
+    \item \textbf{Validación:} Cuando una transacción intenta leer o escribir un dato, su marca de tiempo se compara con la marca de tiempo del último acceso a ese dato.  Si la transacción que intenta acceder a un dato tiene una marca de tiempo anterior a la última operación realizada sobre ese dato, se puede abortar la transacción para mantener la serializabilidad.
+
+    \item \textbf{Protocolos de Validación:} Hay diferentes protocolos basados en marcas de tiempo, como el protocolo de lectura-escritura basado en marcas de tiempo.  Estos protocolos pueden ser más eficientes que los protocolos de bloqueo en situaciones de alta concurrencia, ya que evitan la sobrecarga de gestionar bloqueos.  Sin embargo, pueden resultar en el aborto de transacciones si se detectan conflictos.
+\end{itemize}
+
+\section{Atomicidad de Transacciones Distribuidas}
+
+La atomicidad de una transacción distribuida significa que la transacción debe completarse con éxito en todos los sitios participantes (commit) o abortarse en todos los sitios (rollback).  No se permite que la transacción se complete parcialmente.  El protocolo de confirmación en dos fases (2PC) es el protocolo más utilizado para garantizar la atomicidad en sistemas distribuidos.
+
+\subsection{El Protocolo de Confirmación en Dos Fases (2PC)}
+
+El protocolo 2PC divide la ejecución de una transacción distribuida en dos fases: la fase de preparación y la fase de confirmación.
+
+\begin{itemize}
+    \item \textbf{Fase de Preparación:}
+    \begin{itemize}
+        \item Un coordinador (normalmente el sitio que inicia la transacción) envía un mensaje de `prepare` a todos los participantes (los sitios que han accedido a datos de la transacción).
+        \item Cada participante evalúa la transacción.  Si la transacción puede completarse con éxito, el participante registra los cambios localmente (pero no los hace visibles a otras transacciones) y envía un mensaje de `ready` al coordinador.  Si la transacción no puede completarse, envía un mensaje de `abort`.
+    \end{itemize}
+
+    \item \textbf{Fase de Confirmación:}
+    \begin{itemize}
+        \item Si el coordinador recibe mensajes `ready` de todos los participantes, envía un mensaje de `commit` a todos los participantes.  Los participantes hacen permanentes los cambios registrados localmente.
+        \item Si el coordinador recibe un mensaje `abort` de cualquier participante o si no recibe respuesta de algún participante dentro de un tiempo límite (timeout), envía un mensaje de `abort` a todos los participantes.  Los participantes deshacen los cambios registrados localmente.
+    \end{itemize}
+
+    \item \textbf{Problemas del 2PC:}
+    \begin{itemize}
+        \item \textbf{Bloqueo:} El 2PC puede bloquearse si el coordinador falla después de enviar el mensaje `prepare` pero antes de enviar el mensaje `commit` o `abort`. Los participantes quedan en estado incierto.
+        \item \textbf{Dependencia del Coordinador:} El coordinador es un punto único de fallo. Si el coordinador falla, la transacción no puede completarse (o abortarse) y los participantes pueden quedar bloqueados.
+        \item \textbf{Alto Overhead de Comunicación:} Requiere dos rondas de comunicación entre el coordinador y los participantes, lo que puede ser costoso en entornos distribuidos con alta latencia.
+    \end{itemize}
+\end{itemize}
+
+\section{Recuperación en Sistemas Distribuidos}
+
+La recuperación en sistemas distribuidos aborda la gestión de fallos, tanto de sitios individuales como de la red, y la restauración de la consistencia de la base de datos.  La robustez es fundamental, ya que los fallos son inevitables.
+
+\subsection{Manejo de Fallos de Sitios y de la Red}
+
+\begin{itemize}
+    \item \textbf{Fallos de Sitios:} Un sitio puede fallar debido a problemas de hardware, software, o energía.  Las estrategias de manejo incluyen:
+    \begin{itemize}
+        \item \textbf{Detección de Fallos:}  Los mecanismos de detección de fallos (timeouts, mensajes de heartbeat) se utilizan para identificar sitios que han fallado.
+        \item \textbf{Protocolos de Recuperación:} Cuando un sitio falla, el sistema debe ser capaz de restaurar el estado consistente del sitio y continuar las operaciones.
+        \item \textbf{Replicación:}  La replicación de datos en múltiples sitios proporciona tolerancia a fallos.  Si un sitio falla, se puede acceder a los datos desde las réplicas.
+    \end{itemize}
+
+    \item \textbf{Fallos de la Red:}  La red puede fallar debido a la pérdida de paquetes, la partición de la red, o la degradación del rendimiento. Las estrategias incluyen:
+    \begin{itemize}
+        \item \textbf{Protocolos de Reintento:}  Los protocolos de reintento (retransmitir los mensajes perdidos) se utilizan para manejar la pérdida de paquetes.
+        \item \textbf{Detección de Particiones:}  Los mecanismos de detección de particiones de la red se utilizan para identificar cuando la red se ha dividido en múltiples partes.
+        \item \textbf{Manejo de Particiones:}  Cuando ocurre una partición, las transacciones que involucran sitios en diferentes particiones pueden abortarse para evitar inconsistencias.  La consistencia eventual puede ser un objetivo.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Procedimientos para Restaurar la Consistencia de la Base de Datos después de un Fallo}
+
+Después de un fallo, es necesario restaurar la consistencia de la base de datos. Los procedimientos dependen del tipo de fallo y de los mecanismos de control de concurrencia y atomicidad utilizados.
+
+\begin{itemize}
+    \item \textbf{Recuperación Basada en Logs:} Se utilizan logs (registros) para registrar todas las operaciones de la base de datos (antes de la imagen, after image o both). Los logs se almacenan en disco y se utilizan para deshacer o rehacer las operaciones que se estaban ejecutando en el momento del fallo.  Se aplican diferentes algoritmos, como el algoritmo de rehacer y deshacer.
+
+    \item \textbf{Recovery basado en Checkpoints:} Se toman snapshots periódicos del estado de la base de datos (checkpoints). En caso de fallo, el sistema puede restaurarse a partir del último checkpoint y aplicar las operaciones registradas en el log que se produjeron después del checkpoint. Esto reduce el tiempo de recuperación.
+
+    \item \textbf{Protocolos de Recuperación para el 2PC:}
+    \begin{itemize}
+        \item \textbf{Recuperación del Coordinador:} Si el coordinador falla, los participantes pueden quedar en estado incierto. Se necesitan protocolos para seleccionar un nuevo coordinador (en caso de fallos del coordinador), o un protocolo para identificar el estado de la transacción (commit o abort) utilizando información en los logs de los participantes.
+        \item \textbf{Recuperación del Participante:} Si un participante falla, el coordinador puede estar en un estado incierto. El participante debe recuperar el estado de la transacción desde su log y notificar al coordinador.
+    \end{itemize}
+\end{itemize}
+```
