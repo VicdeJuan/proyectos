@@ -9,23 +9,88 @@
 \contentsline {section}{\numberline {2}Contexto}{12}{section.2.2}%
 \contentsline {chapter}{\numberline {3}Resultados de aprendizaje y criterios de evaluación}{15}{chapter.3}%
 \contentsline {section}{\numberline {1}Principios de la evaluación}{22}{section.3.1}%
-\contentsline {chapter}{\numberline {4}Saberes básicos y temporalización}{23}{chapter.4}%
-\contentsline {section}{\numberline {1}Saberes básicos}{23}{section.4.1}%
-\contentsline {section}{\numberline {2}Temporalización}{25}{section.4.2}%
-\contentsline {chapter}{\numberline {5}Desarrollo de las Unidades Didácticas}{26}{chapter.5}%
-\contentsline {section}{\numberline {1}Unidades Didácticas}{26}{section.5.1}%
-\contentsline {chapter}{\numberline {6}Metodología didáctica}{27}{chapter.6}%
-\contentsline {section}{\numberline {1}Principios metodológicos}{27}{section.6.1}%
-\contentsline {section}{\numberline {2}Recursos}{28}{section.6.2}%
-\contentsline {section}{\numberline {3}Medidas de atención a la diversidad para alumnos con necesidad específica de apoyo educativo}{29}{section.6.3}%
-\contentsline {chapter}{\numberline {7}Evaluación y calificación}{30}{chapter.7}%
-\contentsline {section}{\numberline {1}Características de la evaluación}{30}{section.7.1}%
-\contentsline {section}{\numberline {2}Procedimientos de evaluación y criterios de calificación}{31}{section.7.2}%
-\contentsline {section}{\numberline {3}Proceso de evaluación continua y calificación en la evaluación final ordinaria}{32}{section.7.3}%
-\contentsline {section}{\numberline {4}Proceso de evaluación para alumnos a los que no se puede aplicar la evaluación continua (pérdida del derecho a la evaluación continua)}{32}{section.7.4}%
-\contentsline {section}{\numberline {5}Proceso de evaluación y calificación en la evaluación final extraordinaria}{32}{section.7.5}%
-\contentsline {section}{\numberline {6}Medidas para alumnos con necesidad específica de apoyo educativo (2 ptos)}{32}{section.7.6}%
-\contentsline {section}{\numberline {7}Procedimiento de evaluación para alumnos con el módulo pendiente}{32}{section.7.7}%
-\contentsline {subsection}{\numberline {7.1}Ordinaria}{32}{subsection.7.7.1}%
-\contentsline {subsection}{\numberline {7.2}Extraordinaria}{32}{subsection.7.7.2}%
-\contentsline {section}{\numberline {8}Calendario de evaluaciones parciales, final ordinaria y final extraordinaria}{32}{section.7.8}%
+\contentsline {chapter}{\numberline {4}Saberes básicos y temporalización}{24}{chapter.4}%
+\contentsline {section}{\numberline {1}Saberes básicos}{24}{section.4.1}%
+\contentsline {section}{\numberline {2}Temporalización}{26}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Desarrollo de las Unidades Didácticas}{27}{chapter.5}%
+\contentsline {section}{\numberline {1}Unidades Didácticas}{27}{section.5.1}%
+\contentsline {subsection}{\numberline {1.1}UD1: Introducción a la Programación}{27}{subsection.5.1.1}%
+\contentsline {paragraph}{RAs y CEs:}{27}{subsection.5.1.1}%
+\contentsline {paragraph}{Saberes Básicos:}{27}{subsection.5.1.1}%
+\contentsline {paragraph}{Sesiones:}{27}{subsection.5.1.1}%
+\contentsline {paragraph}{Instrumento de calificación:}{27}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {1.2}UD2: Básicos de programación estructurada}{28}{subsection.5.1.2}%
+\contentsline {paragraph}{RAs y CEs}{28}{subsection.5.1.2}%
+\contentsline {paragraph}{Saberes básicos:}{28}{subsection.5.1.2}%
+\contentsline {paragraph}{Sesiones:}{28}{subsection.5.1.2}%
+\contentsline {paragraph}{Instrumentos de calificación: }{29}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {1.3}UD3: Estructuras de control}{30}{subsection.5.1.3}%
+\contentsline {paragraph}{RAs y CEs:}{30}{subsection.5.1.3}%
+\contentsline {paragraph}{Contenidos:}{30}{subsection.5.1.3}%
+\contentsline {paragraph}{Sesiones:}{30}{subsection.5.1.3}%
+\contentsline {paragraph}{Instrumentos de calificación:}{30}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {1.4}UD4: Programación modular}{31}{subsection.5.1.4}%
+\contentsline {paragraph}{RAs y CEs:}{31}{subsection.5.1.4}%
+\contentsline {paragraph}{Contenidos:}{31}{subsection.5.1.4}%
+\contentsline {paragraph}{Sesiones:}{31}{subsection.5.1.4}%
+\contentsline {paragraph}{Instrumentos de calificación:}{31}{subsection.5.1.4}%
+\contentsline {subsection}{\numberline {1.5}UD5: Estructuras de almacenamiento en C}{32}{subsection.5.1.5}%
+\contentsline {paragraph}{RAs y CEs:}{32}{subsection.5.1.5}%
+\contentsline {paragraph}{Contenidos:}{32}{subsection.5.1.5}%
+\contentsline {paragraph}{Sesiones:}{32}{subsection.5.1.5}%
+\contentsline {paragraph}{Instrumentos de calificación:}{32}{subsection.5.1.5}%
+\contentsline {subsection}{\numberline {1.6}UD6: Cambio de paradigma: La Orientación a Objetos}{33}{subsection.5.1.6}%
+\contentsline {paragraph}{RAs y CEs:}{33}{subsection.5.1.6}%
+\contentsline {paragraph}{Contenidos:}{34}{subsection.5.1.6}%
+\contentsline {paragraph}{Sesiones:}{34}{subsection.5.1.6}%
+\contentsline {paragraph}{Instrumentos de calificación:}{34}{subsection.5.1.6}%
+\contentsline {subsection}{\numberline {1.7}UD7: Colecciones de datos}{35}{subsection.5.1.7}%
+\contentsline {paragraph}{RAs y CEs:}{35}{subsection.5.1.7}%
+\contentsline {paragraph}{Contenidos:}{36}{subsection.5.1.7}%
+\contentsline {paragraph}{Sesiones:}{36}{subsection.5.1.7}%
+\contentsline {paragraph}{Instrumentos de calificación:}{36}{subsection.5.1.7}%
+\contentsline {subsection}{\numberline {1.8}UD8: POO Intermedia}{37}{subsection.5.1.8}%
+\contentsline {paragraph}{RAs y CEs:}{37}{subsection.5.1.8}%
+\contentsline {paragraph}{Contenidos:}{38}{subsection.5.1.8}%
+\contentsline {paragraph}{Sesiones:}{38}{subsection.5.1.8}%
+\contentsline {paragraph}{Instrumentos de calificación:}{38}{subsection.5.1.8}%
+\contentsline {subsection}{\numberline {1.9}UD9: POO Avanzada}{39}{subsection.5.1.9}%
+\contentsline {paragraph}{RAs y CEs:}{39}{subsection.5.1.9}%
+\contentsline {paragraph}{Contenidos:}{40}{subsection.5.1.9}%
+\contentsline {paragraph}{Sesiones:}{40}{subsection.5.1.9}%
+\contentsline {paragraph}{Instrumentos de calificación:}{40}{subsection.5.1.9}%
+\contentsline {subsection}{\numberline {1.10}UD10:Control y manejo de excepciones:}{41}{subsection.5.1.10}%
+\contentsline {paragraph}{RAs y CEs:}{41}{subsection.5.1.10}%
+\contentsline {paragraph}{Contenidos:}{41}{subsection.5.1.10}%
+\contentsline {paragraph}{Sesiones:}{41}{subsection.5.1.10}%
+\contentsline {paragraph}{Instrumentos de calificación:}{41}{subsection.5.1.10}%
+\contentsline {subsection}{\numberline {1.11}UD11: Lectura y escritura de información}{42}{subsection.5.1.11}%
+\contentsline {paragraph}{RAs y CEs:}{42}{subsection.5.1.11}%
+\contentsline {paragraph}{Contenidos:}{42}{subsection.5.1.11}%
+\contentsline {paragraph}{Sesiones:}{42}{subsection.5.1.11}%
+\contentsline {paragraph}{Instrumentos de calificación:}{42}{subsection.5.1.11}%
+\contentsline {subsection}{\numberline {1.12}UD12: Gestión de bases de datos relacionales}{43}{subsection.5.1.12}%
+\contentsline {paragraph}{RAs y CEs:}{43}{subsection.5.1.12}%
+\contentsline {paragraph}{Contenidos:}{43}{subsection.5.1.12}%
+\contentsline {paragraph}{Sesiones:}{43}{subsection.5.1.12}%
+\contentsline {paragraph}{Instrumentos de calificación:}{43}{subsection.5.1.12}%
+\contentsline {subsection}{\numberline {1.13}UD13: Mantenimiento de la persistencia de los objetos:}{44}{subsection.5.1.13}%
+\contentsline {paragraph}{RAs y CEs:}{44}{subsection.5.1.13}%
+\contentsline {paragraph}{Contenidos:}{44}{subsection.5.1.13}%
+\contentsline {paragraph}{Sesiones:}{44}{subsection.5.1.13}%
+\contentsline {paragraph}{Instrumentos de calificación:}{44}{subsection.5.1.13}%
+\contentsline {chapter}{\numberline {6}Metodología didáctica}{45}{chapter.6}%
+\contentsline {section}{\numberline {1}Principios metodológicos}{45}{section.6.1}%
+\contentsline {section}{\numberline {2}Recursos}{46}{section.6.2}%
+\contentsline {section}{\numberline {3}Medidas de atención a la diversidad para alumnos con necesidad específica de apoyo educativo}{47}{section.6.3}%
+\contentsline {chapter}{\numberline {7}Evaluación y calificación}{48}{chapter.7}%
+\contentsline {section}{\numberline {1}Características de la evaluación}{48}{section.7.1}%
+\contentsline {section}{\numberline {2}Procedimientos de evaluación y criterios de calificación}{49}{section.7.2}%
+\contentsline {section}{\numberline {3}Proceso de evaluación continua y calificación en la evaluación final ordinaria}{50}{section.7.3}%
+\contentsline {section}{\numberline {4}Proceso de evaluación para alumnos a los que no se puede aplicar la evaluación continua (pérdida del derecho a la evaluación continua)}{50}{section.7.4}%
+\contentsline {section}{\numberline {5}Proceso de evaluación y calificación en la evaluación final extraordinaria}{50}{section.7.5}%
+\contentsline {section}{\numberline {6}Medidas para alumnos con necesidad específica de apoyo educativo (2 ptos)}{50}{section.7.6}%
+\contentsline {section}{\numberline {7}Procedimiento de evaluación para alumnos con el módulo pendiente}{50}{section.7.7}%
+\contentsline {subsection}{\numberline {7.1}Ordinaria}{50}{subsection.7.7.1}%
+\contentsline {subsection}{\numberline {7.2}Extraordinaria}{50}{subsection.7.7.2}%
+\contentsline {section}{\numberline {8}Calendario de evaluaciones parciales, final ordinaria y final extraordinaria}{50}{section.7.8}%
