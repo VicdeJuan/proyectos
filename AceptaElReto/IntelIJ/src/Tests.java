@@ -4,6 +4,16 @@ import java.util.List;
     public class Tests {
 
         public static void main(String[] args) {
+            Integer a = 2;
+
+            Integer b = a;
+
+            if (a==b){
+                System.out.println("Equals");
+            }
+
+        }
+        public static void not_main(String[] args) {
             // Array de dígitos del 0 al 9
             int[] digits = new int[10];
             for (int i = 0; i < 10; i++) {
