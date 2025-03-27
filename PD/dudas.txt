@@ -7,3 +7,5 @@ dudas:
 - Las notas nuevas que vaya teniendo de CEs, van actualizando la calificación del RA, por lo que en cualquier momento del curso se puede ir recuperando cada RA y, por este motivo, no necesito hacer recuperaciones explícitas. ¿Podría justificarlo? Si no, no me cuesta nada poner que habrá alguna recuperación de cosas concretas.
 
 - Muchos test de moodle. Puedo decir que los genero con IA, ¿verdad? Es la leche lo bien que funcionan las IAs para generar exámenes de Moodle.
+
+- 
