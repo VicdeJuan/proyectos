@@ -5,15 +5,21 @@ dudas:
 %
 RTA: Sí, se programa para 270-24, además de restar los días festivos.
 
-- Hay 2 UD que se complementan con otra asignatura y que tienen continuación el año que viene. ¿Especifico en la programación que si no da tiempo se deja eso sin impartir? Corresponden a 2 de 9 RAs (cada unidad, en este caso, tiene su propio RA por este motivo).
+- Hay 2 UD que se complementan con otra asignatura y que tienen continuación el año que viene. ¿Especifico en la programación que si no da tiempo se deja eso sin impartir? Corresponden a 2 de 9 RAs (cada unidad, en este caso, tiene su propio RA por este motivo). 
+% 
+RTA: no 
 
 - Las notas nuevas que vaya teniendo de CEs, van actualizando la calificación del RA, por lo que en cualquier momento del curso se puede ir recuperando cada RA y, por este motivo, no necesito hacer recuperaciones explícitas. ¿Podría justificarlo? Si no, no me cuesta nada poner que habrá alguna recuperación de cosas concretas.
-- Hay que permitir a los que han suspendido algún RA que puedan recuperar todos los criterios.
-- Hay que marcar recuperaciones para todos los CE siempre.
+%
+RTA: Hay que permitir a los que han suspendido algún RA que puedan recuperar todos los criterios. Hay que marcar recuperaciones para todos los CE siempre. El papel lo aguanta todo.
 
 - Muchos test de moodle. Puedo decir que los genero con IA, ¿verdad? Es la leche lo bien que funcionan las IAs para generar exámenes de Moodle.
 
 
-- Llevar el excel impreso en A3.
+No meterse en camisas de 11 varas. El papel lo aguanta todo, así que a por todas. 
+
+- Llevar el excel de calificaciones impreso en A3 al tribunal.
 
 - Trabajo telemático
+
+- Proyectos de innovación de la Comunidad.
