@@ -1,4 +1,6 @@
-import java.util.*;
+import java.io.DataInputStream;
+import java.io.IOException;
+
 
 public class ADN656HappyIDea {
     public final static int GUION = 0;
@@ -11,10 +13,6 @@ public class ADN656HappyIDea {
     public static boolean compare(long l1, long l2) {
         if (l1 == l2)
             return true;
-
-        // Si no son iguales, resto y comparo las diferencias para ver si son guiones.
-
-
         // Se recorre posición a posición (en base BASE) hasta agotar los dígitos.
         while(l1 != 0 || l2 != 0) {
             int c1 = (int)(l1 % BASE);
@@ -38,17 +36,16 @@ public class ADN656HappyIDea {
         for (int i = 0; i < s.length(); i++){
             int value;
             c = s.charAt(i);
-            if (prefix &&  c != '-'){
+            if (prefix && c != '-') {
                 prefix = false;
                 central = true;
-            } else if(central && num_guiones_intermedios <= 2){
+            } else if (central && num_guiones_intermedios <= 2) {
                 num_guiones_intermedios++;
-            } else if(central && num_guiones_intermedios > 2){
+            } else if (central && num_guiones_intermedios > 2) {
                 central = false;
                 break;
             }
-
-            if(central){
+            if (central) {
                 switch(c) {
                     case '-': value = GUION; break;
                     case 'A': value = A; break;
@@ -84,50 +81,37 @@ public class ADN656HappyIDea {
         return retval;
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String leido;
-        int numCadenas, contador;
-        long[] listaCadenas;
-        int[] contadores;
-
-
+    public static void main(String[] args) throws IOException {
+        FastReader fr = new FastReader();
+        // Lectura de casos de prueba hasta que se reciba una línea vacía
         while (true) {
-            contador = 0;
-            try {
-                leido = sc.nextLine();
-            } catch (Exception e) {
+            String line = fr.nextLine();
+            if (line == null || line.equals(""))
                 break;
-            }
-            if (leido == "")
-                break;
-            numCadenas = Integer.parseInt(leido);
-
-
-            listaCadenas = new long[numCadenas];
-            contadores = new int[numCadenas];
+            int numCadenas = Integer.parseInt(line);
+            long[] listaCadenas = new long[numCadenas];
+            int[] contadores = new int[numCadenas];
 
             for (int i = 0; i < numCadenas; i++) {
-                listaCadenas[i] = transform(sc.nextLine());
-                if (listaCadenas[i] == 0){
+                String dna = fr.nextLine();
+                listaCadenas[i] = transform(dna);
+                if (listaCadenas[i] == 0) {
                     for (int j = 0; j < i; j++)
                         contadores[j]++;
                     contadores[i] = i;
                     continue;
                 }
                 for (int j = 0; j < i; j++) {
-                    if (compare(listaCadenas[i],listaCadenas[j])) {
+                    if (compare(listaCadenas[i], listaCadenas[j])) {
                         contadores[i]++;
                         contadores[j]++;
                     }
                 }
             }
+            // Imprime los contadores separados por espacio
             for (int i = 0; i < numCadenas - 1; i++)
                 System.out.print(contadores[i] + " ");
             System.out.println(contadores[numCadenas - 1]);
-
-
         }
-        sc.close();
     }
 }

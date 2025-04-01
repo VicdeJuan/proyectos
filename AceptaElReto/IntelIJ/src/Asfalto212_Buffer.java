@@ -1,35 +1,41 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
-public class Asfalto212 {
+public class Asfalto212_Buffer {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 
-        Scanner sc = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         int num_calles,num_nodos;
         int[][] visitado;
         int fila,columna;
-        String[] leido;
+        StringTokenizer leido;
         int total = 0;
         boolean sol_encontrada;
         int grados[];
 
-        while (sc.hasNextLine()) {
-            num_calles = Integer.parseInt(sc.nextLine());
+        while (true) {
+
+            num_calles = Integer.parseInt(br.readLine());
             if (num_calles == 0 )
                 break;
-            num_nodos = Integer.parseInt(sc.nextLine());
-            
+            num_nodos = Integer.parseInt(br.readLine());
+
             visitado = new int[num_nodos][num_nodos];
             grados = new int[num_nodos];
 
             // Relleno la matriz de adyacencia.
             for (int i = 0; i < num_calles; i++) {
-                leido = sc.nextLine().split(" ");
-                fila = Integer.parseInt(leido[0])-1;
-                columna = Integer.parseInt(leido[1])-1;
+                leido = new StringTokenizer(br.readLine());
+                fila = Integer.parseInt(leido.nextToken())-1;
+                columna = Integer.parseInt(leido.nextToken())-1;
                 grados[fila]++;
                 grados[columna]++;
                 total++;
@@ -52,7 +58,7 @@ public class Asfalto212 {
             if (! respondido)
                 System.out.println("SI");
         }
-        sc.close();
+        br.close();
     }
 
     private static int[][] nuevo(int [][] antiguo,int n){
