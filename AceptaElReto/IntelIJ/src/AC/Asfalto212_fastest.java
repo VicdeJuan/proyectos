@@ -1,4 +1,7 @@
-import java.io.DataInputStream;
+package AC;
+
+import TLE.FastReader;
+
 import java.io.IOException;
 
 public class Asfalto212_fastest {

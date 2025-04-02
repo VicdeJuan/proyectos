@@ -1,4 +1,11 @@
+package TLE;
+
 import java.util.*;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+
+
 
 class Cadena{
     final private String valor;

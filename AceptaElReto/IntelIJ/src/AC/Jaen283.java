@@ -1,3 +1,5 @@
+package AC;
+
 import java.util.Scanner;
 
 public class Jaen283 {

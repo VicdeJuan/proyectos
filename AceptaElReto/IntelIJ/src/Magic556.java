@@ -146,11 +146,17 @@ public class Magic556 {
             if (mana == 0)
                 break;
             int numCartas = Integer.parseInt(leido[1]);
+            if (numCartas == 0)
+                continue;
 
-            ArrayList<Carta> valores = new ArrayList<Carta>(numCartas);
+            ArrayList<Carta> valores = new ArrayList<Carta>();
             String[] valores_cartas = sc.nextLine().split(" ");
 
             for (int i = 0; i < numCartas; i++) {
+                if (Integer.parseInt(valores_cartas[i]) > mana){
+                    numCartas--;
+                    continue;
+                }
                 valores.add(new Carta(Integer.parseInt(valores_cartas[i])));
             }
 
@@ -166,7 +172,7 @@ public class Magic556 {
             for (int i = 0; i < mana; i++)
                 fila.add(new LinkedList<Combo>());
 
-            Combo solucion = new Combo(valores.getFirst());
+            Combo solucion = new Combo(valores.get(0));
 
             // Relleno la primera fila con los valores obtenidos.
             // añadiendo al set el combo de un único valor.

@@ -1,4 +1,5 @@
-import java.util.Arrays;
+package WA;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;

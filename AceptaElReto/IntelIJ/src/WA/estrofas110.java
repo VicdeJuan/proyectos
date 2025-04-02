@@ -1,3 +1,5 @@
+package WA;
+
 import java.util.Scanner;
 
 //https://aceptaelreto.com/problem/statement.php?id=110
