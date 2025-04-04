@@ -12,6 +12,7 @@
 *.cb
 *.cb2
 .*.lb
+*.fdb_latexmk
 
 ask*
 *.py
