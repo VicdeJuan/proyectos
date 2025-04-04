@@ -1,4 +1,5 @@
 ##LaTeX
+*.lock.*
 *.pdf
 *.aux
 *.lof
@@ -13,6 +14,8 @@
 *.cb2
 .*.lb
 *.fdb_latexmk
+*.ind
+*.idx
 
 ask*
 *.py
