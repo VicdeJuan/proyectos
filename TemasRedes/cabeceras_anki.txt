@@ -1,0 +1,6 @@
+La cabecera del protocolo Ethernet se compone de la {{c1::dirección de destino}}, la {{c2::dirección de origen}} y el {{c3::campo de tipo/longitud}}, donde la dirección MAC tiene una longitud de {{c4::48 bits}}.
+La cabecera del protocolo IPv4 contiene los campos: {{c1::versión}}, {{c2::longitud de cabecera}}, {{c3::servicios diferenciados (DSCP/ECN)}}, {{c4::longitud total}}, {{c5::identificación}}, {{c6::flags}}, {{c7::desplazamiento de fragmento}}, {{c8::TTL}}, {{c9::protocolo}}, {{c10::checksum}}, {{c11::dirección IP de origen}} y {{c12::dirección IP de destino}}.
+La cabecera del protocolo TCP se compone de los campos: {{c1::puerto de origen}}, {{c2::puerto de destino}}, {{c3::número de secuencia}}, {{c4::número de acuse de recibo}}, {{c5::data offset}}, {{c6::reserved}}, {{c7::flags}}, {{c8::ventana}}, {{c9::checksum}}, {{c10::puntero urgente}} y {{c11::opciones}} (opcional).
+La cabecera del protocolo UDP contiene los siguientes campos: {{c1::puerto de origen}}, {{c2::puerto de destino}}, {{c3::longitud}} y {{c4::checksum}}.
+
+

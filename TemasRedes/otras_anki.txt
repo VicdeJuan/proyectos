@@ -1,0 +1,5 @@
+DSL 	 Digital Subscribe Line (voz y datos a la vez porque van en frecuencias muy diferentes)
+Antecedentes OSI 	 Cada uno su sistema (ArpaNet del US Army; SNA de IBM; Servicio Público Conmutación de Paquetes para direccionamiento en la Red Especial de Transmisión de Datos de Telefónia [Bomba central Río Rosas 1982])
+Postulantes del modelo TCP 	 Victor Cerf & Robert Khan
+
+

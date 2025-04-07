@@ -1,0 +1,17 @@
+Diferencia entre codificar y modular	Se modula una señal digital sobre una portadora base analógica. Se codifica una señal digital con pulsos para poder enviarla.
+Frecuencias fibra óptica	850,1300 y 1500
+WDM	Wave Divission Multiplexin
+¿Cómo multiplexa y demultiplexa PON?	Downstream se envía la misma señal a todos y cada cual se apaña para recoger la suya. <br> Upstream se reparten por turnos (TDMA)
+Fenómeno por el que la luz que se envía por el núcleo no se sale	Reflexión interna total
+Fuentes de luz para fibra óptica	LED vs ILD
+Frecuencias microondas	[2,40GHz]
+Frecuencias microondas para satélites	ascenso en 4GHz y descenso en 6Ghz. Evolución a 12/14 y 19/29 porque 4/6 saturado.
+Problemas microondas por satélite	Ruido por causas naturales para frecuencais bajas y atencuación demasiado acentuada para frecuencias altas.
+Criterios para clasificar medios de transmisión no guiados	Single/multi hop. Con/sin infraestructura.
+Ejemplos de single/multi-hop con y sin infraestructura.	single,con: Wifi normal. multi-con: Wifi Mesh; single-sin: bluetooth. multi-sin: VANET
+VANET	Vehicule Ad hoc Network [802.11p]
+Compara señal digital y señal analógica (2)	La analógica se interpreta tal cuál es mientras que la digital se decodifica (porque la analógica catura la info tal cuál es y la digital la codifica en una cantidad finita de valores posible) . La analógica es más susceptible a ruidos y atenuación, mientras que la digital es regenerable, comprimible y  cifrable. 
+Modulaciones de una señal y comparativa	Amplitud (barata pero limitada	salvo QAM) , Frecuencia (la más utilizada) y Fase (complicada de implementar).
+2 tipos de tramas	Datos y asentimiento.
+Direccionamientos por protocolo nivel de enlace	PPP (ADSL) y ATM utilizan NSAP y VPI/VCI. HDLC y Frame Relay utilizan DLCI. MAC lo utilizan todos los demás
+
