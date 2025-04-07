@@ -1,0 +1,224 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}    
+\usepackage[spanish]{babel}    
+\usepackage{tikz}              
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric}
+\usepackage{float}             
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Ejercicios de Direccionamiento IP y VLSM}
+\author{Tu Nombre}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Ejercicio 1: Red Empresarial Distribuida con Redundancia}
+
+\subsection{Enunciado}
+Utilizando la red \textbf{192.168.0.0/16}, realiza el direccionamiento IP mediante VLSM para la siguiente topología:
+\begin{itemize}
+  \item \textbf{Routers:} R1, R2, R3 y R4.
+  \item \textbf{Interconexiones entre routers:}  
+    \begin{itemize}
+      \item R1--R2, R2--R3, R3--R4 y R4--R1 (formando un anillo).
+      \item Enlace adicional entre R1 y R3 para mayor redundancia.
+    \end{itemize}
+  \item \textbf{Redes LAN locales:}
+    \begin{itemize}
+      \item R1: Red A con 400 PCs.
+      \item R2: Red B con 250 PCs.
+      \item R3: Red C con 600 PCs.
+      \item R4: Red D con 150 PCs.
+    \end{itemize}
+  \item \textbf{Enlaces punto a punto:} Todos los enlaces entre routers se deben asignar con bloques \texttt{}.
+\end{itemize}
+
+\subsection{Diagrama de Topología con TikZ}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      node distance=2.5cm and 2.5cm,
+      router/.style={draw, circle, minimum size=1cm, fill=blue!20},
+      lan/.style={draw, rectangle, minimum width=2.5cm, minimum height=0.8cm, fill=green!20},
+      link/.style={-Stealth, thick},
+      auto
+    ]
+    % Posiciones de los routers (dispuestos en forma de cuadrado)
+    \node[router] (R1) {R1};
+    \node[router, right=of R1] (R2) {R2};
+    \node[router, below=of R2] (R3) {R3};
+    \node[router, below=of R1] (R4) {R4};
+    
+    % Enlaces entre routers (anillo)
+    \draw[link] (R1) -- node[above] {} (R2);
+    \draw[link] (R2) -- node[right] {} (R3);
+    \draw[link] (R3) -- node[below] {} (R4);
+    \draw[link] (R4) -- node[left] {} (R1);
+    
+    % Enlace adicional entre R1 y R3
+    \draw[link, dashed] (R1) -- node[above, sloped] {} (R3);
+    
+    % LANs conectadas a cada router
+    \node[lan, above=of R1] (LAN_A) {Red A\\ (400 PCs)};
+    \draw[link] (R1) -- (LAN_A);
+    
+    \node[lan, above=of R2] (LAN_B) {Red B\\ (250 PCs)};
+    \draw[link] (R2) -- (LAN_B);
+    
+    \node[lan, below=of R3] (LAN_C) {Red C\\ (600 PCs)};
+    \draw[link] (R3) -- (LAN_C);
+    
+    \node[lan, below=of R4] (LAN_D) {Red D\\ (150 PCs)};
+    \draw[link] (R4) -- (LAN_D);
+    
+  \end{tikzpicture}
+  \caption{Topología de Red Empresarial Distribuida con Redundancia.}
+\end{figure}
+
+\newpage
+
+\section{Ejercicio 2: Campus Universitario con Topología Mesh Parcial}
+
+\subsection{Enunciado}
+Utilizando la red \textbf{172.20.0.0/16}, realiza el direccionamiento IP mediante VLSM para la siguiente topología de campus:
+\begin{itemize}
+  \item \textbf{Routers:} R1, R2, R3, R4 y R5.
+  \item \textbf{Interconexiones entre routers:}
+    \begin{itemize}
+      \item R1 se conecta con R2 y R3.
+      \item R2 se conecta con R3 y R4.
+      \item R3 se conecta con R4 y R5.
+      \item R4 se conecta con R5.
+    \end{itemize}
+    (Todos los enlaces se implementan con bloques \texttt{}).
+  \item \textbf{Redes LAN locales:}
+    \begin{itemize}
+      \item R1: Área de Docencia con 350 equipos.
+      \item R2: Área Administrativa con 200 equipos.
+      \item R3: Laboratorio de Investigación con 450 equipos.
+      \item R4: Biblioteca y Servicios con 150 equipos.
+      \item R5: Área de Estudiantes con 500 equipos.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Diagrama de Topología con TikZ}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      node distance=2cm and 2cm,
+      router/.style={draw, circle, minimum size=1cm, fill=blue!20},
+      lan/.style={draw, rectangle, minimum width=2.5cm, minimum height=0.8cm, fill=green!20},
+      link/.style={-Stealth, thick},
+      auto
+    ]
+    % Posicionamiento de los routers en forma de pentágono
+    \node[router] (R1) {R1};
+    \node[router, right=of R1] (R2) {R2};
+    \node[router, below right=of R2] (R3) {R3};
+    \node[router, below left=of R3] (R4) {R4};
+    \node[router, left=of R4] (R5) {R5};
+    
+    % Conexiones entre routers
+    \draw[link] (R1) -- node[above] {} (R2);
+    \draw[link] (R1) -- node[above left] {} (R3);
+    \draw[link] (R2) -- node[right] {} (R3);
+    \draw[link] (R2) -- node[below right] {} (R4);
+    \draw[link] (R3) -- node[below] {} (R4);
+    \draw[link] (R3) -- node[below right] {} (R5);
+    \draw[link] (R4) -- node[below left] {} (R5);
+    
+    % LANs conectadas a cada router
+    \node[lan, above=of R1] (LAN1) {Docencia (350 equipos)};
+    \draw[link] (R1) -- (LAN1);
+    
+    \node[lan, right=of R2] (LAN2) {Administrativa (200 equipos)};
+    \draw[link] (R2) -- (LAN2);
+    
+    \node[lan, right=of R3] (LAN3) {Laboratorio (450 equipos)};
+    \draw[link] (R3) -- (LAN3);
+    
+    \node[lan, below=of R4] (LAN4) {Biblioteca y Servicios (150 equipos)};
+    \draw[link] (R4) -- (LAN4);
+    
+    \node[lan, left=of R5] (LAN5) {Estudiantes (500 equipos)};
+    \draw[link] (R5) -- (LAN5);
+    
+  \end{tikzpicture}
+  \caption{Topología de Campus Universitario con Topología Mesh Parcial.}
+\end{figure}
+
+\newpage
+
+\section{Ejercicio 3: Red Regional con Topología Mixta y Enlaces Cruzados}
+
+\subsection{Enunciado}
+Con la red \textbf{10.0.0.0/16}, realiza el direccionamiento mediante VLSM para la siguiente topología regional:
+\begin{itemize}
+  \item \textbf{Routers:} R1, R2, R3 y R4.
+  \item \textbf{Interconexiones entre routers:}
+    \begin{itemize}
+      \item R1 se conecta a R2 y R3.
+      \item R2 se conecta a R3 y R4.
+      \item R3 se conecta a R4.
+      \item Existe un enlace cruzado entre R1 y R4 para soportar tráfico alternativo.
+    \end{itemize}
+    (Todos estos enlaces son \texttt{}).
+  \item \textbf{Redes LAN locales:}
+    \begin{itemize}
+      \item R1: Oficina Central con 500 PCs.
+      \item R2: Sede Norte con 300 PCs.
+      \item R3: Sede Sur con 400 PCs.
+      \item R4: Sede Este con 250 PCs.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Diagrama de Topología con TikZ}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      node distance=2.5cm and 2.5cm,
+      router/.style={draw, circle, minimum size=1cm, fill=blue!20},
+      lan/.style={draw, rectangle, minimum width=2.5cm, minimum height=0.8cm, fill=green!20},
+      link/.style={-Stealth, thick},
+      auto
+    ]
+    % Posiciones de los routers en forma de cuadrado
+    \node[router] (R1) {R1};
+    \node[router, right=of R1] (R2) {R2};
+    \node[router, below=of R2] (R3) {R3};
+    \node[router, below=of R1] (R4) {R4};
+    
+    % Conexiones principales
+    \draw[link] (R1) -- node[above] {} (R2);
+    \draw[link] (R1) -- node[left] {} (R3);
+    \draw[link] (R2) -- node[right] {} (R3);
+    \draw[link] (R2) -- node[above right] {} (R4);
+    \draw[link] (R3) -- node[below right] {} (R4);
+    % Enlace cruzado entre R1 y R4
+    \draw[link, dashed] (R1) -- node[below left, sloped] {} (R4);
+    
+    % LANs conectadas a cada router
+    \node[lan, above=of R1] (LAN_R1) {Oficina Central (500 PCs)};
+    \draw[link] (R1) -- (LAN_R1);
+    
+    \node[lan, right=of R2] (LAN_R2) {Sede Norte (300 PCs)};
+    \draw[link] (R2) -- (LAN_R2);
+    
+    \node[lan, right=of R3] (LAN_R3) {Sede Sur (400 PCs)};
+    \draw[link] (R3) -- (LAN_R3);
+    
+    \node[lan, left=of R4] (LAN_R4) {Sede Este (250 PCs)};
+    \draw[link] (R4) -- (LAN_R4);
+    
+  \end{tikzpicture}
+  \caption{Topología de Red Regional con Topología Mixta y Enlaces Cruzados.}
+\end{figure}
+
+\section{Conclusión}
+Cada uno de estos ejercicios requiere que se determine el tamaño mínimo de cada subred (incluyendo red y broadcast), se calcule el prefijo adecuado y se asignen los bloques IP mediante VLSM, completando la tabla de subredes con la información necesaria. Estos ejemplos permiten practicar la segmentación de redes en topologías complejas y no jerárquicas.
+
+\end{document}

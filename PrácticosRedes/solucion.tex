@@ -1,0 +1,400 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{array}
+\usepackage{longtable}
+
+\title{Solución de Ejercicios de Direccionamiento IP y VLSM}
+\author{Tu Nombre}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Ejercicio 1: Red Empresarial Distribuida con Redundancia}
+
+\subsection{Enunciado}
+Utilizando la red \textbf{192.168.0.0/16}, realiza el direccionamiento IP mediante VLSM para la siguiente topología:
+\begin{itemize}
+  \item \textbf{Routers:} R1, R2, R3 y R4.
+  \item \textbf{Interconexiones entre routers:}  
+    \begin{itemize}
+      \item R1--R2, R2--R3, R3--R4 y R4--R1 (formando un anillo).
+      \item Enlace adicional entre R1 y R3 para mayor redundancia.
+    \end{itemize}
+  \item \textbf{Redes LAN locales:}
+    \begin{itemize}
+      \item R1: Red A con 400 PCs.
+      \item R2: Red B con 250 PCs.
+      \item R3: Red C con 600 PCs.
+      \item R4: Red D con 150 PCs.
+    \end{itemize}
+  \item \textbf{Enlaces punto a punto:} Todos los enlaces entre routers se deben asignar con bloques \texttt{/30}.
+\end{itemize}
+
+\subsection{Diagrama de Topología (TikZ)}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      node distance=2.5cm and 2.5cm,
+      router/.style={draw, circle, minimum size=1cm, fill=blue!20},
+      lan/.style={draw, rectangle, minimum width=2.5cm, minimum height=0.8cm, fill=green!20},
+      link/.style={-Stealth, thick},
+      auto
+    ]
+    % Posiciones de los routers (dispuestos en forma de cuadrado)
+    \node[router] (R1) {R1};
+    \node[router, right=of R1] (R2) {R2};
+    \node[router, below=of R2] (R3) {R3};
+    \node[router, below=of R1] (R4) {R4};
+    
+    % Enlaces entre routers (anillo)
+    \draw[link] (R1) -- node[above] {/30} (R2);
+    \draw[link] (R2) -- node[right] {/30} (R3);
+    \draw[link] (R3) -- node[below] {/30} (R4);
+    \draw[link] (R4) -- node[left] {/30} (R1);
+    
+    % Enlace adicional entre R1 y R3
+    \draw[link, dashed] (R1) -- node[above, sloped] {/30} (R3);
+    
+    % LANs conectadas a cada router
+    \node[lan, above=of R1] (LAN_A) {Red A (400 PCs)};
+    \draw[link] (R1) -- (LAN_A);
+    
+    \node[lan, above=of R2] (LAN_B) {Red B (250 PCs)};
+    \draw[link] (R2) -- (LAN_B);
+    
+    \node[lan, below=of R3] (LAN_C) {Red C (600 PCs)};
+    \draw[link] (R3) -- (LAN_C);
+    
+    \node[lan, below=of R4] (LAN_D) {Red D (150 PCs)};
+    \draw[link] (R4) -- (LAN_D);
+    
+  \end{tikzpicture}
+  \caption{Topología de Red Empresarial Distribuida con Redundancia.}
+\end{figure}
+
+\subsection{Solución}
+Para este ejercicio se ha procedido a asignar bloques de la red \texttt{192.168.0.0/16} mediante VLSM. Se han considerado los siguientes requerimientos:
+\begin{itemize}
+  \item \textbf{Red C (600 PCs):} Se requiere al menos 602 direcciones. Se asigna un bloque \texttt{/22} (1024 direcciones).
+  \item \textbf{Red A (400 PCs):} Se requiere al menos 402 direcciones. Se asigna un bloque \texttt{/23} (512 direcciones).
+  \item \textbf{Red B (250 PCs):} Se requiere al menos 252 direcciones. Se asigna un bloque \texttt{/24} (256 direcciones).
+  \item \textbf{Red D (150 PCs):} Se requiere al menos 152 direcciones. Se asigna un bloque \texttt{/24} (256 direcciones).
+  \item \textbf{Enlaces punto a punto:} Cada enlace requiere 2 hosts. Se asigna un bloque \texttt{/30} (4 direcciones) para cada uno.
+\end{itemize}
+
+Se asignaron los bloques de la siguiente manera:
+\begin{itemize}
+  \item \textbf{Red C (R3):} \texttt{192.168.0.0/22} \quad (192.168.0.0 - 192.168.3.255)
+  \item \textbf{Red A (R1):} \texttt{192.168.4.0/23} \quad (192.168.4.0 - 192.168.5.255)
+  \item \textbf{Red B (R2):} \texttt{192.168.6.0/24} \quad (192.168.6.0 - 192.168.6.255)
+  \item \textbf{Red D (R4):} \texttt{192.168.7.0/24} \quad (192.168.7.0 - 192.168.7.255)
+  \item \textbf{Enlace R1-R2:} \texttt{192.168.8.0/30} \quad (192.168.8.0 - 192.168.8.3)
+  \item \textbf{Enlace R2-R3:} \texttt{192.168.8.4/30} \quad (192.168.8.4 - 192.168.8.7)
+  \item \textbf{Enlace R3-R4:} \texttt{192.168.8.8/30} \quad (192.168.8.8 - 192.168.8.11)
+  \item \textbf{Enlace R4-R1:} \texttt{192.168.8.12/30} \quad (192.168.8.12 - 192.168.8.15)
+  \item \textbf{Enlace extra R1-R3:} \texttt{192.168.8.16/30} \quad (192.168.8.16 - 192.168.8.19)
+\end{itemize}
+
+La siguiente tabla resume la solución:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{1.2cm}|>{\centering\arraybackslash}m{2.5cm}|>{\centering\arraybackslash}m{2.5cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{1.8cm}|}
+\hline
+\textbf{Segmento} & \textbf{Hosts Requeridos} & \textbf{Prefijo} & \textbf{Dirección de red} & \textbf{Broadcast} & \textbf{Rango Útil} & \textbf{Total Direcciones} \\
+\hline
+Red C (R3) & 600 & /22 & 192.168.0.0 & 192.168.3.255 & 192.168.0.1 -- 192.168.3.254 & 1024 \\
+\hline
+Red A (R1) & 400 & /23 & 192.168.4.0 & 192.168.5.255 & 192.168.4.1 -- 192.168.5.254 & 512 \\
+\hline
+Red B (R2) & 250 & /24 & 192.168.6.0 & 192.168.6.255 & 192.168.6.1 -- 192.168.6.254 & 256 \\
+\hline
+Red D (R4) & 150 & /24 & 192.168.7.0 & 192.168.7.255 & 192.168.7.1 -- 192.168.7.254 & 256 \\
+\hline
+Enlace R1-R2 & 2 & /30 & 192.168.8.0 & 192.168.8.3 & 192.168.8.1 -- 192.168.8.2 & 4 \\
+\hline
+Enlace R2-R3 & 2 & /30 & 192.168.8.4 & 192.168.8.7 & 192.168.8.5 -- 192.168.8.6 & 4 \\
+\hline
+Enlace R3-R4 & 2 & /30 & 192.168.8.8 & 192.168.8.11 & 192.168.8.9 -- 192.168.8.10 & 4 \\
+\hline
+Enlace R4-R1 & 2 & /30 & 192.168.8.12 & 192.168.8.15 & 192.168.8.13 -- 192.168.8.14 & 4 \\
+\hline
+Enlace extra R1-R3 & 2 & /30 & 192.168.8.16 & 192.168.8.19 & 192.168.8.17 -- 192.168.8.18 & 4 \\
+\hline
+\end{tabular}
+\caption{Asignación de subredes para Ejercicio 1.}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Ejercicio 2: Campus Universitario con Topología Mesh Parcial}
+
+\subsection{Enunciado}
+Utilizando la red \textbf{172.20.0.0/16}, realiza el direccionamiento IP mediante VLSM para la siguiente topología de campus:
+\begin{itemize}
+  \item \textbf{Routers:} R1, R2, R3, R4 y R5.
+  \item \textbf{Interconexiones entre routers:}
+    \begin{itemize}
+      \item R1 se conecta con R2 y R3.
+      \item R2 se conecta con R3 y R4.
+      \item R3 se conecta con R4 y R5.
+      \item R4 se conecta con R5.
+    \end{itemize}
+    (Todos los enlaces se implementan con bloques \texttt{/30}).
+  \item \textbf{Redes LAN locales:}
+    \begin{itemize}
+      \item R1: Área de Docencia con 350 equipos.
+      \item R2: Área Administrativa con 200 equipos.
+      \item R3: Laboratorio de Investigación con 450 equipos.
+      \item R4: Biblioteca y Servicios con 150 equipos.
+      \item R5: Área de Estudiantes con 500 equipos.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Diagrama de Topología (TikZ)}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      node distance=2cm and 2cm,
+      router/.style={draw, circle, minimum size=1cm, fill=blue!20},
+      lan/.style={draw, rectangle, minimum width=2.5cm, minimum height=0.8cm, fill=green!20},
+      link/.style={-Stealth, thick},
+      auto
+    ]
+    % Posicionamiento de los routers en forma de pentágono
+    \node[router] (R1) {R1};
+    \node[router, right=of R1] (R2) {R2};
+    \node[router, below right=of R2] (R3) {R3};
+    \node[router, below left=of R3] (R4) {R4};
+    \node[router, left=of R4] (R5) {R5};
+    
+    % Conexiones entre routers
+    \draw[link] (R1) -- node[above] {/30} (R2);
+    \draw[link] (R1) -- node[above left] {/30} (R3);
+    \draw[link] (R2) -- node[right] {/30} (R3);
+    \draw[link] (R2) -- node[below right] {/30} (R4);
+    \draw[link] (R3) -- node[below] {/30} (R4);
+    \draw[link] (R3) -- node[below right] {/30} (R5);
+    \draw[link] (R4) -- node[below left] {/30} (R5);
+    
+    % LANs conectadas a cada router
+    \node[lan, above=of R1] (LAN1) {Docencia (350 equipos)};
+    \draw[link] (R1) -- (LAN1);
+    
+    \node[lan, right=of R2] (LAN2) {Administrativa (200 equipos)};
+    \draw[link] (R2) -- (LAN2);
+    
+    \node[lan, right=of R3] (LAN3) {Laboratorio (450 equipos)};
+    \draw[link] (R3) -- (LAN3);
+    
+    \node[lan, below=of R4] (LAN4) {Biblioteca y Servicios (150 equipos)};
+    \draw[link] (R4) -- (LAN4);
+    
+    \node[lan, left=of R5] (LAN5) {Estudiantes (500 equipos)};
+    \draw[link] (R5) -- (LAN5);
+    
+  \end{tikzpicture}
+  \caption{Topología de Campus Universitario con Topología Mesh Parcial.}
+\end{figure}
+
+\subsection{Solución}
+Se procede a asignar bloques desde la red \texttt{172.20.0.0/16} considerando:
+\begin{itemize}
+  \item \textbf{Área de Estudiantes (500 equipos):} \texttt{/23} (512 direcciones).
+  \item \textbf{Laboratorio (450 equipos):} \texttt{/23} (512 direcciones).
+  \item \textbf{Área de Docencia (350 equipos):} \texttt{/23} (512 direcciones).
+  \item \textbf{Administrativa (200 equipos):} \texttt{/24} (256 direcciones).
+  \item \textbf{Biblioteca y Servicios (150 equipos):} \texttt{/24} (256 direcciones).
+  \item \textbf{Enlaces punto a punto:} Se asigna \texttt{/30} para cada enlace.
+\end{itemize}
+
+Asignación de bloques:
+\begin{itemize}
+  \item \textbf{Estudiantes (R5):} \texttt{172.20.0.0/23} \quad (172.20.0.0 -- 172.20.1.255)
+  \item \textbf{Laboratorio (R3):} \texttt{172.20.2.0/23} \quad (172.20.2.0 -- 172.20.3.255)
+  \item \textbf{Docencia (R1):} \texttt{172.20.4.0/23} \quad (172.20.4.0 -- 172.20.5.255)
+  \item \textbf{Administrativa (R2):} \texttt{172.20.6.0/24} \quad (172.20.6.0 -- 172.20.6.255)
+  \item \textbf{Biblioteca y Servicios (R4):} \texttt{172.20.7.0/24} \quad (172.20.7.0 -- 172.20.7.255)
+  \item \textbf{Enlaces:} Se asignan desde \texttt{172.20.8.0/30} en adelante:
+    \begin{itemize}
+      \item R1-R2: \texttt{172.20.8.0/30}
+      \item R1-R3: \texttt{172.20.8.4/30}
+      \item R2-R3: \texttt{172.20.8.8/30}
+      \item R2-R4: \texttt{172.20.8.12/30}
+      \item R3-R4: \texttt{172.20.8.16/30}
+      \item R3-R5: \texttt{172.20.8.20/30}
+      \item R4-R5: \texttt{172.20.8.24/30}
+    \end{itemize}
+\end{itemize}
+
+La tabla resumen es la siguiente:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+\textbf{Segmento} & \textbf{Hosts} & \textbf{Prefijo} & \textbf{Red} & \textbf{Broadcast} & \textbf{Rango Útil} & \textbf{Total} \\
+\hline
+Estudiantes (R5) & 500 & /23 & 172.20.0.0 & 172.20.1.255 & 172.20.0.1 -- 172.20.1.254 & 512 \\
+\hline
+Laboratorio (R3) & 450 & /23 & 172.20.2.0 & 172.20.3.255 & 172.20.2.1 -- 172.20.3.254 & 512 \\
+\hline
+Docencia (R1) & 350 & /23 & 172.20.4.0 & 172.20.5.255 & 172.20.4.1 -- 172.20.5.254 & 512 \\
+\hline
+Administrativa (R2) & 200 & /24 & 172.20.6.0 & 172.20.6.255 & 172.20.6.1 -- 172.20.6.254 & 256 \\
+\hline
+Biblioteca y Servicios (R4) & 150 & /24 & 172.20.7.0 & 172.20.7.255 & 172.20.7.1 -- 172.20.7.254 & 256 \\
+\hline
+Enlace R1-R2 & 2 & /30 & 172.20.8.0 & 172.20.8.3 & 172.20.8.1 -- 172.20.8.2 & 4 \\
+\hline
+Enlace R1-R3 & 2 & /30 & 172.20.8.4 & 172.20.8.7 & 172.20.8.5 -- 172.20.8.6 & 4 \\
+\hline
+Enlace R2-R3 & 2 & /30 & 172.20.8.8 & 172.20.8.11 & 172.20.8.9 -- 172.20.8.10 & 4 \\
+\hline
+Enlace R2-R4 & 2 & /30 & 172.20.8.12 & 172.20.8.15 & 172.20.8.13 -- 172.20.8.14 & 4 \\
+\hline
+Enlace R3-R4 & 2 & /30 & 172.20.8.16 & 172.20.8.19 & 172.20.8.17 -- 172.20.8.18 & 4 \\
+\hline
+Enlace R3-R5 & 2 & /30 & 172.20.8.20 & 172.20.8.23 & 172.20.8.21 -- 172.20.8.22 & 4 \\
+\hline
+Enlace R4-R5 & 2 & /30 & 172.20.8.24 & 172.20.8.27 & 172.20.8.25 -- 172.20.8.26 & 4 \\
+\hline
+\end{tabular}
+\caption{Asignación de subredes para Ejercicio 2.}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Ejercicio 3: Red Regional con Topología Mixta y Enlaces Cruzados}
+
+\subsection{Enunciado}
+Con la red \textbf{10.0.0.0/16}, realiza el direccionamiento mediante VLSM para la siguiente topología regional:
+\begin{itemize}
+  \item \textbf{Routers:} R1, R2, R3 y R4.
+  \item \textbf{Interconexiones entre routers:}
+    \begin{itemize}
+      \item R1 se conecta a R2 y R3.
+      \item R2 se conecta a R3 y R4.
+      \item R3 se conecta a R4.
+      \item Existe un enlace cruzado entre R1 y R4 para soportar tráfico alternativo.
+    \end{itemize}
+    (Todos estos enlaces son \texttt{/30}).
+  \item \textbf{Redes LAN locales:}
+    \begin{itemize}
+      \item R1: Oficina Central con 500 PCs.
+      \item R2: Sede Norte con 300 PCs.
+      \item R3: Sede Sur con 400 PCs.
+      \item R4: Sede Este con 250 PCs.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Diagrama de Topología (TikZ)}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      node distance=2.5cm and 2.5cm,
+      router/.style={draw, circle, minimum size=1cm, fill=blue!20},
+      lan/.style={draw, rectangle, minimum width=2.5cm, minimum height=0.8cm, fill=green!20},
+      link/.style={-Stealth, thick},
+      auto
+    ]
+    % Posiciones de los routers en forma de cuadrado
+    \node[router] (R1) {R1};
+    \node[router, right=of R1] (R2) {R2};
+    \node[router, below=of R2] (R3) {R3};
+    \node[router, below=of R1] (R4) {R4};
+    
+    % Conexiones principales
+    \draw[link] (R1) -- node[above] {/30} (R2);
+    \draw[link] (R1) -- node[left] {/30} (R3);
+    \draw[link] (R2) -- node[right] {/30} (R3);
+    \draw[link] (R2) -- node[above right] {/30} (R4);
+    \draw[link] (R3) -- node[below right] {/30} (R4);
+    % Enlace cruzado entre R1 y R4
+    \draw[link, dashed] (R1) -- node[below left, sloped] {/30} (R4);
+    
+    % LANs conectadas a cada router
+    \node[lan, above=of R1] (LAN_R1) {Oficina Central (500 PCs)};
+    \draw[link] (R1) -- (LAN_R1);
+    
+    \node[lan, right=of R2] (LAN_R2) {Sede Norte (300 PCs)};
+    \draw[link] (R2) -- (LAN_R2);
+    
+    \node[lan, right=of R3] (LAN_R3) {Sede Sur (400 PCs)};
+    \draw[link] (R3) -- (LAN_R3);
+    
+    \node[lan, left=of R4] (LAN_R4) {Sede Este (250 PCs)};
+    \draw[link] (R4) -- (LAN_R4);
+    
+  \end{tikzpicture}
+  \caption{Topología de Red Regional con Topología Mixta y Enlaces Cruzados.}
+\end{figure}
+
+\subsection{Solución}
+Se asignan bloques desde la red \texttt{10.0.0.0/16} de la siguiente manera:
+\begin{itemize}
+  \item \textbf{Oficina Central (R1, 500 PCs):} Se asigna \texttt{/23}. \\
+        \quad Bloque: \texttt{10.0.0.0/23} \quad (10.0.0.0 -- 10.0.1.255)
+  \item \textbf{Sede Norte (R2, 300 PCs):} Se asigna \texttt{/23}. \\
+        \quad Bloque: \texttt{10.0.2.0/23} \quad (10.0.2.0 -- 10.0.3.255)
+  \item \textbf{Sede Sur (R3, 400 PCs):} Se asigna \texttt{/23}. \\
+        \quad Bloque: \texttt{10.0.4.0/23} \quad (10.0.4.0 -- 10.0.5.255)
+  \item \textbf{Sede Este (R4, 250 PCs):} Se asigna \texttt{/24}. \\
+        \quad Bloque: \texttt{10.0.6.0/24} \quad (10.0.6.0 -- 10.0.6.255)
+  \item \textbf{Enlaces punto a punto:} Se asignan bloques \texttt{/30} a partir de \texttt{10.0.7.0}:
+    \begin{itemize}
+      \item Enlace R1-R2: \texttt{10.0.7.0/30}
+      \item Enlace R1-R3: \texttt{10.0.7.4/30}
+      \item Enlace R2-R3: \texttt{10.0.7.8/30}
+      \item Enlace R2-R4: \texttt{10.0.7.12/30}
+      \item Enlace R3-R4: \texttt{10.0.7.16/30}
+      \item Enlace extra R1-R4: \texttt{10.0.7.20/30}
+    \end{itemize}
+\end{itemize}
+
+La tabla resumen es:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+\textbf{Segmento} & \textbf{Hosts} & \textbf{Prefijo} & \textbf{Red} & \textbf{Broadcast} & \textbf{Rango Útil} & \textbf{Total} \\
+\hline
+Oficina Central (R1) & 500 & /23 & 10.0.0.0 & 10.0.1.255 & 10.0.0.1 -- 10.0.1.254 & 512 \\
+\hline
+Sede Norte (R2) & 300 & /23 & 10.0.2.0 & 10.0.3.255 & 10.0.2.1 -- 10.0.3.254 & 512 \\
+\hline
+Sede Sur (R3) & 400 & /23 & 10.0.4.0 & 10.0.5.255 & 10.0.4.1 -- 10.0.5.254 & 512 \\
+\hline
+Sede Este (R4) & 250 & /24 & 10.0.6.0 & 10.0.6.255 & 10.0.6.1 -- 10.0.6.254 & 256 \\
+\hline
+Enlace R1-R2 & 2 & /30 & 10.0.7.0 & 10.0.7.3 & 10.0.7.1 -- 10.0.7.2 & 4 \\
+\hline
+Enlace R1-R3 & 2 & /30 & 10.0.7.4 & 10.0.7.7 & 10.0.7.5 -- 10.0.7.6 & 4 \\
+\hline
+Enlace R2-R3 & 2 & /30 & 10.0.7.8 & 10.0.7.11 & 10.0.7.9 -- 10.0.7.10 & 4 \\
+\hline
+Enlace R2-R4 & 2 & /30 & 10.0.7.12 & 10.0.7.15 & 10.0.7.13 -- 10.0.7.14 & 4 \\
+\hline
+Enlace R3-R4 & 2 & /30 & 10.0.7.16 & 10.0.7.19 & 10.0.7.17 -- 10.0.7.18 & 4 \\
+\hline
+Enlace extra R1-R4 & 2 & /30 & 10.0.7.20 & 10.0.7.23 & 10.0.7.21 -- 10.0.7.22 & 4 \\
+\hline
+\end{tabular}
+\caption{Asignación de subredes para Ejercicio 3.}
+\end{table}
+
+\section{Conclusión}
+En los tres ejercicios se ha aplicado el direccionamiento IP mediante VLSM sobre redes complejas y no jerárquicas, asignando bloques de direcciones adaptados a las necesidades de cada segmento (red LAN o enlace punto a punto). Se ha elaborado una tabla resumen en cada caso que muestra la dirección de red, máscara, dirección de broadcast, rango de hosts útiles y el total de direcciones asignadas.
+
+\end{document}
