@@ -93,10 +93,10 @@ class Grafo {
             if (visitado[nodo_actual.destino])
                 continue;
             visitado[nodo_actual.destino] = true;
+            padre[nodo_actual.destino] = nodo_actual.origen;
 
             if (nodo_actual.destino == destino) {
                 System.out.println("Encontrado camino mínimo");
-                padre[nodo_actual.destino] = nodo_actual.origen;
                 visitado[nodo_actual.destino] = true;
                 break;
             } else {
@@ -104,12 +104,9 @@ class Grafo {
                     if (matrix[nodo_actual.destino][i] != 0 && !visitado[i]) {
                         System.out.println("Recorriendo " + nodo_actual);
 
-
                         Arista toadd = new Arista(nodo_actual.destino, i, matrix[nodo_actual.destino][i]);
                         para_visitar.offer(toadd);
-                        visitado[i] = true;
-                        padre[i] = nodo_actual.destino;
-                        System.out.println(para_visitar);
+
                     }
                 }
             }
@@ -153,6 +150,8 @@ public class Main {
         List<Integer> path = new ArrayList<>();
 
         List<Integer> resultado = grafo.dfs(origen, destino, stack, path, true);
+        Arrays.fill(grafo.visitado, false);
+
         List<Integer> resultado2 = grafo.bfs(origen, destino);
 
         if (resultado != null) {
