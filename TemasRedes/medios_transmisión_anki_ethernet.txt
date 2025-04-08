@@ -1,0 +1,13 @@
+La categoría {{c1::Cat5}} tiene un ancho de banda de {{c2::100 MHz}}, una velocidad máxima de {{c3::0.1 Gbps}}, una distancia máxima de {{c4::100 m}} y su estándar es {{c5::100Base-Tx}}.
+
+La categoría {{c1::Cat5e}} presenta un ancho de banda de {{c2::100 MHz}}, una velocidad máxima de {{c3::1 - 2.5 Gbps}}, una distancia máxima de {{c4::100 m}}, y sus estándares son {{c5::1000Base-T}} y {{c6::2.5GBase-T}}.
+
+La categoría {{c1::Cat6}} tiene un ancho de banda de {{c2::250 MHz}}, una velocidad máxima de {{c3::10 Gbps (hasta 55 m) / 1 Gbps (hasta 100 m)}}, una distancia máxima de {{c4::55 - 100 m}}, y su estándar es {{c5::10GBase-T}}.
+
+La categoría {{c1::Cat6a}} tiene un ancho de banda de {{c2::500 MHz}}, una velocidad máxima de {{c3::10 Gbps}}, una distancia máxima de {{c4::100 m}} y su estándar es {{c5::N/D}}.
+
+La categoría {{c1::Cat7}} tiene un ancho de banda de {{c2::600 MHz}}, una velocidad máxima de {{c3::10 Gbps}}, una distancia máxima de {{c4::100 m}}, y su estándar es {{c5::N/D}}.
+
+La categoría {{c1::Cat7a}} tiene un ancho de banda de {{c2::1000 MHz}}, una velocidad máxima de {{c3::10 / 40 / 100 Gbps}}, una distancia máxima de {{c4::100 / 55 / 15 m}}, y su estándar es {{c5::N/D}}.
+
+La categoría {{c1::Cat8}} tiene un ancho de banda de {{c2::2000 MHz}}, una velocidad máxima de {{c3::25 - 40 Gbps}}, una distancia máxima de {{c4::30 m}}, y sus estándares son {{c5::25GBase-T}} y {{c6::40GBase-T}}.
