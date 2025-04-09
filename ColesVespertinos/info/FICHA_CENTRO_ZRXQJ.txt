@@ -1,0 +1,813 @@
+"FRANCISCO DE QUEVEDO"
+Datos Identificativos y localización
+Nombre del Centro:
+
+"FRANCISCO DE QUEVEDO"
+
+Código del centro:
+
+28044902
+
+Tipo (denominación genérica):
+Titularidad:
+Área Territorial:
+Dirección:
+Teléfono:
+
+s/n, 28037, (San Blas-Canillejas).
+913065604
+
+Fax:
+
+913065606
+
+Web:
+
+http://www.educa.madrid.org/ies.quevedo.madrid
+
+Correo Electrónico:
+
+ies.quevedo.madrid@educa.madrid.org
+
+Etapas educativas
+Formación Profesional Básica (LOE-LOMCE)
+Actividades Físicas Y Deportivas
+Acceso Y Conservación En Instalaciones Deportivas
+
+Presencial / Vespertino
+
+Informática Y Comunicaciones
+Informática De Oficina
+
+Presencial / Vespertino
+
+Comercio Y Marketing
+Servicios Comerciales
+
+Presencial / Vespertino
+
+Formación Profesional de grado medio
+Informatica Y Comunicaciones (loe)
+Sistemas Microinformáticos Y Redes (loe)
+
+Presencial / Diurno, Vespertino
+
+Comercio Y Marketing
+Actividades Comerciales (loe)
+
+Presencial / Diurno, Vespertino
+
+Formación Profesional de grado superior
+Comercio Y Marketing
+Marketing Y Publicidad Y Gestión De Ventas Y Espacios Comerciales
+
+Diurno
+
+Comercio Internacional (loe)
+
+Presencial
+
+Transporte Y Logística (loe)
+
+Presencial / Vespertino
+
+Gestión De Ventas Y Espacios Comerciales (loe)
+
+Presencial
+
+Marketing Y Publicidad (loe)
+
+Presencial / Vespertino
+
+Informática Y Comunicaciones (loe)
+Administración De Sistemas Informáticos En Red (loe)
+
+Presencial / Diurno, Vespertino
+
+Desarrollo De Aplicaciones Multiplataforma (loe)
+
+Presencial / Diurno, Vespertino
+
+Desarrollo De Aplicaciones Web (loe)
+
+Presencial / Vespertino
+
+Grado D
+F.profesional Grado Medio
+Comercio Y Marketing
+Actividades Comerciales
+
+09/04/2025
+
+General
+
+Página 1
+
+Informática Y Comunicaciones
+Sistemas Microinformáticos Y Redes
+
+General
+
+F. Profesional Grado Superior
+Informática Y Comunicaciones
+Desarrollo De Aplicaciones Multiplataforma
+
+General
+
+Desarrollo De Aplicaciones Web
+
+General
+
+Administración De Sistemas Informáticos En Red
+
+General
+
+Comercio Y Marketing
+Gestión De Ventas Y Espacios Comerciales Y Marketing Y
+
+General Doble Título
+
+Comercio Internacional
+
+General
+
+Gestión De Ventas Y Espacios Comerciales
+
+General
+
+Marketing Y Publicidad
+
+General
+
+Transporte Y Logística
+
+General
+
+Educación Secundaria Obligatoria (LOMLOE)
+Educación Secundaria Obligatoria (LOMLOE)
+Ed. Sec. Postobligatoria Bachillerato (LOMLOE)
+Ciencias Y Tecnología
+
+Semipresencial, Presencial
+
+Humanidades Y Ciencias Sociales
+
+Semipresencial, Presencial
+
+Ciclos Formativos de Grado Básico (LOMLOE)
+Actividades Físicas Y Deportivas
+Acceso Y Conservación En Instalaciones Deportivas
+
+Presencial
+
+Comercio Y Marketing
+Servicios Comerciales
+
+Presencial / Vespertino
+
+Informática Y Comunicaciones
+Informática De Oficina
+
+Presencial / Vespertino
+
+Opciones Lingüísticas
+Centro Bilingüe
+Español/Inglés
+
+Centro de Convenio con
+British Council
+
+Secciones Lingüísticas de
+francés en el I.E.S.
+
+Secciones Lingüísticas de
+alemán en el I.E.S.
+
+Programa de Excelencia en Bachillerato
+Centro de Excelencia
+
+Aula de Excelencia
+
+Innovación tecnológica
+Instituto de innovación tecnológica
+
+Servicios Complementarios
+Transporte
+
+09/04/2025
+
+Horario Ampliado
+
+Comedor
+
+Página 2
+
+Residencia
+
+Tipo de Jornada
+Jornada dividida en 2 sesiones
+
+Jornada continuada
+
+Modalidades de Integración Preferente
+Auditivos
+
+Motóricos
+
+Centro preferente TGD/TEA
+
+Actividades extraescolares institucionales
+
+PROGRAMA REFUERZA
+PROGRAMA 4ºESO+EMPRESA
+ESCUELA DEPORTIVA: BALONCESTO
+ESCUELA DEPORTIVA: FUTBOL SALA
+ESCUELA DEPORTIVA: VOLEIBOL
+ESCUELA DEPORTIVA: LUCHA
+
+09/04/2025
+
+Página 3
+
+Adscripción a efectos de escolarización
+Centros con enseñanzas de nivel inferior adscritos al centro
+Centros de adscripción única bilingüe
+Código
+
+Nombre
+
+28049377
+
+CP INF-PRI MARIA MOLINER (Madrid) (Bilingüe)
+
+Centros de adscripción múltiple ordinaria
+Código
+
+Nombre
+
+28063805
+
+CP INF-PRI JULIAN MARIAS (Madrid)
+
+28057015
+
+CP INF-PRI EL SOL (Madrid)
+
+28010977
+
+CP INF-PRI REPUBLICA DE CHILE (Madrid)
+
+28025956
+
+CP INF-PRI RAMON MARIA DEL VALLE INCLAN (Madrid)
+
+28066302
+
+CP INF-PRI ALVARO DE BAZAN (Madrid)
+
+28017777
+
+CPR INF-PRI SANTA CRUZ (Madrid)
+
+Centros de adscripción múltiple bilingüe
+Código
+
+Nombre
+
+28020740
+
+CP INF-PRI NUESTRA SEÑORA DEL LUCERO (Madrid) (Bilingüe)
+
+28021291
+
+CP INF-PRI FILOSOFO SENECA (Madrid) (Bilingüe)
+
+28021367
+
+CP INF-PRI LUIS CERNUDA (Madrid) (Bilingüe)
+
+28021321
+
+CP INF-PRI RABINDRANATH TAGORE (Madrid) (Bilingüe)
+
+28041767
+
+CP INF-PRI ROSA LUXEMBURGO (Madrid) (Bilingüe)
+
+28006366
+
+CP INF-PRI SAN PABLO (Madrid) (Bilingüe)
+
+28006354
+
+CP INF-PRI SAN JUAN DE LA CRUZ (Madrid) (Bilingüe)
+
+28077865
+
+CP INF-PRI-SEC ALFREDO DI STEFANO (Madrid) (Bilingüe)
+
+28075777
+
+CP INF-PRI-SEC BLAS DE LEZO (Madrid) (Bilingüe)
+
+28021461
+
+CP INF-PRI JOSE ORTEGA Y GASSET (Madrid) (Bilingüe)
+
+28021446
+
+CP INF-PRI DANIEL VAZQUEZ DIAZ (Madrid) (Bilingüe)
+
+28006391
+
+CP INF-PRI SANTO DOMINGO (Madrid) (Bilingüe)
+
+28006411
+
+CP INF-PRI LA ALAMEDA (Madrid) (Bilingüe)
+
+28006020
+
+CP INF-PRI PADRE POVEDA (Madrid) (Bilingüe)
+
+28005933
+
+CP INF-PRI EDUARDO ROJO (Madrid) (Bilingüe)
+
+28021434
+
+CP INF-PRI PIO BAROJA (Madrid) (Bilingüe)
+
+28021422
+
+CP INF-PRI DOCTOR SEVERO OCHOA (Madrid) (Bilingüe)
+
+28028416
+
+CP INF-PRI PASAMONTE (Madrid) (Bilingüe)
+
+28005994
+
+CP INF-PRI PADRE COLOMA (Madrid) (Bilingüe)
+
+28006317
+
+CP INF-PRI SAN ILDEFONSO (Madrid) (Bilingüe)
+
+28049365
+
+CP INF-PRI GUINDALERA (Madrid) (Bilingüe)
+
+28074578
+
+CP INF-PRI MARGARET THATCHER (Madrid) (Bilingüe)
+
+28020867
+
+CP INF-PRI LORENZO LUZURIAGA (Madrid) (Bilingüe)
+
+28021045
+
+CP INF-PRI PINTOR ROSALES (Madrid) (Bilingüe)
+
+28020533
+
+CP INF-PRI JUAN ZARAGUETA (Madrid) (Bilingüe)
+
+28006305
+
+CP INF-PRI SAN IGNACIO DE LOYOLA (Madrid) (Bilingüe)
+
+28006275
+
+CP INF-PRI SAN EUGENIO Y SAN ISIDRO (Madrid) (Bilingüe)
+
+09/04/2025
+
+Página 4
+
+28006238
+
+CP INF-PRI RUFINO BLANCO (Madrid) (Bilingüe)
+
+28079436
+
+CP INF-PRI MARIA DE VILLOTA (Madrid) (Bilingüe)
+
+28004989
+
+CP INF-PRI AGUSTINA DIEZ (Madrid) (Bilingüe)
+
+28026006
+
+CP INF-PRI FONTARRON (Madrid) (Bilingüe)
+
+28006135
+
+CP INF-PRI REGIMIENTO INMEMORIAL DEL REY (Madrid) (Bilingüe)
+
+28006123
+
+CP INF-PRI RAMIRO DE MAEZTU (Madrid) (Bilingüe)
+
+28006101
+
+CP INF-PRI PUERTO RICO (Madrid) (Bilingüe)
+
+28010886
+
+CP INF-PRI NUESTRA SEÑORA DE LA ALMUDENA (Madrid) (Bilingüe)
+
+28019658
+
+CP INF-PRI SAN BENITO (Madrid) (Bilingüe)
+
+28013309
+
+CP INF-PRI NUESTRA SEÑORA DE LA PALOMA (Madrid) (Bilingüe)
+
+28069169
+
+CP INF-PRI-SEC LOYOLA DE PALACIO (Madrid) (Bilingüe)
+
+28005623
+
+CP INF-PRI JAVIER DE MIGUEL (Madrid) (Bilingüe)
+
+28005908
+
+CP INF-PRI MESONERO ROMANOS (Madrid) (Bilingüe)
+
+28005726
+
+CP INF-PRI JUAN SEBASTIAN ELCANO (Madrid) (Bilingüe)
+
+28025968
+
+CP INF-PRI NUESTRA SEÑORA DE LA FUENCISLA (Madrid) (Bilingüe)
+
+28018502
+
+CP INF-PRI CIUDAD DE GUADALAJARA (Madrid) (Bilingüe)
+
+28018496
+
+CP INF-PRI MARTINEZ MONTAÑES (Madrid) (Bilingüe)
+
+28005490
+
+CP INF-PRI HERNAN CORTES (Madrid) (Bilingüe)
+
+28005465
+
+CP INF-PRI GUSTAVO ADOLFO BECQUER (Madrid) (Bilingüe)
+
+28005489
+
+CP INF-PRI HERMANOS PINZON (Madrid) (Bilingüe)
+
+28074256
+
+CP INF-PRI-SEC JOSE DE ECHEGARAY (Madrid) (Bilingüe)
+
+28018459
+
+CP INF-PRI DOCTOR TOLOSA LATOUR (Madrid) (Bilingüe)
+
+28071826
+
+CP INF-PRI CARMEN LAFORET (Madrid) (Bilingüe)
+
+28050355
+
+CP INF-PRI LOS ALMENDROS (Madrid) (Bilingüe)
+
+28005601
+
+CP INF-PRI JAIME BALMES (Madrid) (Bilingüe)
+
+28005571
+
+CP INF-PRI LUIS BELLO (Madrid) (Bilingüe)
+
+28005349
+
+CP INF-PRI EMILIA PARDO BAZAN (Madrid) (Bilingüe)
+
+28006068
+
+CP INF-PRI PINAR DEL REY (Madrid) (Bilingüe)
+
+28072466
+
+CP INF-PRI MAESTRO PADILLA (Madrid) (Bilingüe)
+
+28010953
+
+CP INF-PRI REAL ARMADA (Madrid) (Bilingüe)
+
+28010898
+
+CP INF-PRI LEOPOLDO ALAS (Madrid) (Bilingüe)
+
+28010761
+
+CP INF-PRI LEGADO CRESPO (Madrid) (Bilingüe)
+
+28010746
+
+CP INF-PRI JOSE CALVO SOTELO (Madrid) (Bilingüe)
+
+28005179
+
+CP INF-PRI CAPITAN CORTES (Madrid) (Bilingüe)
+
+28005167
+
+CP INF-PRI ESCUELAS BOSQUE (Madrid) (Bilingüe)
+
+28045104
+
+CP INF-PRI MONTE DE EL PARDO (Madrid) (Bilingüe)
+
+28071361
+
+CP INF-PRI JOSEP TARRADELLAS (Madrid) (Bilingüe)
+
+28010722
+
+CP INF-PRI JOAQUIN COSTA (Madrid) (Bilingüe)
+
+28010710
+
+CP INF-PRI ISABEL LA CATOLICA (Madrid) (Bilingüe)
+
+28039360
+
+CP INF-PRI EE.UU. DE AMERICA-HUARTE DE SAN JUAN (Madrid) (Bilingüe)
+
+28045098
+
+CP INF-PRI VALDEBERNARDO (Madrid) (Bilingüe)
+
+28011684
+
+CP INF-PRI CIUDAD DE CORDOBA (Madrid) (Bilingüe)
+
+28010461
+
+CP INF-PRI CARLOS V (Madrid) (Bilingüe)
+
+28010618
+
+CP INF-PRI FERNANDO EL CATOLICO (Madrid) (Bilingüe)
+
+28005441
+
+CP INF-PRI GONZALO FERNANDEZ DE CORDOBA (Madrid) (Bilingüe)
+
+09/04/2025
+
+Página 5
+
+28005431
+
+CP INF-PRI REINA VICTORIA (Madrid) (Bilingüe)
+
+28004965
+
+CP INF-PRI ESCUELAS AGUIRRE (Madrid) (Bilingüe)
+
+28010412
+
+CP INF-PRI AMADOR DE LOS RIOS (Madrid) (Bilingüe)
+
+28004266
+
+CP INF-PRI DAMASO ALONSO (Madrid) (Bilingüe)
+
+28005258
+
+CP INF-PRI CLAUDIO MOYANO (Madrid) (Bilingüe)
+
+28005246
+
+CP INF-PRI CIUDAD PEGASO (Madrid) (Bilingüe)
+
+28010941
+
+CP INF-PRI RAMON GOMEZ DE LA SERNA (Madrid) (Bilingüe)
+
+28028854
+
+CP INF-PRI DIONISIO RIDRUEJO (Madrid) (Bilingüe)
+
+28071383
+
+CP INF-PRI AUSIAS MARCH (Madrid) (Bilingüe)
+
+28010424
+
+CP INF-PRI ARAVACA (Madrid) (Bilingüe)
+
+28033928
+
+CP INF-PRI COMPLEJO ESCOLAR PRINCIPE FELIPE (Madrid) (Bilingüe)
+
+28011015
+
+CP INF-PRI SAN JUAN BOSCO (Madrid) (Bilingüe)
+
+28010990
+
+CP INF-PRI SAN CRISTOBAL (Madrid) (Bilingüe)
+
+28010771
+
+CP INF-PRI LEPANTO (Madrid) (Bilingüe)
+
+28072995
+
+CP INF-PRI CORTES DE CADIZ (Madrid) (Bilingüe)
+
+28010801
+
+CP INF-PRI MANUEL SAINZ DE VICUÑA (Madrid) (Bilingüe)
+
+28033941
+
+CP INF-PRI ARAGON (Madrid) (Bilingüe)
+
+28010931
+
+CP INF-PRI PATRIARCA OBISPO EIJO GARAY (Madrid) (Bilingüe)
+
+28010850
+
+CP INF-PRI MIGUEL DE UNAMUNO (Madrid) (Bilingüe)
+
+28010679
+
+CP INF-PRI PI I MARGALL (Madrid) (Bilingüe)
+
+28038343
+
+CP INF-PRI MIRASIERRA (Madrid) (Bilingüe)
+
+28071371
+
+CP INF-PRI PLACIDO DOMINGO (Madrid) (Bilingüe)
+
+28072478
+
+CP INF-PRI ANTONIO FONTAN (Madrid) (Bilingüe)
+
+28030472
+
+CP INF-PRI SAN JUAN BAUTISTA (Madrid) (Bilingüe)
+
+28025981
+
+CP INF-PRI VIRGEN DEL CERRO (Madrid) (Bilingüe)
+
+28079424
+
+CP INF-PRI NURIA ESPERT (Madrid) (Bilingüe)
+
+28030411
+
+CP INF-PRI VICALVARO (Madrid) (Bilingüe)
+
+28042796
+
+CP INF-PRI EL QUIJOTE (Madrid) (Bilingüe)
+
+28031351
+
+CP INF-PRI PABLO PICASSO (Madrid) (Bilingüe)
+
+28029123
+
+CP INF-PRI MESETA DE ORCASITAS (Madrid) (Bilingüe)
+
+28031075
+
+CP INF-PRI VIRGEN DEL CORTIJO (Madrid) (Bilingüe)
+
+28069820
+
+CP INF-PRI LEOPOLDO CALVO-SOTELO (Madrid) (Bilingüe)
+
+28063775
+
+CP INF-PRI GABRIELA MISTRAL (Madrid) (Bilingüe)
+
+28021409
+
+CP INF-PRI ESPERANZA (Madrid) (Bilingüe)
+
+28037201
+
+CP INF-PRI CALDERON DE LA BARCA (Madrid) (Bilingüe)
+
+28077877
+
+CP INF-PRI ANGEL NIETO (Madrid) (Bilingüe)
+
+28026067
+
+CP INF-PRI RAMON PEREZ DE AYALA (Madrid) (Bilingüe)
+
+28006044
+
+CP INF-PRI PARQUE ALUCHE (Madrid) (Bilingüe)
+
+28060211
+
+CP INF-PRI PEDRO DUQUE (Madrid) (Bilingüe)
+
+28004990
+
+CP INF-PRI ALBERTO ALCOCER (Madrid) (Bilingüe)
+
+28031348
+
+CP INF-PRI MARIANO JOSE DE LARRA (Madrid) (Bilingüe)
+
+28004552
+
+CP INF-PRI ISAAC ALBENIZ (Madrid) (Bilingüe)
+
+28004904
+
+CP INF-PRI CIUDAD DE JAEN (Madrid) (Bilingüe)
+
+28031087
+
+CP INF-PRI CIUDAD DE ROMA (Madrid) (Bilingüe)
+
+28030198
+
+CP INF-PRI CARDENAL HERRERA ORIA (Madrid) (Bilingüe)
+
+09/04/2025
+
+Página 6
+
+28063751
+
+CP INF-PRI AGUSTIN RODRIGUEZ SAHAGUN (Madrid) (Bilingüe)
+
+28032791
+
+CP INF-PRI EUGENIO MARIA DE HOSTOS (Madrid) (Bilingüe)
+
+28066090
+
+CP INF-PRI WINSTON CHURCHILL (Madrid) (Bilingüe)
+
+28035548
+
+CP INF-PRI PARQUE EUGENIA DE MONTIJO (Madrid) (Bilingüe)
+
+28038318
+
+CP INF-PRI ALHAMBRA (Madrid) (Bilingüe)
+
+28037648
+
+CP INF-PRI GARCILASO DE LA VEGA (Madrid) (Bilingüe)
+
+28035524
+
+CP INF-PRI ASTURIAS (Madrid) (Bilingüe)
+
+28010503
+
+CP INF-PRI DOCTOR CONDE ARRUGA (Madrid) (Bilingüe)
+
+28006159
+
+CP INF-PRI REPUBLICA DEL BRASIL (Madrid) (Bilingüe)
+
+28035512
+
+CP INF-PRI BLAS DE OTERO (Madrid) (Bilingüe)
+
+28063787
+
+CP INF-PRI INFANTA LEONOR (Madrid) (Bilingüe)
+
+28010795
+
+CP INF-PRI MANUEL BARTOLOME COSSIO (Madrid) (Bilingüe)
+
+28005076
+
+CP INF-PRI DE PRACTICAS ASUNCION RINCON (Madrid) (Bilingüe)
+
+09/04/2025
+
+Página 7
+
+

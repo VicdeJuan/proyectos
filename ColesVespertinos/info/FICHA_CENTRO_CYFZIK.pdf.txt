@@ -1,0 +1,232 @@
+BUSCADOR DE COLEGIOS
+
+“ARQUITECTO VENTURA RODRIGUEZ”
+
+Datos Identificativos y localizacion
+
+Comunid
+
++
+7
+
+id
+
+de Madrid
+
+Nombre del Centro: “ARQUITECTO VENTURA RODRIGUEZ"
+
+Cédigo del centro: 28058640
+
+Tipo (denominacion genérica):
+
+Titularidad:
+
+Area Territorial:
+
+Direccién: 4, 28660, .
+
+Teléfono: 916336271
+
+Fax: 916339594
+
+Web: http://www.educa.madrid.org/ies.arquitectoventurarodriguez.boadilla
+Correo Electronico: ies.arquitectoventurarodriguez.boadilla@educa.madrid.org
+
+Etapas educativas
+
+Formacion Profesional Basica (LOE-LOMCE)
+
+Informatica Y Comunicaciones
+Informatica De Oficina
+Formacion Profesional de grado medio
+
+Informatica Y Comunicaciones (loe)
+Sistemas Microinformaticos Y Redes (loe)
+Comercio Y Marketing
+Actividades Comerciales (loe)
+Formacion Profesional de grado superior
+
+Comercio Y Marketing
+Transporte Y Logistica (loe)
+Gestion De Ventas Y Espacios Comerciales (loe)
+Marketing Y Publicidad (loe)
+
+Informatica Y Comunicaciones (loe)
+Administracién De Sistemas Informaticos En Red (loe)
+Desarrollo De Aplicaciones Multiplataforma (loe)
+Desarrollo De Aplicaciones Web (loe)
+
+Grado D
+
+F.profesional Grado Medio
+Comercio Y Marketing
+Actividades Comerciales
+Informatica Y Comunicaciones
+Sistemas Microinformaticos Y Redes
+F. Profesional Grado Superior
+Informatica Y Comunicaciones
+Desarrollo De Aplicaciones Multiplataforma
+Desarrollo De Aplicaciones Web
+
+09/04/2025 Pagina 1
+
+Presencial
+
+Presencial
+
+Presencial
+
+Presencial
+
+Presencial
+
+Presencial
+
+Presencial
+
+Presencial
+
+Presencial
+
+General
+
+Diurno
+
+Vespertino
+
+Vespertino
+Diurno
+
+Vespertino
+
+Diumno, Vespertina
+
+Diumno, Vespertina
+
+Intensivo, General
+
+General
+
+General
+7
+
+BUSCADOR DE COLEGIOS = comuniaas
+
+Administracién De Sistemas Informaticos En Red
+Comercio Y Marketing
+Gestion De Ventas Y Espacios Comerciales
+Marketing Y Publicidad
+Transporte Y Logistica
+Educacion Secundaria Obligatoria (LOMLOE)
+
+Educacion Secundaria Obligatoria (LOMLOE)
+
+General
+
+General
+
+General
+
+General
+
+Ed. Sec. Postobligatoria Bachillerato (LOMLOE)
+
+Ciencias Y Tecnologia
+Humanidades Y Ciencias Sociales
+Ciclos Formativos de Grado Basico (LOMLOE)
+
+Informatica Y Comunicaciones
+Informatica De Oficina
+
+Opciones Lingiisticas
+
+Presencial
+
+Presencial
+
+Presencial
+
+Centro Bilingtie Centro de Convenio con Secciones Lingiisticas de Secciones Lingtisticas de
+
+Espafiol/Inglés British Council francés en el I-E.S.
+
+Programa de Excelencia en Bachillerato
+
+Centro de Excelencia Aula de Excelencia
+
+Innovacion tecnoldgica
+
+Instituto de innovacion tecnoldgica
+
+Servicios Complementarios
+
+Transporte Horario Ampliado Comedor
+
+Tipo de Jornada
+
+Jornada dividida en 2 sesiones Jornada continuada
+
+Modalidades de Integracion Preferente
+
+Auditivos Motoricos
+
+09/04/2025 Pagina 2
+
+aleméan en el I-E.S.
+
+Residencia
+
+Centro preferente TGD/TEA
+thee
+eee
+
+BUSCADOR DE COLEGIOS = comuniaas
+
+de Madrid
+
+Actividades extraescolares institucionales
+
+PROGRAMA 4°ESO+EMPRESA
+ESCUELA DEPORTIVA: BALONCESTO
+ESCUELA DEPORTIVA: BADMINTON
+ESCUELA DEPORTIVA: PATINAJE
+ESCUELA DEPORTIVA: VOLEIBOL
+
+Adscripcion a efectos de escolarizacion
+Centros con ensefanzas de nivel inferior adscritos al centro
+Centros de adscripcion multiple ordinaria
+
+Codigo
+
+28001848
+28001848
+28001848
+28001848
+28060324
+28041640
+28050458
+28063970
+
+Nombre
+
+CP INF-PRI-SEC PRINCIPE DON FELIPE (Boadilla del Monte) (Bilingue)
+CP INF-PRI-SEC PRINCIPE DON FELIPE (Boadilla del Monte) (Bilingue)
+CP INF-PRI-SEC PRINCIPE DON FELIPE (Boadilla del Monte) (Bilingue)
+CP INF-PRI-SEC PRINCIPE DON FELIPE (Boadilla del Monte) (Bilingue)
+CP INF-PRI TERESA BERGANZA (Boadilla del Monte) (Bilingtie)
+
+CP INF-PRI JOSE BERGAMIN GUTIERREZ (Boadilla del Monte) (Bilingtie)
+CP INF-PRI FEDERICO GARCIA LORCA (Boadilla del Monte) (Bilingiie)
+CP INF-PRI AGORA (Boadilla del Monte)
+
+Centros de adscripcion multiple bilingiie
+
+Codigo
+28001848
+
+09/04/2025
+
+Nombre
+CP INF-PRI-SEC PRINCIPE DON FELIPE (Boadilla del Monte) (Bilingue)
+
+Pagina 3

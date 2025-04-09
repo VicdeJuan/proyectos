@@ -1,0 +1,209 @@
+BUSCADOR DECOLEGIOS cones
+
+de Madrid
+
+"ISIDRA DE GUZMAN"
+Datos Identificativos y localizacion
+Nombre del Centro: “ISIDRA DE GUZMAN"
+Cédigo del centro: 28080517
+Tipo (denominacion genérica):
+Titularidad:
+Area Territorial:
+Direccién: 29, 28803, .
+Teléfono:
+Fax:
+Web: http://www.educa.madrid.org/ies.isidradeguzman.alcala
+Correo Electronico: ies.isidradeguzman.alcala@educa.madrid.org
+Etapas educativas
+Formacion Profesional Basica (LOE-LOMCE)
+Artes Graficas
+Artes Graficas Preseneial / Diurno
+Formacion Profesional de grado medio
+Artes Graficas
+Preimpresion Digital (loe) Presencial / Diurno
+Formacion Profesional de grado superior
+Artes Graficas
+Disefio Y Edicion De Publicaciones Impresas Y Multimedia (loe) Presencial / Diurno
+Informatica Y Comunicaciones (loe)
+Desarrollo De Aplicaciones Multiplataforma (loe) Presencial /Diumno
+Desarrollo De Aplicaciones Web (loe) Presencial/ Diumno
+
+Grado D
+
+F.profesional Grado Medio
+Artes Graficas
+Preimpresién Digital General
+F. Profesional Grado Superior
+Artes Graficas
+
+Disefo Y Edicion De Publicaciones Impresas Y Multimedia General
+Informatica Y Comunicaciones
+
+Desarrollo De Aplicaciones Multiplataforma General
+
+Desarrollo De Aplicaciones Web General
+
+Educacion Secundaria Obligatoria (LOMLOE)
+Educacion Secundaria Obligatoria (LOMLOE)
+
+Ed. Sec. Postobligatoria Bachillerato (LOMLOE)
+
+Ciencias Y Tecnologia Presencial
+
+09/04/2025 Pagina 1
+BUSCADOR DE COLEGIOS = comuniaas
+
+Humanidades Y Ciencias Sociales
+Ciclos Formativos de Grado Basico (LOMLOE)
+
+Presencial
+
+Artes Graficas
+Artes Graficas
+
+Opciones Linglisticas
+
+Presencial
+
+Centro Bilingtie Centro de Convenio con Secciones Lingilisticas de Secciones Lingtisticas de
+
+Espafiol/Inglés British Council francés en el I.E.S.
+
+Programa de Excelencia en Bachillerato
+
+Centro de Excelencia Aula de Excelencia
+
+Innovacion tecnoldgica
+
+Instituto de innovacion tecnoldgica
+
+Servicios Complementarios
+
+Transporte Horario Ampliado Comedor
+
+Tipo de Jornada
+
+Jornada dividida en 2 sesiones Jornada continuada
+
+Modalidades de Integracion Preferente
+
+Auditivos Motoricos
+
+09/04/2025 Pagina 2
+
+aleman en el I.E.S.
+
+Residencia
+
+Centro preferente TGD/TEA
+BUSCADOR DE COLEGIOS = comuniaas
+
+de Madrid
+
+Adscripcion a efectos de escolarizacion
+Centros con ensefanzas de nivel inferior adscritos al centro
+Centros de adscripcion unica bilingiie
+
+Codigo
+
+28028738
+28031440
+28000558
+
+Nombre
+
+CP INF-PRI BEATRIZ GALINDO (Alcala de Henares) (Bilingiie)
+
+CP INF-PRI FRANCISCO DE QUEVEDO (Alcala de Henares) (Bilingiie)
+CP INF-PRI INFANTA CATALINA (Alcala de Henares) (Bilingue)
+
+Centros de adscripcion multiple ordinaria
+
+Codigo
+
+28074581
+28080980
+28044801
+28000066
+28000078
+28028763
+28037491
+28030447
+28030344
+28037168
+28038057
+28060300
+28000388
+28028751
+28000315
+28000054
+
+Nombre
+
+CP INF-PRI ALICIA DE LARROCHA (Alcala de Henares)
+CP INF-PRI VIRGEN DE LA OLIVA (Anchuelo)
+
+CP INF-PRI C.R.A. AMIGOS DE LA PAZ (Santorcaz)
+
+CP INF-PRI CARDENAL CISNEROS (Alcala de Henares)
+CP INF-PRI CERVANTES (Alcala de Henares)
+
+CP INF-PRI SANTOS NINOS (Alcala de Henares)
+
+CP INF-PRI PABLO NERUDA (Alcala de Henares)
+
+CP INF-PRI CIUDAD DEL AIRE (Alcala de Henares)
+
+CP INF-PRI MANUEL AZANA (Alcala de Henares)
+
+CP INF-PRI LUIS VIVES (Alcala de Henares)
+
+CP INF-PRI CRISTOBAL COLON (Alcala de Henares)
+CP INF-PRI LA GARENA (Alcala de Henares)
+
+CP INF-PRI DOCTORA DE ALCALA (Alcala de Henares)
+CP INF-PRI JUAN DE AUSTRIA (Alcala de Henares)
+
+CP INF-PRI EMPERADOR FERNANDO (Alcala de Henares)
+CP INF-PRI ANTONIO DE NEBRIJA (Alcala de Henares)
+
+Centros de adscripcion multiple bilinguie
+
+Codigo
+
+28050380
+28070718
+28032341
+28028741
+28030368
+28073926
+28032331
+28066107
+28000376
+28033621
+28000081
+
+09/04/2025
+
+Nombre
+
+CP INF-PRI ESPARTALES (Alcala de Henares) (Bilingiie)
+CP INF-PRI ERNEST HEMINGWAY (Alcala de Henares) (Bil
+CP INF-PRI GARCIA LORCA (Alcala de Henares) (Bilingiie)
+
+CP INF-PRI DULCINEA (Alcala de Henares) (Bilingiie)
+
+CP INF-PRI IPLACEA (Alcala de Henares) (Bilingiie)
+
+CP INF-PRI ANTONIO MINGOTE (Alcala de Henares) (Bilingiie)
+
+CP INF-PRI MIGUEL HERNANDEZ (Alcala de Henares) (Bilingtie)
+
+CP INF-PRI MOZART (Alcala de Henares) (Bilingiie)
+
+CP INF-PRI NUESTRA SENORA DEL VAL (Alcala de Henares) (Bilingiie)
+CP INF-PRI ANTONIO MACHADO (Alcala de Henares) (Bilingiie)
+
+CP INF-PRI DAOIZ Y VELARDE (Alcala de Henares) (Bilingiie)
+
+Pagina 3

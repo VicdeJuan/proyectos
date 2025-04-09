@@ -1,5 +1,7 @@
 dudas:
 - ¿Puedo dar 0% a algún CE? ¿Puedo no incluir algún CE? Me parece que hay alguno que no tiene relación con los contenidos.
+%
+RTA: No.
 
 - Horas del módulo y de FCT. Si tengo 270h y el centro ha establecido 120h de prácticas en 1º (3 semanas completas, lo que supone 8*3=24h menos de clase). ¿Programo para 270-24h? ¿O programo para 270 que no caben? ¿Me tengo que inventar un horario y marcar los festivos que me hacen perder clase? Si es que no a ambas cosas, las 270h son imposibles de cumplir y, por tanto, el temario entero también. 
 %
@@ -13,13 +15,92 @@ RTA: no
 %
 RTA: Hay que permitir a los que han suspendido algún RA que puedan recuperar todos los criterios. Hay que marcar recuperaciones para todos los CE siempre. El papel lo aguanta todo.
 
-- Muchos test de moodle. Puedo decir que los genero con IA, ¿verdad? Es la leche lo bien que funcionan las IAs para generar exámenes de Moodle.
+
+Tutoría 4/4/2025:
+
+Consulta planteamientos generales:
+- LaTeX
+%
+RTA:
+
+- Consultar índice
+%
+RTA:
+
+- Saberes básicos de Madrid, no del BOE.
+%
+RTA:
+
+- Desarrollo completo UDs en anexo y no en mitad, ¿no?
+%
+RTA: como quiera.
+
+- UD vs UT:
+%
+RTA: UT
+
+- ¿Donde entra el Plan Digital, Proyecto Educativo del Centro, Plan de Atención a la Diversidad, Plan Acción Tutorial?
+	- Fechas en la PGA
+	- Plan de convivencia, nº ausencias.
+%
+RTA:
+# PEC: es el documento por encima de la programación. Contribución a los programas de centro. Dentro de las UDs puedo meter alguna cosa.
 
 
-No meterse en camisas de 11 varas. El papel lo aguanta todo, así que a por todas. 
+- Atención a la diversidad: ¿en general, o específico para los alumnos que he definido que hay en mi grupo?
+%
+RTA:
+# DUA muy genérico.
+# Apartado genérico de atención a la diversidad. Medidas de ampliación y refuerzo generales.
+# ACNEAE en cada UT actividad debería mencionarse.
+
+
+- Solo un RA (el 3) será calificado en FCT porque es algo relativamente básico que seguro que hacen. ¿Debería poner más?
+%
+RTA: un máximo del 20% de la calificación final la pone la empresa. (Artículo 66 de la ley de FP)
+
+
+- Evaluación continua: 
+		- RA7h = RA3g
+			RA3.g) Se ha comentado y documentado el código.
+			RA7.h) Se ha comentado y documentado el código.
+		- Si justifico que todo un RA está contenido dentro de otro, ¿puedo justificar que se puede recuperar el RA4 con el RA7? 
+
+- A mi me gustaría ampliar lo que se ve con elementos transversales como git. No aparece, quita tiempo, pero es un elemento transversal muy muy bueno.
+	- Parecido con memoria dinámica de C
+%
+RTA:
+
+- ¿Programación en C? Creo que puedo defenderlo, pero es muy controvertido, ¿no?
+%
+RTA: 
+Como en Madrid hay debate, puede ser positivo. Es un punto 
+
+
+- Instrumento de calificación: Muchos test de moodle. Puedo decir que los genero con IA, ¿verdad? Es la leche lo bien que funcionan las IAs para generar exámenes de Moodle. 
+Lo que me preocupa es que la PD no se puede elaborar con IA, pero en mis clases sí puedo utilizarla, ¿no? ¿Puede ir el tribunal a pillar? Todos sabemos que todas las programaciones van a llevar IA... 
+%
+RTA:
+ambiguo. Todo bien. Prepararse bien la respuesta. Tal vez no decirlo de primeras y, si preguntan, puedo entrar en el debate.
+
+- Utilización de la IA
+% 
+RTA: debería tener una opinión formada pero puedo no decirlo nada. Si me preguntan, pues vale.
+Tal vez puedo preparar un notebook o un GPT para que ayude a programar pensando.
+
+- ¿Te puedo mandar la programación para que corrijas lo que llevo? 
+%
+RTA:
+
+
+Recomendaciones y cosas que faltan (visto en clase):
+
+- No meterse en camisas de 11 varas. El papel lo aguanta todo, así que a por todas. 
 
 - Llevar el excel de calificaciones impreso en A3 al tribunal.
 
 - Trabajo telemático
 
 - Proyectos de innovación de la Comunidad.
+
+- Respuestas sandwich. No confrontar. Dorar la píldora y dar la razón.

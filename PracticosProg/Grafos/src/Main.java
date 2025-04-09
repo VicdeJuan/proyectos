@@ -131,7 +131,7 @@ public class Main {
         grafo.matrix[1][3] = 1;
         grafo.matrix[1][4] = 1;
         grafo.matrix[2][5] = 1;
-        grafo.matrix[5][6] = 100;
+        grafo.matrix[5][6] = 1;
         grafo.matrix[4][6] = 1;
 
         // Puedes conectar en ambas direcciones si es no dirigido:
@@ -140,7 +140,7 @@ public class Main {
         grafo.matrix[3][1] = 1;
         grafo.matrix[4][1] = 1;
         grafo.matrix[5][2] = 1;
-        grafo.matrix[6][5] = 100;
+        grafo.matrix[6][5] = 1;
         grafo.matrix[6][4] = 1;
 
         int origen = 0;
