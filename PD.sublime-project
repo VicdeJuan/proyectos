@@ -1,0 +1,9 @@
+{
+	"folders":
+	[
+		{
+			"path": "PD",
+			"file_exclude_patterns": ["*.xlsx","*.lock.*","*.pdf","*.aux","*.lof","*.log","*.lot","*.fls","*.out","*.toc","*.fmt","*.fot","*.cb","*.cb2",".*.lb","*.fdb_latexmk","*.ind","*.idx"]
+		}
+	]
+}
