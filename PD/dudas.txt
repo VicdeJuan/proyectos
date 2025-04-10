@@ -74,7 +74,17 @@ RTA:
 - ¿Programación en C? Creo que puedo defenderlo, pero es muy controvertido, ¿no?
 %
 RTA: 
-Como en Madrid hay debate, puede ser positivo. Es un punto 
+Como en Madrid hay debate, puede ser positivo. Es un punto.
+% 
+Nuevos planteamientos (10/04):
+En realidad, programar en C supone invertir mucho tiempo en sintaxis de un lenguaje que no es tan importante como algoritmos de programación. Por ejemplo, programar el problema de devolver cambio exacto en su versión voraz y en su versión dinámica puede ser muy positivo.
+%
+Por ejemplo, 1,4,6 pagar 8 (voraz: 1+1+6; óptimo: 4+4). O, con monedas limitadas: {2:100,5:1} pagar 6 (voraz: sin solución, dinámico 2+2+2). 
+%
+Creo que esto puede tener más interés que programar en C.
+%
+Pero, llevándola ya empezada, hay que seguir por aquí. A por C (que si no hay que rehacer bastante).
+
 
 
 - Instrumento de calificación: Muchos test de moodle. Puedo decir que los genero con IA, ¿verdad? Es la leche lo bien que funcionan las IAs para generar exámenes de Moodle. 
