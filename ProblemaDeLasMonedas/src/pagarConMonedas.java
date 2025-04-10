@@ -1,6 +1,20 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
+/*
+Comparación de algoritmos de programación dinámica y programación voraz.
+
+Queremos pagar una cantidad de dinero con unas monedas. Por ejemplo, pagar 9 con monedas de 1,4,6
+
+La solución voraz (cojo monedas grandes y voy restando) no da soluciones óptimas. En el ejemplo propuesto,
+lo óptimo es 4+4 en lugar de 6+1+1+1.
+
+Se puede resolver con un algoritmo de programación dinámica que construye una tabla como el problema
+de la mochila. Primero, contamos solo con 1 monedas y todas las posibles cantidades. Después, con 2
+monedas (aquí obtendríamos el 4+4). Después, al incorporar la 3ª moneda, comprobamos si tenemos una
+solución mejor en la fila anterior (es decir, con una moneda menos).
+ */
+
 public class pagarConMonedas {
     public static void main(String[] args) {
 
