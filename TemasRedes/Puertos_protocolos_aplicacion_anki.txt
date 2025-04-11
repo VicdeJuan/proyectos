@@ -1,0 +1,18 @@
+¿Qué puerto usa el protocolo BitTorrent?;TCP/UDP 6881–6889 (puertos comunes)
+¿Qué puerto usa el protocolo DHCP?;UDP 67 (servidor), 68 (cliente)
+¿Qué puerto usa el protocolo DNS?;UDP 53, TCP 53
+¿Qué puerto usa el protocolo FTP?;TCP 20 (datos), 21 (control) y TCP 990 el seguro.
+¿Qué puerto usa el protocolo HTTP?;TCP 80 y TCP 443 el seguro.
+¿Qué puerto usa el protocolo IMAP?;TCP 143 y TCP 993 el seguro
+¿Qué puerto usa el protocolo IPFS?;TCP/UDP 4001 (por defecto), 5001 (API), 8080 (gateway)
+¿Qué puerto usa el protocolo IRC?;TCP 194, 6660–6669
+¿Qué puerto usa el protocolo NTP?;UDP 123
+¿Qué puerto usa el protocolo POP3?;TCP 110 y TCP 995 el seguro
+¿Qué puerto usa el protocolo RTMP?;TCP 1935
+¿Qué puerto usa el protocolo RTSP?;TCP/UDP 554
+¿Qué puerto usa el protocolo SIP?;UDP/TCP 5060, 5061 (TLS)
+¿Qué puerto usa el protocolo SMTP?;TCP 25
+¿Qué puerto usa el protocolo SMTPS?;TCP 465
+¿Qué puerto usa el protocolo SNMP?;UDP 161, 162
+¿Qué puerto usa el protocolo SSH?;TCP 22
+¿Qué puerto usa el protocolo Telnet?;TCP 23
